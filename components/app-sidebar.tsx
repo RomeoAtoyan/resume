@@ -1,10 +1,10 @@
 "use client";
 
 import {
-  ArrowUpCircleIcon,
+  Folders,
   HelpCircleIcon,
-  LayoutDashboardIcon,
   SettingsIcon,
+  Sparkle
 } from "lucide-react";
 import * as React from "react";
 
@@ -17,8 +17,7 @@ import {
   SidebarFooter,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
+  SidebarMenuItem
 } from "@/components/ui/sidebar";
 import NavLogo from "./nav-logo";
 
@@ -30,9 +29,9 @@ const data = {
   },
   navMain: [
     {
-      title: "Dashboard",
+      title: "My CV's",
       url: "#",
-      icon: LayoutDashboardIcon,
+      icon: Folders,
     },
   ],
   navSecondary: [

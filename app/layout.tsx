@@ -31,15 +31,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <SessionProvider>
-          <SidebarProvider>
-            <AppSidebar variant="inset" />
-            <SidebarInset>
-              <SiteHeader />
-              <main className="p-6">{children}</main>
-            </SidebarInset>
-          </SidebarProvider>
+          <SiteHeader />
+          <main className="p-6">{children}</main>
+          <GlobalModal />
         </SessionProvider>
-        <GlobalModal />
       </body>
     </html>
   );

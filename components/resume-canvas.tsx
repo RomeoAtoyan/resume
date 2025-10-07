@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
+import { useCvDataStore } from "@/store/use-cv-data-store";
 
 const ResumeCanvas = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -9,6 +10,7 @@ const ResumeCanvas = () => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [scale, setScale] = useState(1);
   const [downloading, setDownloading] = useState(false);
+  const { fullName } = useCvDataStore();
 
   const containerRef = useRef<HTMLDivElement>(null);
   const paperRef = useRef<HTMLDivElement>(null);
@@ -97,11 +99,9 @@ const ResumeCanvas = () => {
           }}
         >
           <div className="w-full h-full p-10 text-gray-700 select-none">
-            <h1 className="text-2xl font-semibold mb-4">My Resume</h1>
-            <p>
-              🧭 Drag me around and use <strong>Ctrl + Scroll</strong> or your
-              trackpad to zoom in/out!
-            </p>
+            <h1 className="text-2xl font-semibold mb-4">
+              Full name: {fullName}
+            </h1>
           </div>
         </div>
       </div>

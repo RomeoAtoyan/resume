@@ -2,8 +2,19 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useCvDataStore } from "@/store/use-cv-data-store";
 
 const PersonalInfo = () => {
+  const { setField, ...cv } = useCvDataStore();
+
+  const fields = [
+    { id: "fullName", label: "Full name", placeholder: "Full name" },
+    { id: "jobTitle", label: "Job title", placeholder: "Job Title" },
+    { id: "email", label: "Email", placeholder: "Email" },
+    { id: "phoneNumber", label: "Phone number", placeholder: "Phone number" },
+    { id: "address", label: "Address", placeholder: "Address" },
+  ] as const;
+
   return (
     <div className="p-6 space-y-6">
       <div className="space-y-4">
@@ -15,30 +26,18 @@ const PersonalInfo = () => {
         <Button>Upload image</Button>
       </div>
 
-      <div className="space-y-1">
-        <Label>Full name</Label>
-        <Input type="text" id="fullName" placeholder="Full name" />
-      </div>
-
-      <div className="space-y-1">
-        <Label>Job title</Label>
-        <Input type="text" id="jobTitle" placeholder="Job Title" />
-      </div>
-
-      <div className="space-y-1">
-        <Label>Email</Label>
-        <Input type="text" id="email" placeholder="Email" />
-      </div>
-
-      <div className="space-y-1">
-        <Label>Phone number</Label>
-        <Input type="text" id="phoneNumber" placeholder="Phone number" />
-      </div>
-
-      <div className="space-y-1">
-        <Label>Address</Label>
-        <Input type="text" id="address" placeholder="Address" />
-      </div>
+      {fields.map((field) => (
+        <div key={field.id} className="space-y-1">
+          <Label>{field.label}</Label>
+          <Input
+            onChange={(e) => setField(field.id, e.target.value)}
+            value={cv[field]}
+            type="text"
+            id={field.id}
+            placeholder={field.placeholder}
+          />
+        </div>
+      ))}
     </div>
   );
 };

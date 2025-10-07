@@ -24,8 +24,8 @@ const Page = () => {
   ];
 
   return (
-    <div className="w-full flex items-start">
-      <div className="max-w-xs w-full">
+    <div className="w-full flex items-start h-[calc(100vh-65px)]">
+      <div className="max-w-xs w-full h-full">
         {sections.map((section) => {
           const isActive = activeSection.id === section.id;
           return (
@@ -47,11 +47,11 @@ const Page = () => {
         })}
       </div>
 
-      <div className="max-w-lg w-full border-l border-r border-b border-gray-200">
+      <div className="max-w-lg w-full h-full border-l border-r border-b border-gray-200">
         <SectionBox activeSection={activeSection} />
       </div>
 
-      <div className="w-full">
+      <div className="w-full h-full">
         <ResumeCanvas />
       </div>
     </div>

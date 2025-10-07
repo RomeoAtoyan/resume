@@ -1,48 +1,17 @@
 "use client";
-import { useState, useRef } from "react";
+import { useCvDataStore } from "@/store/use-cv-data-store";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
-import { useCvDataStore } from "@/store/use-cv-data-store";
+import { useRef, useState } from "react";
+import { Separator } from "./ui/separator";
+import { TimelineItem } from "@/components/ui/timeline-item";
+import { SkillBar } from "./ui/skill-bar"
 
 const ResumeCanvas = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [dragging, setDragging] = useState(false);
-  const [offset, setOffset] = useState({ x: 0, y: 0 });
-  const [scale, setScale] = useState(1);
   const [downloading, setDownloading] = useState(false);
   const { fullName } = useCvDataStore();
 
-  const containerRef = useRef<HTMLDivElement>(null);
   const paperRef = useRef<HTMLDivElement>(null);
-
-  // --- DRAG LOGIC ---
-  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    setDragging(true);
-    setOffset({
-      x: e.clientX - position.x,
-      y: e.clientY - position.y,
-    });
-  };
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!dragging) return;
-    setPosition({
-      x: e.clientX - offset.x,
-      y: e.clientY - offset.y,
-    });
-  };
-
-  const handleMouseUp = () => setDragging(false);
-
-  // --- ZOOM LOGIC ---
-  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    const delta = e.deltaY > 0 ? -0.1 : 0.1;
-    setScale((prev) => {
-      const newScale = Math.min(2, Math.max(0.5, prev + delta));
-      return parseFloat(newScale.toFixed(2));
-    });
-  };
 
   // --- DOWNLOAD PDF ---
   const handleDownloadPDF = async () => {
@@ -51,7 +20,7 @@ const ResumeCanvas = () => {
 
     try {
       const canvas = await html2canvas(paperRef.current, {
-        scale: 2,
+        scale: 4,
         backgroundColor: "#ffffff",
       });
       const imgData = canvas.toDataURL("image/png");
@@ -70,8 +39,8 @@ const ResumeCanvas = () => {
   };
 
   return (
-    <div className="relative h-[calc(100vh-4.25rem)] w-full bg-[radial-gradient(circle_at_center,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px] overflow-hidden cursor-grab active:cursor-grabbing">
-      <div className="absolute top-4 right-4 z-10">
+    <div className="relative h-[calc(100vh-65px)] w-full overflow-y-auto bg-[radial-gradient(circle_at_center,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px] flex justify-start pl-10 py-10">
+      <div className="fixed top-20 right-4">
         <button
           onClick={handleDownloadPDF}
           disabled={downloading}
@@ -82,26 +51,96 @@ const ResumeCanvas = () => {
       </div>
 
       <div
-        ref={containerRef}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-        onWheel={handleWheel}
-        className="relative w-full h-full"
+        ref={paperRef}
+        className="bg-white shadow-lg border border-gray-300 rounded-md overflow-hidden"
+        style={{
+          width: "210mm",
+          height: "297mm",
+        }}
       >
-        <div
-          ref={paperRef}
-          className="absolute bg-white shadow-lg border border-gray-300 rounded-md origin-top-left transition-transform duration-0"
-          onMouseDown={handleMouseDown}
-          style={{
-            width: "210mm",
-            height: "297mm",
-            transform: `translate(${position.x}px, ${position.y}px) scale(${scale})`,
-          }}
-        >
-          <div className="w-full h-full p-10 text-gray-700 select-none">
-            <h1 className="text-2xl font-semibold mb-4">
-              Full name: {fullName}
-            </h1>
+        <div className="w-full h-full flex select-none">
+          <div className="w-4/12 bg-gray-300 p-4">
+          
+          </div>
+          <div className="w-8/12">
+            <div className="w-full p-8 bg-gray-200 flex items-center gap-6">
+              <img
+                className="size-32 object-cover rounded-full"
+                src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8cG9ydHJhaXR8ZW58MHx8MHx8fDA%3D"
+                alt=""
+              />
+              <div>
+                <h1 className="text-3xl font-bold">Romeo Atoyan</h1>
+                <p className="font-medium">Front-End Developer</p>
+              </div>
+            </div>
+
+            <div className="p-8 w-full space-y-8">
+              <div className="w-full space-y-6">
+                <div className="flex items-center justify-between">
+                  <h1 className="uppercase font-bold inline">Education</h1>
+                  <Separator className="max-w-xs" />
+                </div>
+                <div className="">
+                  <TimelineItem
+                    university="University of Stanford"
+                    years="2005 – 2007"
+                    title="CERTIFICATE OF WEB TRAINING"
+                    description="Porttitor amet massa. Donec consectetur dolor et orci ornare, sit amet mollis massa."
+                  />
+                  <TimelineItem
+                    university="University of Stanford"
+                    years="2005 – 2007"
+                    title="CERTIFICATE OF WEB TRAINING"
+                    description="Porttitor amet massa. Donec consectetur dolor et orci ornare, sit amet mollis massa."
+                  />
+                </div>
+              </div>
+              <div className="w-full space-y-6">
+                <div className="flex items-center justify-between">
+                  <h1 className="uppercase font-bold inline">Experience</h1>
+                  <Separator className="max-w-xs" />
+                </div>
+                <div className="">
+                  <TimelineItem
+                    university="University of Stanford"
+                    years="2005 – 2007"
+                    title="CERTIFICATE OF WEB TRAINING"
+                    description="Porttitor amet massa. Donec consectetur dolor et orci ornare, sit amet mollis massa."
+                  />
+                  <TimelineItem
+                    university="University of Stanford"
+                    years="2005 – 2007"
+                    title="CERTIFICATE OF WEB TRAINING"
+                    description="Porttitor amet massa. Donec consectetur dolor et orci ornare, sit amet mollis massa."
+                  />
+                </div>
+              </div>
+              <div className="w-full space-y-6">
+                <div className="flex items-center justify-between">
+                  <h1 className="uppercase font-bold inline">Skills</h1>
+                  <Separator className="max-w-xs" />
+                </div>
+                <div className="grid grid-cols-2 gap-x-10">
+                  <div className="col-span-1">
+                    <h1 className="text-base font-semibold mb-2">
+                      Professional skills
+                    </h1>
+                    <SkillBar skill="Photoshop" level={90} />
+                    <SkillBar skill="Photoshop" level={90} />
+                    <SkillBar skill="Photoshop" level={90} />
+                  </div>
+                  <div className="col-span-1">
+                    <h1 className="text-base font-semibold mb-2">
+                      Personal skills
+                    </h1>
+                    <SkillBar skill="Photoshop" level={90} />
+                    <SkillBar skill="Photoshop" level={90} />
+                    <SkillBar skill="Photoshop" level={90} />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

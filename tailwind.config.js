@@ -8,6 +8,7 @@ module.exports = {
     "./lib/**/*.{js,ts,jsx,tsx,mdx}",
     "./modals/**/*.{js,ts,jsx,tsx,mdx}",
     "./globals/**/*.{js,ts,jsx,tsx,mdx}",
+    "./sections/**/*.{js,ts,jsx,tsx,mdx}",
 
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx,mdx}",

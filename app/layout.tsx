@@ -1,11 +1,9 @@
+import "@/app/globals.css";
+import { SiteHeader } from "@/components/site-header";
+import GlobalModal from "@/globals/global-modal";
+import SessionProvider from "@/providers/session-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "@/app/globals.css";
-import SessionProvider from "@/providers/session-provider";
-import GlobalModal from "@/globals/global-modal";
-import { AppSidebar } from "@/components/app-sidebar";
-import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,7 +30,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <SessionProvider>
           <SiteHeader />
-          <main className="p-6">{children}</main>
+          <main>{children}</main>
           <GlobalModal />
         </SessionProvider>
       </body>

@@ -7,6 +7,8 @@ interface CvStore {
   phoneNumber: string;
   address: string;
 
+  summary: string;
+
   setField: (field: keyof CvStore, value: string) => void;
   reset: () => void;
 }
@@ -17,6 +19,7 @@ export const useCvDataStore = create<CvStore>((set) => ({
   email: "",
   phoneNumber: "",
   address: "",
+  summary: "",
 
   setField: (field, value) => set(() => ({ [field]: value })),
   reset: () =>
@@ -26,5 +29,6 @@ export const useCvDataStore = create<CvStore>((set) => ({
       email: "",
       phoneNumber: "",
       address: "",
+      summary: ""
     }),
 }));

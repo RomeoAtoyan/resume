@@ -1,4 +1,6 @@
 import PersonalInfo from "./personal-info";
+import Summary from "./summary";
+import WorkExperience from "./work-experience";
 
 export const SectionBox = ({
   activeSection,
@@ -9,9 +11,9 @@ export const SectionBox = ({
     case "personal-info":
       return <PersonalInfo />;
     case "summary":
-      return <div>123</div>;
+      return <Summary />;
     case "work-experience":
-      return <div>123</div>;
+      return <WorkExperience />;
     case "education":
       return <div>123</div>;
     case "language":

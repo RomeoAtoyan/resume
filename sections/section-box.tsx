@@ -1,6 +1,7 @@
 import CoursesAndCertificates from "./courses-certificates";
 import Education from "./education";
 import Language from "./language";
+import MoreDetails from "./more-details";
 import PersonalInfo from "./personal-info";
 import References from "./references";
 import Summary from "./summary";
@@ -27,7 +28,7 @@ export const SectionBox = ({
     case "references":
       return <References />;
     case "more-details":
-      return <div>123</div>;
+      return <MoreDetails />;
     default:
       return <div className="p-6 text-gray-500">Select a section</div>;
   }

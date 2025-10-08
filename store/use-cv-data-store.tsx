@@ -51,6 +51,14 @@ interface Reference {
   order?: number;
 }
 
+interface MoreDetails {
+  id: string;
+  achievements: string;
+  hobbies: string;
+  personalStatement: string;
+  misc: string;
+}
+
 interface CvStore {
   fullName: string;
   jobTitle: string;
@@ -64,6 +72,7 @@ interface CvStore {
   languages: Language[];
   courses: CourseCertificate[];
   references: Reference[];
+  moreDetails: MoreDetails[];
 
   setField: (field: keyof CvStore, value: string) => void;
   setWorkExperienceField: (
@@ -89,6 +98,11 @@ interface CvStore {
   setReferenceField: (
     id: string,
     field: keyof Reference,
+    value: string
+  ) => void;
+  setMoreDetailsField: (
+    id: string,
+    field: keyof MoreDetails,
     value: string
   ) => void;
   reset: () => void;
@@ -163,6 +177,16 @@ export const useCvDataStore = create<CvStore>((set) => ({
     },
   ],
 
+  moreDetails: [
+    {
+      id: "1",
+      achievements: "",
+      hobbies: "",
+      personalStatement: "",
+      misc: "",
+    },
+  ],
+
   setField: (field, value) => set(() => ({ [field]: value })),
 
   setWorkExperienceField: (id, field, value) =>
@@ -197,6 +221,13 @@ export const useCvDataStore = create<CvStore>((set) => ({
     set((state) => ({
       references: state.references.map((ref) =>
         ref.id === id ? { ...ref, [field]: value } : ref
+      ),
+    })),
+
+  setMoreDetailsField: (id, field, value) =>
+    set((state) => ({
+      moreDetails: state.moreDetails.map((detail) =>
+        detail.id === id ? { ...detail, [field]: value } : detail
       ),
     })),
 
@@ -262,6 +293,16 @@ export const useCvDataStore = create<CvStore>((set) => ({
           email: "",
           phone: "",
           order: 0,
+        },
+      ],
+
+      moreDetails: [
+        {
+          id: "1",
+          achievements: "",
+          hobbies: "",
+          personalStatement: "",
+          misc: "",
         },
       ],
     }),

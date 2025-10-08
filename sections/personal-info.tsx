@@ -34,8 +34,11 @@ const PersonalInfo = () => {
             type="text"
             id={field.id}
             placeholder={field.placeholder}
+            //@ts-ignore
             value={cv[field.id as keyof typeof cv] ?? ""}
-            onChange={(e) => setField(field.id as keyof typeof cv, e.target.value)}
+            onChange={(e) =>
+              setField(field.id as keyof typeof cv, e.target.value)
+            }
           />
         </div>
       ))}

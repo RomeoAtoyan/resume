@@ -11,29 +11,39 @@ interface WorkExperience {
   order?: number;
 }
 
+interface Education {
+  id: string;
+  school: string;
+  degree: string;
+  fieldOfStudy: string;
+  startDate: string;
+  endDate: string;
+  location: string;
+  summary: string;
+  grade: string;
+  order?: number;
+}
+
 interface CvStore {
   fullName: string;
   jobTitle: string;
   email: string;
   phoneNumber: string;
   address: string;
-
   summary: string;
-  workExperience: {
-    id: string;
-    jobTitle: string;
-    startDate: string;
-    endDate: string;
-    company: string;
-    summary: string;
-    location?: string;
-    order?: number;
-  }[];
+
+  workExperience: WorkExperience[];
+  education: Education[];
 
   setField: (field: keyof CvStore, value: string) => void;
   setWorkExperienceField: (
     id: string,
     field: keyof WorkExperience,
+    value: string
+  ) => void;
+  setEducationField: (
+    id: string,
+    field: keyof Education,
     value: string
   ) => void;
   reset: () => void;
@@ -60,13 +70,37 @@ export const useCvDataStore = create<CvStore>((set) => ({
     },
   ],
 
+  education: [
+    {
+      id: "1",
+      school: "",
+      degree: "",
+      fieldOfStudy: "",
+      startDate: "",
+      endDate: "",
+      location: "",
+      summary: "",
+      grade: "",
+      order: 0,
+    },
+  ],
+
   setField: (field, value) => set(() => ({ [field]: value })),
+
   setWorkExperienceField: (id, field, value) =>
     set((state) => ({
       workExperience: state.workExperience.map((exp) =>
         exp.id === id ? { ...exp, [field]: value } : exp
       ),
     })),
+
+  setEducationField: (id, field, value) =>
+    set((state) => ({
+      education: state.education.map((edu) =>
+        edu.id === id ? { ...edu, [field]: value } : edu
+      ),
+    })),
+
   reset: () =>
     set({
       fullName: "",
@@ -77,12 +111,27 @@ export const useCvDataStore = create<CvStore>((set) => ({
       summary: "",
       workExperience: [
         {
-          id: "",
+          id: "1",
           jobTitle: "",
           startDate: "",
           endDate: "",
           company: "",
           summary: "",
+          location: "",
+          order: 0,
+        },
+      ],
+      education: [
+        {
+          id: "1",
+          school: "",
+          degree: "",
+          fieldOfStudy: "",
+          startDate: "",
+          endDate: "",
+          location: "",
+          summary: "",
+          grade: "",
           order: 0,
         },
       ],

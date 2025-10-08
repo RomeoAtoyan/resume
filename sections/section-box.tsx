@@ -1,4 +1,5 @@
 import Education from "./education";
+import Language from "./language";
 import PersonalInfo from "./personal-info";
 import Summary from "./summary";
 import WorkExperience from "./work-experience";
@@ -18,7 +19,7 @@ export const SectionBox = ({
     case "education":
       return <Education />;
     case "language":
-      return <div>123</div>;
+      return <Language />;
     case "courses-certificates":
       return <div>123</div>;
     case "more-details":

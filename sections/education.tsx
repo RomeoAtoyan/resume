@@ -67,12 +67,12 @@ const Education = () => {
       <div className="space-y-6 overflow-y-auto">
         <div>
           <Label className="text-sm font-semibold text-gray-800">
-            Work Experience
+            Education
           </Label>
           <p className="text-xs text-gray-500">
-            Add your previous roles, companies, and key achievements. Focus on
-            responsibilities and results that demonstrate your skills and
-            growth.
+            Add your academic background, including schools, degrees, and key
+            areas of study. Highlight achievements or courses that best
+            represent your expertise.
           </p>
         </div>
 

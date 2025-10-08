@@ -20,6 +20,7 @@ const Page = () => {
     { id: "education", title: "Education" },
     { id: "language", title: "Language" },
     { id: "courses-certificates", title: "Courses & Certificates" },
+    { id: "references", title: "References" },
     { id: "more-details", title: "More details" },
   ];
 

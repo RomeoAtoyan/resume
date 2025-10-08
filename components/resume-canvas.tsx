@@ -14,7 +14,8 @@ const ResumeCanvas = () => {
     workExperience,
     education,
     languages,
-    courses
+    courses,
+    references
   } = useCvDataStore();
 
   return (
@@ -39,6 +40,7 @@ const ResumeCanvas = () => {
           <div>{JSON.stringify(education)}</div>
           <div>{JSON.stringify(languages)}</div>
           <div>{JSON.stringify(courses)}</div>
+          <div>{JSON.stringify(references)}</div>
         </div>
       </div>
     </div>

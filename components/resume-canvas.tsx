@@ -20,7 +20,7 @@ const ResumeCanvas = () => {
   } = useCvDataStore();
 
   return (
-    <div className="relative h-[calc(100vh-65px)] w-full overflow-y-auto bg-[radial-gradient(circle_at_center,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px] flex justify-start pl-10 py-10">
+    <div className="relative h-[calc(100vh-65px)] w-full overflow-y-auto bg-[radial-gradient(circle_at_center,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px] flex justify-center pl-10 py-10">
       <div
         className="bg-white shadow-lg border border-gray-300 rounded-md overflow-hidden"
         style={{

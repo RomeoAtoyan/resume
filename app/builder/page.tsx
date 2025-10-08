@@ -48,7 +48,7 @@ const Page = () => {
         })}
       </div>
 
-      <div className="max-w-lg w-full h-full border-l border-r border-b border-gray-200">
+      <div className="max-w-lg w-full h-full overflow-y-auto border-l border-r border-b border-gray-200">
         <SectionBox activeSection={activeSection} />
       </div>
 

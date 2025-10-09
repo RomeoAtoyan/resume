@@ -122,7 +122,7 @@ const WorkExperience = () => {
               key={exp.id}
               className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
-              <div className="flex items-center justify-end absolute top-0 right-0">
+              <div className="flex items-center justify-end absolute top-1 right-1">
                 <Button
                   className="group"
                   size="icon"

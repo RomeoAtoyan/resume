@@ -68,8 +68,7 @@ const PersonalInfo = () => {
 
       <div className="space-y-4 mt-4">
         <Label>Profile Image</Label>
-
-        <div className="flex flex-col items-start gap-4">
+        <div className="flex flex-col items-start">
           <div className="relative group">
             <Avatar className="h-20 w-20 border mb-4">
               <AvatarImage

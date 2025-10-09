@@ -4,6 +4,7 @@ import clsx from "clsx";
 import {
   Award,
   Briefcase,
+  Cpu,
   FileText,
   GraduationCap,
   Languages,
@@ -32,6 +33,7 @@ const Page = () => {
     { id: "summary", title: "Summary", icon: FileText },
     { id: "work-experience", title: "Work experience", icon: Briefcase },
     { id: "education", title: "Education", icon: GraduationCap },
+    { id: "skills", title: "Skills", icon: Cpu },
     { id: "language", title: "Language", icon: Languages },
     {
       id: "courses-certificates",

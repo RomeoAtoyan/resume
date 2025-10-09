@@ -41,12 +41,30 @@ type TextField = BaseField & { type?: "text" };
 type EducationField = DateField | TextField;
 
 const educationFields: readonly EducationField[] = [
-  { id: "school", label: "School / University", placeholder: "Stanford University" },
+  {
+    id: "school",
+    label: "School / University",
+    placeholder: "Stanford University",
+  },
   { id: "degree", label: "Degree", placeholder: "Bachelor of Science" },
-  { id: "fieldOfStudy", label: "Field of Study", placeholder: "Computer Science" },
+  {
+    id: "fieldOfStudy",
+    label: "Field of Study",
+    placeholder: "Computer Science",
+  },
   { id: "location", label: "Location", placeholder: "California, USA" },
-  { id: "startDate", label: "Start Date", placeholder: "Select month and year", type: "date" },
-  { id: "endDate", label: "End Date", placeholder: "Select month and year", type: "date" },
+  {
+    id: "startDate",
+    label: "Start Date",
+    placeholder: "Select month and year",
+    type: "date",
+  },
+  {
+    id: "endDate",
+    label: "End Date",
+    placeholder: "Select month and year",
+    type: "date",
+  },
   { id: "grade", label: "Grade / GPA", placeholder: "3.8 GPA" },
   {
     id: "summary",
@@ -59,7 +77,9 @@ const educationFields: readonly EducationField[] = [
 
 const Education = () => {
   const { education, setItemField, addItem, removeItem } = useCvDataStore();
-  const [dates, setDates] = useState<Record<string, Record<string, Date | undefined>>>({});
+  const [dates, setDates] = useState<
+    Record<string, Record<string, Date | undefined>>
+  >({});
 
   const getIcon = (id: string) => {
     switch (id) {
@@ -76,7 +96,11 @@ const Education = () => {
     }
   };
 
-  const handleDateSelect = (eduId: string, fieldId: string, date: Date | undefined) => {
+  const handleDateSelect = (
+    eduId: string,
+    fieldId: string,
+    date: Date | undefined
+  ) => {
     setDates((prev) => ({
       ...prev,
       [eduId]: { ...prev[eduId], [fieldId]: date },
@@ -108,10 +132,9 @@ const Education = () => {
           {education.map((edu) => (
             <div
               key={edu.id}
-              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm"
+              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
-              <div className="flex justify-between items-start">
-                <Label className="font-medium">Education Entry</Label>
+              <div className="flex justify-end items-start absolute top-1 right-1">
                 <Button
                   size="icon"
                   variant="ghost"
@@ -123,7 +146,8 @@ const Education = () => {
 
               {educationFields.map((field) => {
                 const icon = getIcon(field.id);
-                const value = (edu[field.id as keyof typeof edu] as string) ?? "";
+                const value =
+                  (edu[field.id as keyof typeof edu] as string) ?? "";
 
                 if (field.type === "date") {
                   return (
@@ -134,7 +158,8 @@ const Education = () => {
                           <Button
                             variant="outline"
                             className={`w-full justify-start text-left font-normal bg-white ${
-                              !dates[edu.id]?.[field.id] && "text-muted-foreground"
+                              !dates[edu.id]?.[field.id] &&
+                              "text-muted-foreground"
                             }`}
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
@@ -151,7 +176,9 @@ const Education = () => {
                           <Calendar
                             mode="single"
                             selected={dates[edu.id]?.[field.id]}
-                            onSelect={(date) => handleDateSelect(edu.id, field.id, date)}
+                            onSelect={(date) =>
+                              handleDateSelect(edu.id, field.id, date)
+                            }
                             captionLayout="dropdown"
                             fromYear={1970}
                             toYear={2035}

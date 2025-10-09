@@ -1,31 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import SectionBoxWrapper from "./section-box-wrapper";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { CourseCertificate, useCvDataStore } from "@/store/use-cv-data-store";
+import { Calendar as CalendarPicker } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
 import {
   InputGroup,
-  InputGroupInput,
   InputGroupAddon,
+  InputGroupInput,
 } from "@/components/ui/input-group";
+import { Label } from "@/components/ui/label";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+import { useCvDataStore } from "@/store/use-cv-data-store";
+import { format } from "date-fns";
 import {
   BookOpen,
   Building2,
-  Calendar,
-  Link2,
   CalendarIcon,
+  Link2,
+  Trash2,
+  Plus,
 } from "lucide-react";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@/components/ui/popover";
-import { Calendar as CalendarPicker } from "@/components/ui/calendar";
-import { format } from "date-fns";
+import SectionBoxWrapper from "./section-box-wrapper";
 
 type BaseField = {
   id: string;
@@ -70,8 +71,8 @@ const coursesFields: readonly CourseField[] = [
 ] as const;
 
 const CoursesAndCertificates = () => {
-  const { courses, setCourseField } = useCvDataStore();
-  const [dates, setDates] = useState<{ [key: string]: Date | undefined }>({});
+  const { courses, setItemField, addItem, removeItem } = useCvDataStore();
+  const [dates, setDates] = useState<Record<string, Date | undefined>>({});
 
   const getIcon = (id: string) => {
     switch (id) {
@@ -88,7 +89,8 @@ const CoursesAndCertificates = () => {
 
   const handleDateSelect = (courseId: string, date: Date | undefined) => {
     setDates((prev) => ({ ...prev, [courseId]: date }));
-    if (date) setCourseField(courseId, "date", format(date, "MMM yyyy"));
+    if (date)
+      setItemField("courses", courseId, "date", format(date, "MMM yyyy"));
   };
 
   return (
@@ -108,8 +110,18 @@ const CoursesAndCertificates = () => {
           {courses.map((course) => (
             <div
               key={course.id}
-              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm"
+              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
+              <div className="flex justify-endbetween items-start absolute top-1 right-1">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => removeItem("courses", course.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-gray-500" />
+                </Button>
+              </div>
+
               {coursesFields.map((field) => {
                 const icon = getIcon(field.id);
                 const value =
@@ -141,9 +153,7 @@ const CoursesAndCertificates = () => {
                           <CalendarPicker
                             mode="single"
                             selected={dates[course.id]}
-                            onSelect={(date) =>
-                              handleDateSelect(course.id, date)
-                            }
+                            onSelect={(date) => handleDateSelect(course.id, date)}
                             captionLayout="dropdown"
                             fromYear={1970}
                             toYear={2035}
@@ -163,9 +173,10 @@ const CoursesAndCertificates = () => {
                         placeholder={field.placeholder}
                         value={value}
                         onChange={(e) =>
-                          setCourseField(
+                          setItemField(
+                            "courses",
                             course.id,
-                            field.id as keyof CourseCertificate,
+                            field.id as keyof typeof course,
                             e.target.value
                           )
                         }
@@ -186,9 +197,10 @@ const CoursesAndCertificates = () => {
                           value={value}
                           className="bg-white"
                           onChange={(e) =>
-                            setCourseField(
+                            setItemField(
+                              "courses",
                               course.id,
-                              field.id as keyof CourseCertificate,
+                              field.id as keyof typeof course,
                               e.target.value
                             )
                           }
@@ -208,9 +220,10 @@ const CoursesAndCertificates = () => {
                       value={value}
                       className="bg-white"
                       onChange={(e) =>
-                        setCourseField(
+                        setItemField(
+                          "courses",
                           course.id,
-                          field.id as keyof CourseCertificate,
+                          field.id as keyof typeof course,
                           e.target.value
                         )
                       }
@@ -223,7 +236,10 @@ const CoursesAndCertificates = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button>Add Certificate</Button>
+          <Button onClick={() => addItem("courses")}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Certificate
+          </Button>
         </div>
       </div>
     </SectionBoxWrapper>

@@ -9,11 +9,11 @@ import {
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import { Languages as LanguagesIcon } from "lucide-react";
+import { Languages as LanguagesIcon, Trash2, Plus } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
 
 const Language = () => {
-  const { languages, setLanguageField, addLanguage, removeLanguage } = useCvDataStore();
+  const { languages, setItemField, addItem, removeItem } = useCvDataStore();
 
   const getLevelLabel = (level: number) => {
     if (level >= 90) return "Native";
@@ -35,22 +35,36 @@ const Language = () => {
           </p>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-8">
           {languages.map((lang) => (
             <div
               key={lang.id}
               className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
-              <Button onClick={() => removeLanguage(lang.id)} className="absolute top-0 right-0">x</Button>
+              <div className="flex justify-end items-start absolute top-1 right-1">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => removeItem("languages", lang.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-gray-500" />
+                </Button>
+              </div>
+
               <div className="space-y-2">
-                <Label htmlFor={`language-${lang.id}`}>Language</Label>
+                <Label htmlFor={`language-${lang.id}`}>Language Name</Label>
                 <InputGroup className="bg-white overflow-hidden">
                   <InputGroupInput
                     id={`language-${lang.id}`}
                     placeholder="e.g. English"
                     value={lang.language}
                     onChange={(e) =>
-                      setLanguageField(lang.id, "language", e.target.value)
+                      setItemField(
+                        "languages",
+                        lang.id,
+                        "language",
+                        e.target.value
+                      )
                     }
                     className="bg-white"
                   />
@@ -73,7 +87,7 @@ const Language = () => {
                   step={5}
                   value={[lang.level ?? 0]}
                   onValueChange={(val) =>
-                    setLanguageField(lang.id, "level", val[0])
+                    setItemField("languages", lang.id, "level", val[0])
                   }
                 />
               </div>
@@ -82,7 +96,10 @@ const Language = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button onClick={addLanguage}>+ Add Language</Button>
+          <Button onClick={() => addItem("languages")}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Language
+          </Button>
         </div>
       </div>
     </SectionBoxWrapper>

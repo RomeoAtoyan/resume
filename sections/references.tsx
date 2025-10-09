@@ -1,20 +1,27 @@
 "use client";
 
-import React from "react";
 import SectionBoxWrapper from "./section-box-wrapper";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCvDataStore } from "@/store/use-cv-data-store";
 import {
   InputGroup,
   InputGroupInput,
   InputGroupAddon,
 } from "@/components/ui/input-group";
-import { User, Briefcase, Building2, Mail, Phone } from "lucide-react";
+import { useCvDataStore } from "@/store/use-cv-data-store";
+import {
+  User,
+  Briefcase,
+  Building2,
+  Mail,
+  Phone,
+  Trash2,
+  Plus,
+} from "lucide-react";
 
 const References = () => {
-  const { references, setReferenceField } = useCvDataStore();
+  const { references, setItemField, addItem, removeItem } = useCvDataStore();
 
   const referencesFields = [
     {
@@ -77,17 +84,27 @@ const References = () => {
           {references.map((ref) => (
             <div
               key={ref.id}
-              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm"
+              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
+              <div className="flex justify-between items-start absolute top-1 right-1">
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => removeItem("references", ref.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-gray-500" />
+                </Button>
+              </div>
+
               {referencesFields.map((field) => {
                 const icon = getIcon(field.id);
                 const value =
                   (ref[field.id as keyof typeof ref] as string) ?? "";
 
-                if (icon) {
-                  return (
-                    <div key={field.id} className="space-y-1">
-                      <Label>{field.label}</Label>
+                return (
+                  <div key={field.id} className="space-y-1">
+                    <Label>{field.label}</Label>
+                    {icon ? (
                       <InputGroup className="bg-white overflow-hidden">
                         <InputGroupInput
                           id={`${field.id}-${ref.id}`}
@@ -95,27 +112,32 @@ const References = () => {
                           value={value}
                           className="bg-white"
                           onChange={(e) =>
-                            setReferenceField(ref.id, field.id, e.target.value)
+                            setItemField(
+                              "references",
+                              ref.id,
+                              field.id as keyof typeof ref,
+                              e.target.value
+                            )
                           }
                         />
                         <InputGroupAddon>{icon}</InputGroupAddon>
                       </InputGroup>
-                    </div>
-                  );
-                }
-
-                return (
-                  <div key={field.id} className="space-y-1">
-                    <Label>{field.label}</Label>
-                    <Input
-                      id={`${field.id}-${ref.id}`}
-                      placeholder={field.placeholder}
-                      value={value}
-                      className="bg-white"
-                      onChange={(e) =>
-                        setReferenceField(ref.id, field.id, e.target.value)
-                      }
-                    />
+                    ) : (
+                      <Input
+                        id={`${field.id}-${ref.id}`}
+                        placeholder={field.placeholder}
+                        value={value}
+                        className="bg-white"
+                        onChange={(e) =>
+                          setItemField(
+                            "references",
+                            ref.id,
+                            field.id as keyof typeof ref,
+                            e.target.value
+                          )
+                        }
+                      />
+                    )}
                   </div>
                 );
               })}
@@ -124,7 +146,10 @@ const References = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button>Add Reference</Button>
+          <Button onClick={() => addItem("references")}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add Reference
+          </Button>
         </div>
       </div>
     </SectionBoxWrapper>

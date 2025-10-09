@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -15,7 +16,6 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
-import type { Education } from "@/store/use-cv-data-store";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { format } from "date-fns";
 import {
@@ -24,8 +24,9 @@ import {
   CalendarIcon,
   GraduationCap,
   MapPin,
+  Trash2,
+  Plus,
 } from "lucide-react";
-import { useState } from "react";
 import SectionBoxWrapper from "./section-box-wrapper";
 
 type BaseField = {
@@ -39,7 +40,7 @@ type DateField = BaseField & { type: "date" };
 type TextField = BaseField & { type?: "text" };
 type EducationField = DateField | TextField;
 
-export const educationFields: readonly EducationField[] = [
+const educationFields: readonly EducationField[] = [
   { id: "school", label: "School / University", placeholder: "Stanford University" },
   { id: "degree", label: "Degree", placeholder: "Bachelor of Science" },
   { id: "fieldOfStudy", label: "Field of Study", placeholder: "Computer Science" },
@@ -57,21 +58,8 @@ export const educationFields: readonly EducationField[] = [
 ] as const;
 
 const Education = () => {
-  const { setEducationField, education } = useCvDataStore();
-  const [dates, setDates] = useState<{ [key: string]: Date | undefined }>({
-    startDate: undefined,
-    endDate: undefined,
-  });
-
-  const handleDateSelect = (fieldId: string, date: Date | undefined) => {
-    setDates((prev) => ({ ...prev, [fieldId]: date }));
-    if (date)
-      setEducationField(
-        "1",
-        fieldId as keyof Education,
-        format(date, "MMM yyyy")
-      );
-  };
+  const { education, setItemField, addItem, removeItem } = useCvDataStore();
+  const [dates, setDates] = useState<Record<string, Record<string, Date | undefined>>>({});
 
   const getIcon = (id: string) => {
     switch (id) {
@@ -88,6 +76,20 @@ const Education = () => {
     }
   };
 
+  const handleDateSelect = (eduId: string, fieldId: string, date: Date | undefined) => {
+    setDates((prev) => ({
+      ...prev,
+      [eduId]: { ...prev[eduId], [fieldId]: date },
+    }));
+    if (date)
+      setItemField(
+        "education",
+        eduId,
+        fieldId as keyof (typeof education)[number],
+        format(date, "MMM yyyy")
+      );
+  };
+
   return (
     <SectionBoxWrapper>
       <div className="space-y-6 overflow-y-auto">
@@ -102,117 +104,140 @@ const Education = () => {
           </p>
         </div>
 
-        <div className="bg-gray-100 p-4 rounded-md space-y-4">
-          {educationFields.map((field) => {
-            const icon = getIcon(field.id);
+        <div className="space-y-8">
+          {education.map((edu) => (
+            <div
+              key={edu.id}
+              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm"
+            >
+              <div className="flex justify-between items-start">
+                <Label className="font-medium">Education Entry</Label>
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  onClick={() => removeItem("education", edu.id)}
+                >
+                  <Trash2 className="h-4 w-4 text-gray-500" />
+                </Button>
+              </div>
 
-            const currentValue =
-              education?.[0]?.[field.id as keyof Education] ?? "";
+              {educationFields.map((field) => {
+                const icon = getIcon(field.id);
+                const value = (edu[field.id as keyof typeof edu] as string) ?? "";
 
-            if (field.type === "date") {
-              return (
-                <div key={field.id} className="space-y-1">
-                  <Label>{field.label}</Label>
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant="outline"
-                        className={`w-full justify-start text-left font-normal bg-white ${
-                          !dates[field.id] && "text-muted-foreground"
-                        }`}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {dates[field.id]
-                          ? format(dates[field.id]!, "MMM yyyy")
-                          : field.placeholder}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent
-                      className="w-auto p-2"
-                      align="start"
-                      sideOffset={4}
-                    >
-                      <Calendar
-                        mode="single"
-                        selected={dates[field.id]}
-                        onSelect={(date) => handleDateSelect(field.id, date)}
-                        captionLayout="dropdown"
-                        fromYear={1970}
-                        toYear={2035}
+                if (field.type === "date") {
+                  return (
+                    <div key={field.id} className="space-y-1">
+                      <Label>{field.label}</Label>
+                      <Popover>
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            className={`w-full justify-start text-left font-normal bg-white ${
+                              !dates[edu.id]?.[field.id] && "text-muted-foreground"
+                            }`}
+                          >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {dates[edu.id]?.[field.id]
+                              ? format(dates[edu.id]![field.id]!, "MMM yyyy")
+                              : field.placeholder}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          className="w-auto p-2"
+                          align="start"
+                          sideOffset={4}
+                        >
+                          <Calendar
+                            mode="single"
+                            selected={dates[edu.id]?.[field.id]}
+                            onSelect={(date) => handleDateSelect(edu.id, field.id, date)}
+                            captionLayout="dropdown"
+                            fromYear={1970}
+                            toYear={2035}
+                            className="[&_.rdp-grid]:hidden"
+                          />
+                        </PopoverContent>
+                      </Popover>
+                    </div>
+                  );
+                }
+
+                if (field.textarea) {
+                  return (
+                    <div key={field.id} className="space-y-1">
+                      <Label>{field.label}</Label>
+                      <Textarea
+                        placeholder={field.placeholder}
+                        value={value}
+                        onChange={(e) =>
+                          setItemField(
+                            "education",
+                            edu.id,
+                            field.id as keyof typeof edu,
+                            e.target.value
+                          )
+                        }
+                        className="bg-white"
                       />
-                    </PopoverContent>
-                  </Popover>
-                </div>
-              );
-            }
+                    </div>
+                  );
+                }
 
-            if (field.textarea) {
-              return (
-                <div key={field.id} className="space-y-1">
-                  <Label>{field.label}</Label>
-                  <Textarea
-                    value={currentValue as string}
-                    onChange={(e) =>
-                      setEducationField(
-                        "1",
-                        field.id as keyof Education,
-                        e.target.value
-                      )
-                    }
-                    placeholder={field.placeholder}
-                    className="bg-white"
-                  />
-                </div>
-              );
-            }
+                if (icon) {
+                  return (
+                    <div key={field.id} className="space-y-1">
+                      <Label>{field.label}</Label>
+                      <InputGroup className="overflow-hidden bg-white">
+                        <InputGroupInput
+                          id={`${field.id}-${edu.id}`}
+                          placeholder={field.placeholder}
+                          value={value}
+                          className="bg-white"
+                          onChange={(e) =>
+                            setItemField(
+                              "education",
+                              edu.id,
+                              field.id as keyof typeof edu,
+                              e.target.value
+                            )
+                          }
+                        />
+                        <InputGroupAddon>{icon}</InputGroupAddon>
+                      </InputGroup>
+                    </div>
+                  );
+                }
 
-            if (icon) {
-              return (
-                <div key={field.id} className="space-y-1">
-                  <Label>{field.label}</Label>
-                  <InputGroup className="overflow-hidden bg-white">
-                    <InputGroupInput
-                      id={field.id}
+                return (
+                  <div key={field.id} className="space-y-1">
+                    <Label>{field.label}</Label>
+                    <Input
+                      id={`${field.id}-${edu.id}`}
                       placeholder={field.placeholder}
-                      value={currentValue as string}
+                      value={value}
                       className="bg-white"
                       onChange={(e) =>
-                        setEducationField(
-                          "1",
-                          field.id as keyof Education,
+                        setItemField(
+                          "education",
+                          edu.id,
+                          field.id as keyof typeof edu,
                           e.target.value
                         )
                       }
                     />
-                    <InputGroupAddon>{icon}</InputGroupAddon>
-                  </InputGroup>
-                </div>
-              );
-            }
-
-            return (
-              <div key={field.id} className="space-y-1">
-                <Label>{field.label}</Label>
-                <Input
-                  id={field.id}
-                  placeholder={field.placeholder}
-                  value={currentValue as string}
-                  className="bg-white"
-                  onChange={(e) =>
-                    setEducationField(
-                      "1",
-                      field.id as keyof Education,
-                      e.target.value
-                    )
-                  }
-                />
-              </div>
-            );
-          })}
+                  </div>
+                );
+              })}
+            </div>
+          ))}
         </div>
 
-        <div className="flex items-center justify-end">
-          <Button>Add education</Button>
+        <div className="flex justify-end">
+          <Button onClick={() => addItem("education")}>
+            <Plus className="h-4 w-4 mr-2" />
+            Add education
+          </Button>
         </div>
       </div>
     </SectionBoxWrapper>

@@ -1,6 +1,16 @@
 "use client";
 import { SectionBox } from "@/sections/section-box";
 import clsx from "clsx";
+import {
+  Award,
+  Briefcase,
+  FileText,
+  GraduationCap,
+  Languages,
+  MoreHorizontal,
+  User,
+  Users2,
+} from "lucide-react";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 
@@ -18,14 +28,18 @@ const Page = () => {
   });
 
   const sections = [
-    { id: "personal-info", title: "Personal info" },
-    { id: "summary", title: "Summary" },
-    { id: "work-experience", title: "Work experience" },
-    { id: "education", title: "Education" },
-    { id: "language", title: "Language" },
-    { id: "courses-certificates", title: "Courses & Certificates" },
-    { id: "references", title: "References" },
-    { id: "more-details", title: "More details" },
+    { id: "personal-info", title: "Personal info", icon: User },
+    { id: "summary", title: "Summary", icon: FileText },
+    { id: "work-experience", title: "Work experience", icon: Briefcase },
+    { id: "education", title: "Education", icon: GraduationCap },
+    { id: "language", title: "Language", icon: Languages },
+    {
+      id: "courses-certificates",
+      title: "Courses & Certificates",
+      icon: Award,
+    },
+    { id: "references", title: "References", icon: Users2 },
+    { id: "more-details", title: "More details", icon: MoreHorizontal },
   ];
 
   return (
@@ -33,6 +47,7 @@ const Page = () => {
       <div className="max-w-xs w-full h-full">
         {sections.map((section) => {
           const isActive = activeSection.id === section.id;
+          const Icon = section.icon;
           return (
             <button
               onClick={() => setActiveSection(section)}
@@ -43,7 +58,10 @@ const Page = () => {
                 isActive && "bg-gray-100"
               )}
             >
-              <span className="font-semibold">{section.title}</span>
+              <div className="flex items-center justify-start gap-4">
+                <Icon size={18} />
+                <span className="font-semibold">{section.title}</span>
+              </div>
               {isActive && (
                 <div className="size-4 bg-green-400 rounded-full"></div>
               )}

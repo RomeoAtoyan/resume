@@ -38,11 +38,11 @@ const ResumeCanvas = () => {
           <p>{summary}</p>
 
           <div>{JSON.stringify(workExperience)}</div>
-          <div>{JSON.stringify(education)}</div>
+          {/* <div>{JSON.stringify(education)}</div>
           <div>{JSON.stringify(languages)}</div>
           <div>{JSON.stringify(courses)}</div>
           <div>{JSON.stringify(references)}</div>
-          <div>{JSON.stringify(moreDetails)}</div>
+          <div>{JSON.stringify(moreDetails)}</div> */}
         </div>
       </div>
     </div>

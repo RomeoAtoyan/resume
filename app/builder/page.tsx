@@ -2,6 +2,7 @@
 import ResumeCanvas from "@/components/resume-canvas";
 import { SectionBox } from "@/sections/section-box";
 import clsx from "clsx";
+import dynamic from "next/dynamic";
 import { useState } from "react";
 
 const Page = () => {
@@ -11,6 +12,10 @@ const Page = () => {
   }>({
     id: "personal-info",
     title: "Personal info",
+  });
+
+  const ResumeCanvas = dynamic(() => import("@/components/resume-canvas"), {
+    ssr: false,
   });
 
   const sections = [

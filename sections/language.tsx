@@ -13,7 +13,7 @@ import { Languages as LanguagesIcon } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
 
 const Language = () => {
-  const { languages, setLanguageField } = useCvDataStore();
+  const { languages, setLanguageField, addLanguage, removeLanguage } = useCvDataStore();
 
   const getLevelLabel = (level: number) => {
     if (level >= 90) return "Native";
@@ -35,12 +35,13 @@ const Language = () => {
           </p>
         </div>
 
-        <div className="space-y-8">
+        <div className="space-y-2">
           {languages.map((lang) => (
             <div
               key={lang.id}
-              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm"
+              className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
+              <Button onClick={() => removeLanguage(lang.id)} className="absolute top-0 right-0">x</Button>
               <div className="space-y-2">
                 <Label htmlFor={`language-${lang.id}`}>Language</Label>
                 <InputGroup className="bg-white overflow-hidden">
@@ -81,7 +82,7 @@ const Language = () => {
         </div>
 
         <div className="flex justify-end">
-          <Button>Add Language</Button>
+          <Button onClick={addLanguage}>+ Add Language</Button>
         </div>
       </div>
     </SectionBoxWrapper>

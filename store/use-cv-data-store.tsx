@@ -1,5 +1,6 @@
 import { create } from "zustand";
 
+// ---------- TYPES ----------
 export interface WorkExperience {
   id: string;
   jobTitle: string;
@@ -59,7 +60,74 @@ export interface MoreDetails {
   misc: string;
 }
 
-interface CvStore {
+type CvCollections = {
+  workExperience: WorkExperience[];
+  education: Education[];
+  languages: Language[];
+  courses: CourseCertificate[];
+  references: Reference[];
+  moreDetails: MoreDetails[];
+};
+
+// ---------- DEFAULT ITEM FACTORY ----------
+const factories = {
+  workExperience: (): WorkExperience => ({
+    id: crypto.randomUUID(),
+    jobTitle: "",
+    company: "",
+    startDate: "",
+    endDate: "",
+    summary: "",
+    location: "",
+    order: 0,
+  }),
+  education: (): Education => ({
+    id: crypto.randomUUID(),
+    school: "",
+    degree: "",
+    fieldOfStudy: "",
+    startDate: "",
+    endDate: "",
+    location: "",
+    summary: "",
+    grade: "",
+    order: 0,
+  }),
+  languages: (): Language => ({
+    id: crypto.randomUUID(),
+    language: "",
+    level: 0,
+    order: 0,
+  }),
+  courses: (): CourseCertificate => ({
+    id: crypto.randomUUID(),
+    title: "",
+    issuer: "",
+    date: "",
+    description: "",
+    certificateUrl: "",
+    order: 0,
+  }),
+  references: (): Reference => ({
+    id: crypto.randomUUID(),
+    fullName: "",
+    position: "",
+    company: "",
+    email: "",
+    phone: "",
+    order: 0,
+  }),
+  moreDetails: (): MoreDetails => ({
+    id: crypto.randomUUID(),
+    achievements: "",
+    hobbies: "",
+    personalStatement: "",
+    misc: "",
+  }),
+};
+
+// ---------- GENERIC STORE ----------
+interface CvStore extends CvCollections {
   fullName: string;
   jobTitle: string;
   email: string;
@@ -67,48 +135,24 @@ interface CvStore {
   address: string;
   summary: string;
 
-  workExperience: WorkExperience[];
-  education: Education[];
-  languages: Language[];
-  courses: CourseCertificate[];
-  references: Reference[];
-  moreDetails: MoreDetails[];
+  setField: (field: keyof CvStore, value: any) => void;
 
-  setField: (field: keyof CvStore, value: string) => void;
-  setWorkExperienceField: (
+  setItemField: <K extends keyof CvCollections, T extends CvCollections[K][number]>(
+    section: K,
     id: string,
-    field: keyof WorkExperience,
-    value: string
+    field: keyof T,
+    value: any
   ) => void;
-  setEducationField: (
-    id: string,
-    field: keyof Education,
-    value: string
-  ) => void;
-  setLanguageField: (
-    id: string,
-    field: keyof Language,
-    value: string | number
-  ) => void;
-  setCourseField: (
-    id: string,
-    field: keyof CourseCertificate,
-    value: string
-  ) => void;
-  setReferenceField: (
-    id: string,
-    field: keyof Reference,
-    value: string
-  ) => void;
-  setMoreDetailsField: (
-    id: string,
-    field: keyof MoreDetails,
-    value: string
-  ) => void;
+
+  addItem: <K extends keyof CvCollections>(section: K) => void;
+  removeItem: <K extends keyof CvCollections>(section: K, id: string) => void;
+
   reset: () => void;
 }
 
+// ---------- IMPLEMENTATION ----------
 export const useCvDataStore = create<CvStore>((set) => ({
+  // base fields
   fullName: "",
   jobTitle: "",
   email: "",
@@ -116,119 +160,32 @@ export const useCvDataStore = create<CvStore>((set) => ({
   address: "",
   summary: "",
 
-  workExperience: [
-    {
-      id: "1",
-      jobTitle: "",
-      startDate: "",
-      endDate: "",
-      company: "",
-      summary: "",
-      location: "",
-      order: 0,
-    },
-  ],
+  // initialize one default record for each
+  workExperience: [factories.workExperience()],
+  education: [factories.education()],
+  languages: [factories.languages()],
+  courses: [factories.courses()],
+  references: [factories.references()],
+  moreDetails: [factories.moreDetails()],
 
-  education: [
-    {
-      id: "1",
-      school: "",
-      degree: "",
-      fieldOfStudy: "",
-      startDate: "",
-      endDate: "",
-      location: "",
-      summary: "",
-      grade: "",
-      order: 0,
-    },
-  ],
-
-  languages: [
-    {
-      id: "1",
-      language: "",
-      level: 0,
-      order: 0,
-    },
-  ],
-
-  courses: [
-    {
-      id: "1",
-      title: "",
-      issuer: "",
-      date: "",
-      description: "",
-      certificateUrl: "",
-      order: 0,
-    },
-  ],
-
-  references: [
-    {
-      id: "1",
-      fullName: "",
-      position: "",
-      company: "",
-      email: "",
-      phone: "",
-      order: 0,
-    },
-  ],
-
-  moreDetails: [
-    {
-      id: "1",
-      achievements: "",
-      hobbies: "",
-      personalStatement: "",
-      misc: "",
-    },
-  ],
-
+  // --- generic setters ---
   setField: (field, value) => set(() => ({ [field]: value })),
 
-  setWorkExperienceField: (id, field, value) =>
+  setItemField: (section, id, field, value) =>
     set((state) => ({
-      workExperience: state.workExperience.map((exp) =>
-        exp.id === id ? { ...exp, [field]: value } : exp
+      [section]: state[section].map((item: any) =>
+        item.id === id ? { ...item, [field]: value } : item
       ),
     })),
 
-  setEducationField: (id, field, value) =>
+  addItem: (section) =>
     set((state) => ({
-      education: state.education.map((edu) =>
-        edu.id === id ? { ...edu, [field]: value } : edu
-      ),
+      [section]: [...state[section], factories[section]()],
     })),
 
-  setLanguageField: (id, field, value) =>
+  removeItem: (section, id) =>
     set((state) => ({
-      languages: state.languages.map((lang) =>
-        lang.id === id ? { ...lang, [field]: value } : lang
-      ),
-    })),
-
-  setCourseField: (id, field, value) =>
-    set((state) => ({
-      courses: state.courses.map((course) =>
-        course.id === id ? { ...course, [field]: value } : course
-      ),
-    })),
-
-  setReferenceField: (id, field, value) =>
-    set((state) => ({
-      references: state.references.map((ref) =>
-        ref.id === id ? { ...ref, [field]: value } : ref
-      ),
-    })),
-
-  setMoreDetailsField: (id, field, value) =>
-    set((state) => ({
-      moreDetails: state.moreDetails.map((detail) =>
-        detail.id === id ? { ...detail, [field]: value } : detail
-      ),
+      [section]: state[section].filter((item: any) => item.id !== id),
     })),
 
   reset: () =>
@@ -239,71 +196,11 @@ export const useCvDataStore = create<CvStore>((set) => ({
       phoneNumber: "",
       address: "",
       summary: "",
-      workExperience: [
-        {
-          id: "1",
-          jobTitle: "",
-          startDate: "",
-          endDate: "",
-          company: "",
-          summary: "",
-          location: "",
-          order: 0,
-        },
-      ],
-      education: [
-        {
-          id: "1",
-          school: "",
-          degree: "",
-          fieldOfStudy: "",
-          startDate: "",
-          endDate: "",
-          location: "",
-          summary: "",
-          grade: "",
-          order: 0,
-        },
-      ],
-      languages: [
-        {
-          id: "1",
-          language: "",
-          level: 0,
-          order: 0,
-        },
-      ],
-      courses: [
-        {
-          id: "1",
-          title: "",
-          issuer: "",
-          date: "",
-          description: "",
-          certificateUrl: "",
-          order: 0,
-        },
-      ],
-      references: [
-        {
-          id: "1",
-          fullName: "",
-          position: "",
-          company: "",
-          email: "",
-          phone: "",
-          order: 0,
-        },
-      ],
-
-      moreDetails: [
-        {
-          id: "1",
-          achievements: "",
-          hobbies: "",
-          personalStatement: "",
-          misc: "",
-        },
-      ],
+      workExperience: [factories.workExperience()],
+      education: [factories.education()],
+      languages: [factories.languages()],
+      courses: [factories.courses()],
+      references: [factories.references()],
+      moreDetails: [factories.moreDetails()],
     }),
 }));

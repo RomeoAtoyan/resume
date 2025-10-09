@@ -13,7 +13,7 @@ import { Heart, Info, Trophy, Trash2, Plus } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
 
 const MoreDetails = () => {
-  const { moreDetails, setItemField, addItem, removeItem } = useCvDataStore();
+  const { moreDetails, setItemField } = useCvDataStore();
 
   return (
     <SectionBoxWrapper>
@@ -34,18 +34,7 @@ const MoreDetails = () => {
               key={section.id}
               className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
-              <div className="flex justify-between items-start absolute top-1 right-1">
-                <Button
-                  size="icon"
-                  variant="ghost"
-                  onClick={() => removeItem("moreDetails", section.id)}
-                >
-                  <Trash2 className="h-4 w-4 text-gray-500" />
-                </Button>
-              </div>
-
               <div className="space-y-2">
-                
                 <Label className="font-medium">Additional Info</Label>
                 <InputGroup className="bg-white overflow-hidden">
                   <InputGroupInput

@@ -1,10 +1,15 @@
 "use client";
 
-import React from "react";
-import SectionBoxWrapper from "./section-box-wrapper";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCvDataStore } from "@/store/use-cv-data-store";
+import { Heart, Info, Trophy } from "lucide-react";
+import SectionBoxWrapper from "./section-box-wrapper";
 
 const MoreDetails = () => {
   const { moreDetails, setMoreDetailsField } = useCvDataStore();
@@ -13,7 +18,7 @@ const MoreDetails = () => {
     <SectionBoxWrapper>
       <div className="space-y-6">
         <div>
-          <Label className="text-sm font-semibold text-gray-800">
+          <Label className="text-lg font-semibold text-gray-800">
             More Details
           </Label>
           <p className="text-xs text-gray-500">
@@ -29,30 +34,40 @@ const MoreDetails = () => {
           >
             <div className="space-y-2">
               <Label>Achievements / Awards</Label>
-              <Textarea
-                placeholder="e.g. Hackathon Winner 2024, Best UI Design Award..."
-                value={section.achievements}
-                onChange={(e) =>
-                  setMoreDetailsField(
-                    section.id,
-                    "achievements",
-                    e.target.value
-                  )
-                }
-                className="bg-white"
-              />
+              <InputGroup className="bg-white overflow-hidden">
+                <InputGroupInput
+                  placeholder="e.g. Hackathon Winner 2024, Best UI Design Award..."
+                  value={section.achievements}
+                  onChange={(e) =>
+                    setMoreDetailsField(
+                      section.id,
+                      "achievements",
+                      e.target.value
+                    )
+                  }
+                  className="bg-white"
+                />
+                <InputGroupAddon>
+                  <Trophy className="h-4 w-4 text-gray-500" />
+                </InputGroupAddon>
+              </InputGroup>
             </div>
 
             <div className="space-y-2">
               <Label>Hobbies / Interests</Label>
-              <Textarea
-                placeholder="e.g. Classic cars, AI education, design..."
-                value={section.hobbies}
-                onChange={(e) =>
-                  setMoreDetailsField(section.id, "hobbies", e.target.value)
-                }
-                className="bg-white"
-              />
+              <InputGroup className="bg-white overflow-hidden">
+                <InputGroupInput
+                  placeholder="e.g. Classic cars, AI education, design..."
+                  value={section.hobbies}
+                  onChange={(e) =>
+                    setMoreDetailsField(section.id, "hobbies", e.target.value)
+                  }
+                  className="bg-white"
+                />
+                <InputGroupAddon>
+                  <Heart className="h-4 w-4 text-gray-500" />
+                </InputGroupAddon>
+              </InputGroup>
             </div>
 
             <div className="space-y-2">
@@ -73,14 +88,19 @@ const MoreDetails = () => {
 
             <div className="space-y-2">
               <Label>Other Details</Label>
-              <Textarea
-                placeholder="e.g. Open to relocation, available immediately..."
-                value={section.misc}
-                onChange={(e) =>
-                  setMoreDetailsField(section.id, "misc", e.target.value)
-                }
-                className="bg-white"
-              />
+              <InputGroup className="bg-white overflow-hidden">
+                <InputGroupInput
+                  placeholder="e.g. Open to relocation, available immediately..."
+                  value={section.misc}
+                  onChange={(e) =>
+                    setMoreDetailsField(section.id, "misc", e.target.value)
+                  }
+                  className="bg-white"
+                />
+                <InputGroupAddon>
+                  <Info className="h-4 w-4 text-gray-500" />
+                </InputGroupAddon>
+              </InputGroup>
             </div>
           </div>
         ))}

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface WorkExperience {
+export interface WorkExperience {
   id: string;
   jobTitle: string;
   company: string;
@@ -11,7 +11,7 @@ interface WorkExperience {
   order?: number;
 }
 
-interface Education {
+export interface Education {
   id: string;
   school: string;
   degree: string;
@@ -24,14 +24,14 @@ interface Education {
   order?: number;
 }
 
-interface Language {
+export interface Language {
   id: string;
   language: string;
   level?: number;
   order?: number;
 }
 
-interface CourseCertificate {
+export interface CourseCertificate {
   id: string;
   title: string;
   issuer: string;
@@ -41,7 +41,7 @@ interface CourseCertificate {
   order?: number;
 }
 
-interface Reference {
+export interface Reference {
   id: string;
   fullName: string;
   position: string;
@@ -51,7 +51,7 @@ interface Reference {
   order?: number;
 }
 
-interface MoreDetails {
+export interface MoreDetails {
   id: string;
   achievements: string;
   hobbies: string;

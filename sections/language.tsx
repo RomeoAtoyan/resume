@@ -1,17 +1,20 @@
 "use client";
 
-import React from "react";
-import SectionBoxWrapper from "./section-box-wrapper";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui/button";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
 import { useCvDataStore } from "@/store/use-cv-data-store";
+import { Languages as LanguagesIcon } from "lucide-react";
+import SectionBoxWrapper from "./section-box-wrapper";
 
 const Language = () => {
   const { languages, setLanguageField } = useCvDataStore();
 
-  // Converts numeric level into a readable label
   const getLevelLabel = (level: number) => {
     if (level >= 90) return "Native";
     if (level >= 75) return "Fluent";
@@ -24,7 +27,7 @@ const Language = () => {
     <SectionBoxWrapper>
       <div className="space-y-6">
         <div>
-          <Label className="text-sm font-semibold text-gray-800">
+          <Label className="text-lg font-semibold text-gray-800">
             Languages
           </Label>
           <p className="text-xs text-gray-500">
@@ -40,15 +43,20 @@ const Language = () => {
             >
               <div className="space-y-2">
                 <Label htmlFor={`language-${lang.id}`}>Language</Label>
-                <Input
-                  id={`language-${lang.id}`}
-                  placeholder="e.g. English"
-                  value={lang.language}
-                  onChange={(e) =>
-                    setLanguageField(lang.id, "language", e.target.value)
-                  }
-                  className="bg-white"
-                />
+                <InputGroup className="bg-white overflow-hidden">
+                  <InputGroupInput
+                    id={`language-${lang.id}`}
+                    placeholder="e.g. English"
+                    value={lang.language}
+                    onChange={(e) =>
+                      setLanguageField(lang.id, "language", e.target.value)
+                    }
+                    className="bg-white"
+                  />
+                  <InputGroupAddon>
+                    <LanguagesIcon className="h-4 w-4 text-gray-500" />
+                  </InputGroupAddon>
+                </InputGroup>
               </div>
 
               <div className="space-y-2">

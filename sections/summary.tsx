@@ -1,4 +1,3 @@
-import React from "react";
 import SectionBoxWrapper from "./section-box-wrapper";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,7 +9,7 @@ const Summary = () => {
     <SectionBoxWrapper>
       <div className="space-y-6">
         <div>
-          <Label className="text-sm font-semibold text-gray-800">
+          <Label className="text-lg font-semibold text-gray-800">
             Professional Summary
           </Label>
           <p className="text-xs text-gray-500">

@@ -1,11 +1,12 @@
 import { Spinner } from "@/components/ui/spinner";
+import { getUser } from "@/lib/auth/get-user";
 import NavLogo from "./nav-logo";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import SiteHeaderProfile from "./site-header-profile";
 
-export const SiteHeader = () => {
+export const SiteHeader = async () => {
+  const user = await getUser();
   return (
-    <header className="w-full border-b border-gray-200 bg-white">
+    <header className="w-full border-b border-gray-200 bg-white overflow-hidden">
       <div className="flex items-center justify-between px-6 py-3">
         <div className="flex items-center gap-8">
           <NavLogo />
@@ -22,12 +23,11 @@ export const SiteHeader = () => {
           <span>Saving your resume...</span>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-        </div>
+        {user && (
+          <div className="flex items-center gap-3">
+            <SiteHeaderProfile user={user} />
+          </div>
+        )}
       </div>
     </header>
   );

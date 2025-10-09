@@ -1,8 +1,13 @@
-import React from 'react'
+"use client";
+
+import { Button } from "@/components/ui/button";
+import { signIn } from "next-auth/react";
 
 const Page = () => {
   return (
-    <div>Page</div>
+    <div>
+      <Button onClick={() => signIn('google')}>LOGIN</Button>
+    </div>
   )
 }
 

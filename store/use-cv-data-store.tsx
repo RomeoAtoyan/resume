@@ -134,6 +134,8 @@ interface CvStore extends CvCollections {
   phoneNumber: string;
   address: string;
   summary: string;
+  profileImage?: string;
+  setProfileImage: (url: string) => void;
 
   setField: (field: keyof CvStore, value: any) => void;
 
@@ -153,6 +155,7 @@ interface CvStore extends CvCollections {
 // ---------- IMPLEMENTATION ----------
 export const useCvDataStore = create<CvStore>((set) => ({
   // base fields
+  profileImage: "",
   fullName: "",
   jobTitle: "",
   email: "",
@@ -170,6 +173,7 @@ export const useCvDataStore = create<CvStore>((set) => ({
 
   // --- generic setters ---
   setField: (field, value) => set(() => ({ [field]: value })),
+  setProfileImage: (url) => set({ profileImage: url }),
 
   setItemField: (section, id, field, value) =>
     set((state) => ({

@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,11 +11,12 @@ import {
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import { Briefcase, Mail, MapPin, Phone } from "lucide-react";
+import { Briefcase, Mail, MapPin, Phone, Upload, Trash2 } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
 
 const PersonalInfo = () => {
-  const { setField, ...cv } = useCvDataStore();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { setField, profileImage, setProfileImage, ...cv } = useCvDataStore();
 
   const fields = [
     { id: "fullName", label: "Full name", placeholder: "Full name" },
@@ -39,6 +41,18 @@ const PersonalInfo = () => {
     }
   };
 
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const objectUrl = URL.createObjectURL(file);
+    setProfileImage(objectUrl);
+  };
+
+  const handleRemoveImage = () => {
+    setProfileImage("");
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
   return (
     <SectionBoxWrapper>
       <div>
@@ -52,13 +66,71 @@ const PersonalInfo = () => {
         </p>
       </div>
 
-      <div className="space-y-4">
-        <Label>Upload your profile image</Label>
-        <Avatar className="h-20 w-20">
-          <AvatarImage src="https://github.com/evilrabbit.png" />
-          <AvatarFallback>JD</AvatarFallback>
-        </Avatar>
-        <Button variant="outline">Upload image</Button>
+      <div className="space-y-4 mt-4">
+        <Label>Profile Image</Label>
+
+        <div className="flex flex-col items-start gap-4">
+          <div className="relative group">
+            <Avatar className="h-20 w-20 border mb-4">
+              <AvatarImage
+                className="object-cover"
+                src={profileImage || null || undefined}
+                alt="Profile Image"
+              />
+              <AvatarFallback>
+                {cv.fullName
+                  ? cv.fullName
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .slice(0, 2)
+                      .toUpperCase()
+                  : "?"}
+              </AvatarFallback>
+            </Avatar>
+
+            {profileImage && (
+              <div className="flex items-center justify-center gap-2 rounded-full">
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  className="text-xs px-2"
+                  onClick={() => fileInputRef.current?.click()}
+                >
+                  Change
+                </Button>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  className="text-xs px-2"
+                  onClick={handleRemoveImage}
+                >
+                  <Trash2 className="h-3 w-3" />
+                </Button>
+              </div>
+            )}
+          </div>
+
+          {!profileImage && (
+            <Button
+              variant="outline"
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              className="flex items-center space-x-2"
+            >
+              <Upload className="h-4 w-4" />
+              <span>Upload image</span>
+            </Button>
+          )}
+
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={handleImageUpload}
+          />
+        </div>
       </div>
 
       <div className="space-y-4 mt-6">
@@ -71,7 +143,7 @@ const PersonalInfo = () => {
             return (
               <div key={field.id} className="space-y-1">
                 <Label>{field.label}</Label>
-                <InputGroup>
+                <InputGroup className="bg-white overflow-hidden">
                   <InputGroupInput
                     id={field.id}
                     placeholder={field.placeholder}
@@ -79,6 +151,7 @@ const PersonalInfo = () => {
                     onChange={(e) =>
                       setField(field.id as keyof typeof cv, e.target.value)
                     }
+                    className="bg-white"
                   />
                   <InputGroupAddon>{icon}</InputGroupAddon>
                 </InputGroup>
@@ -96,6 +169,7 @@ const PersonalInfo = () => {
                 onChange={(e) =>
                   setField(field.id as keyof typeof cv, e.target.value)
                 }
+                className="bg-white"
               />
             </div>
           );

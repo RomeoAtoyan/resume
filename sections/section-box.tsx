@@ -1,3 +1,4 @@
+import { useSectionStore } from "@/store/use-sections-store";
 import AiMotivation from "./ai-motivation";
 import CoursesAndCertificates from "./courses-certificates";
 import Education from "./education";
@@ -9,11 +10,9 @@ import Skills from "./skills";
 import Summary from "./summary";
 import WorkExperience from "./work-experience";
 
-export const SectionBox = ({
-  activeSection,
-}: {
-  activeSection: { id: string; title: string };
-}) => {
+export const SectionBox = () => {
+  const { activeSection } = useSectionStore();
+
   switch (activeSection.id) {
     case "personal-info":
       return <PersonalInfo />;

@@ -1,5 +1,4 @@
 "use client";
-// import ResumeCanvas from "@/components/resume-canvas";
 import { SectionBox } from "@/sections/section-box";
 import clsx from "clsx";
 import dynamic from "next/dynamic";

@@ -3,6 +3,7 @@ import { SectionBox } from "@/sections/section-box";
 import clsx from "clsx";
 import {
   Award,
+  Brain,
   Briefcase,
   Cpu,
   FileText,
@@ -29,19 +30,46 @@ const Page = () => {
   });
 
   const sections = [
-    { id: "personal-info", title: "Personal info", icon: User },
-    { id: "summary", title: "Summary", icon: FileText },
-    { id: "work-experience", title: "Work experience", icon: Briefcase },
-    { id: "education", title: "Education", icon: GraduationCap },
-    { id: "skills", title: "Skills", icon: Cpu },
-    { id: "language", title: "Language", icon: Languages },
+    {
+      id: "personal-info",
+      title: "Personal info",
+      icon: User,
+      highlight: false,
+    },
+    { id: "summary", title: "Summary", icon: FileText, highlight: false },
+    {
+      id: "work-experience",
+      title: "Work experience",
+      icon: Briefcase,
+      highlight: false,
+    },
+    {
+      id: "education",
+      title: "Education",
+      icon: GraduationCap,
+      highlight: false,
+    },
+    { id: "skills", title: "Skills", icon: Cpu, highlight: false },
+    { id: "language", title: "Language", icon: Languages, highlight: false },
     {
       id: "courses-certificates",
       title: "Courses & Certificates",
       icon: Award,
+      highlight: false,
     },
-    { id: "references", title: "References", icon: Users2 },
-    { id: "more-details", title: "More details", icon: MoreHorizontal },
+    { id: "references", title: "References", icon: Users2, highlight: false },
+    {
+      id: "more-details",
+      title: "More details",
+      icon: MoreHorizontal,
+      highlight: false,
+    },
+    {
+      id: "ai-motivation",
+      title: "AI motivation letter",
+      icon: Brain,
+      highlight: true,
+    },
   ];
 
   return (
@@ -57,7 +85,8 @@ const Page = () => {
               id={section.id}
               className={clsx(
                 "w-full flex items-center justify-between p-6 border-b border-gray-200",
-                isActive && "bg-gray-100"
+                isActive && "bg-gray-100",
+                section.highlight && "bg-purple-500 text-white"
               )}
             >
               <div className="flex items-center justify-start gap-4">

@@ -1,3 +1,4 @@
+import AiMotivation from "./ai-motivation";
 import CoursesAndCertificates from "./courses-certificates";
 import Education from "./education";
 import Language from "./language";
@@ -32,6 +33,8 @@ export const SectionBox = ({
       return <References />;
     case "more-details":
       return <MoreDetails />;
+    case "ai-motivation":
+      return <AiMotivation />;
     default:
       return <div className="p-6 text-gray-500">Select a section</div>;
   }

@@ -185,7 +185,7 @@ const ResumeCanvas = () => {
           </section>
 
           {/* --- More Details --- */}
-          <section>
+          {/* <section>
             <h2 className="text-xl font-semibold border-b pb-1 mb-2">
               More Details
             </h2>
@@ -197,7 +197,7 @@ const ResumeCanvas = () => {
                 <div>{det.personalStatement}</div>
               </div>
             ))}
-          </section>
+          </section> */}
         </div>
       </div>
     </div>

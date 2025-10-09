@@ -263,7 +263,7 @@ const Education = () => {
         <div className="flex justify-end">
           <Button onClick={() => addItem("education")}>
             <Plus className="h-4 w-4 mr-2" />
-            Add education
+            Add Education
           </Button>
         </div>
       </div>

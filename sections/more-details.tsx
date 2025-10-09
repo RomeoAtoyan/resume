@@ -130,13 +130,6 @@ const MoreDetails = () => {
             </div>
           ))}
         </div>
-
-        <div className="flex justify-end">
-          <Button onClick={() => addItem("moreDetails")}>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Section
-          </Button>
-        </div>
       </div>
     </SectionBoxWrapper>
   );

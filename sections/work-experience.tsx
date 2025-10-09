@@ -254,7 +254,7 @@ const WorkExperience = () => {
         <div className="flex items-center justify-end">
           <Button onClick={() => addItem("workExperience")}>
             <Plus className="h-4 w-4 mr-2" />
-            Add experience
+            Add Experience
           </Button>
         </div>
       </div>

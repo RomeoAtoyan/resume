@@ -21,7 +21,6 @@ export interface Education {
   endDate: string;
   location: string;
   summary: string;
-  grade: string;
   order?: number;
 }
 
@@ -60,6 +59,17 @@ export interface MoreDetails {
   misc: string;
 }
 
+export interface Skill {
+  id: string;
+  name: string;
+  category?: string;
+  level?: string;
+  proficiency?: number;
+  keywords?: string[];
+  description?: string;
+  order?: number;
+}
+
 type CvCollections = {
   workExperience: WorkExperience[];
   education: Education[];
@@ -67,6 +77,7 @@ type CvCollections = {
   courses: CourseCertificate[];
   references: Reference[];
   moreDetails: MoreDetails[];
+  skills: Skill[];
 };
 
 // ---------- DEFAULT ITEM FACTORY ----------
@@ -90,7 +101,6 @@ const factories = {
     endDate: "",
     location: "",
     summary: "",
-    grade: "",
     order: 0,
   }),
   languages: (): Language => ({
@@ -124,6 +134,16 @@ const factories = {
     personalStatement: "",
     misc: "",
   }),
+  skills: (): Skill => ({
+    id: crypto.randomUUID(),
+    name: "",
+    category: "",
+    level: "",
+    proficiency: 0,
+    keywords: [],
+    description: "",
+    order: 0,
+  }),
 };
 
 // ---------- GENERIC STORE ----------
@@ -139,7 +159,10 @@ interface CvStore extends CvCollections {
 
   setField: (field: keyof CvStore, value: any) => void;
 
-  setItemField: <K extends keyof CvCollections, T extends CvCollections[K][number]>(
+  setItemField: <
+    K extends keyof CvCollections,
+    T extends CvCollections[K][number]
+  >(
     section: K,
     id: string,
     field: keyof T,
@@ -170,6 +193,7 @@ export const useCvDataStore = create<CvStore>((set) => ({
   courses: [factories.courses()],
   references: [factories.references()],
   moreDetails: [factories.moreDetails()],
+  skills: [factories.skills()],
 
   // --- generic setters ---
   setField: (field, value) => set(() => ({ [field]: value })),
@@ -206,5 +230,6 @@ export const useCvDataStore = create<CvStore>((set) => ({
       courses: [factories.courses()],
       references: [factories.references()],
       moreDetails: [factories.moreDetails()],
+      skills: [factories.skills()],
     }),
 }));

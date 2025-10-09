@@ -114,11 +114,12 @@ const CoursesAndCertificates = () => {
             >
               <div className="flex justify-endbetween items-start absolute top-1 right-1">
                 <Button
+                  className="group"
                   size="icon"
                   variant="ghost"
                   onClick={() => removeItem("courses", course.id)}
                 >
-                  <Trash2 className="h-4 w-4 text-gray-500" />
+                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-500/80" />
                 </Button>
               </div>
 
@@ -153,7 +154,9 @@ const CoursesAndCertificates = () => {
                           <CalendarPicker
                             mode="single"
                             selected={dates[course.id]}
-                            onSelect={(date) => handleDateSelect(course.id, date)}
+                            onSelect={(date) =>
+                              handleDateSelect(course.id, date)
+                            }
                             captionLayout="dropdown"
                             fromYear={1970}
                             toYear={2035}

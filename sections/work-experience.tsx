@@ -124,13 +124,14 @@ const WorkExperience = () => {
             >
               <div className="flex items-center justify-end absolute top-0 right-0">
                 <Button
+                  className="group"
                   size="icon"
                   variant="ghost"
                   onClick={() => {
                     removeItem("workExperience", exp.id);
                   }}
                 >
-                  <Trash2 className="h-4 w-4 text-gray-500" />
+                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-500/80" />
                 </Button>
               </div>
 

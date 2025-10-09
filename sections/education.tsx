@@ -65,7 +65,6 @@ const educationFields: readonly EducationField[] = [
     placeholder: "Select month and year",
     type: "date",
   },
-  { id: "grade", label: "Grade / GPA", placeholder: "3.8 GPA" },
   {
     id: "summary",
     label: "Summary / Coursework",
@@ -136,11 +135,12 @@ const Education = () => {
             >
               <div className="flex justify-end items-start absolute top-1 right-1">
                 <Button
+                  className="group"
                   size="icon"
                   variant="ghost"
                   onClick={() => removeItem("education", edu.id)}
                 >
-                  <Trash2 className="h-4 w-4 text-gray-500" />
+                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-500/80" />
                 </Button>
               </div>
 

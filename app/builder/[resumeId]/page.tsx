@@ -1,10 +1,11 @@
 import Sections from "@/components/sections";
 import { SectionBox } from "@/sections/section-box";
 import { ResumeCanvas } from "@/components/resume-canvas-client";
-
+import { getResume } from "@/lib/db/get-resume";
 
 const Page = async ({ params }: { params: { resumeId: string } }) => {
   const { resumeId } = await params;
+  const resume = await getResume(resumeId);
   return (
     <div className="w-full flex items-start h-[calc(100vh-65px)]">
       <div className="max-w-xs w-full h-full">

@@ -1,4 +1,7 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
+
+type SaveStatus = "idle" | "saving" | "saved" | "error";
 
 // ---------- TYPES ----------
 export interface WorkExperience {
@@ -148,6 +151,10 @@ const factories = {
 
 // ---------- GENERIC STORE ----------
 interface CvStore extends CvCollections {
+  resumeId?: string;
+  saveStatus: SaveStatus;
+  lastSaved?: Date | null;
+
   fullName: string;
   jobTitle: string;
   email: string;
@@ -172,58 +179,31 @@ interface CvStore extends CvCollections {
   addItem: <K extends keyof CvCollections>(section: K) => void;
   removeItem: <K extends keyof CvCollections>(section: K, id: string) => void;
 
+  setResumeId: (id: string) => void;
+  setSaveStatus: (status: SaveStatus) => void;
+  setLastSaved: (date: Date) => void;
+
   reset: () => void;
 }
 
 // ---------- IMPLEMENTATION ----------
-export const useCvDataStore = create<CvStore>((set) => ({
-  // base fields
-  profileImage: "",
-  fullName: "",
-  jobTitle: "",
-  email: "",
-  phoneNumber: "",
-  address: "",
-  summary: "",
+export const useCvDataStore = create<CvStore>()(
+  persist(
+    (set, get) => ({
+      // --- base fields ---
+      resumeId: undefined,
+      saveStatus: "idle",
+      lastSaved: null,
 
-  // initialize one default record for each
-  workExperience: [factories.workExperience()],
-  education: [factories.education()],
-  languages: [factories.languages()],
-  courses: [factories.courses()],
-  references: [factories.references()],
-  moreDetails: [factories.moreDetails()],
-  skills: [factories.skills()],
-
-  // --- generic setters ---
-  setField: (field, value) => set(() => ({ [field]: value })),
-  setProfileImage: (url) => set({ profileImage: url }),
-
-  setItemField: (section, id, field, value) =>
-    set((state) => ({
-      [section]: state[section].map((item: any) =>
-        item.id === id ? { ...item, [field]: value } : item
-      ),
-    })),
-
-  addItem: (section) =>
-    set((state) => ({
-      [section]: [...state[section], factories[section]()],
-    })),
-
-  removeItem: (section, id) =>
-    set((state) => ({
-      [section]: state[section].filter((item: any) => item.id !== id),
-    })),
-
-  reset: () =>
-    set({
+      profileImage: "",
       fullName: "",
       jobTitle: "",
       email: "",
       phoneNumber: "",
       address: "",
       summary: "",
+
+      // --- collections ---
       workExperience: [factories.workExperience()],
       education: [factories.education()],
       languages: [factories.languages()],
@@ -231,5 +211,69 @@ export const useCvDataStore = create<CvStore>((set) => ({
       references: [factories.references()],
       moreDetails: [factories.moreDetails()],
       skills: [factories.skills()],
+
+      // --- setters ---
+      setField: (field, value) => set(() => ({ [field]: value })),
+      setProfileImage: (url) => set({ profileImage: url }),
+
+      setItemField: (section, id, field, value) =>
+        set((state) => ({
+          [section]: state[section].map((item: any) =>
+            item.id === id ? { ...item, [field]: value } : item
+          ),
+        })),
+
+      addItem: (section) =>
+        set((state) => ({
+          [section]: [...state[section], factories[section]()],
+        })),
+
+      removeItem: (section, id) =>
+        set((state) => ({
+          [section]: state[section].filter((item: any) => item.id !== id),
+        })),
+
+      setResumeId: (id) => set({ resumeId: id }),
+      setSaveStatus: (status) => set({ saveStatus: status }),
+      setLastSaved: (date) => set({ lastSaved: date }),
+
+      reset: () =>
+        set({
+          fullName: "",
+          jobTitle: "",
+          email: "",
+          phoneNumber: "",
+          address: "",
+          summary: "",
+          workExperience: [factories.workExperience()],
+          education: [factories.education()],
+          languages: [factories.languages()],
+          courses: [factories.courses()],
+          references: [factories.references()],
+          moreDetails: [factories.moreDetails()],
+          skills: [factories.skills()],
+        }),
     }),
-}));
+
+    {
+      name: "cv-data-store",
+      partialize: (state) => ({
+        resumeId: state.resumeId,
+        profileImage: state.profileImage,
+        fullName: state.fullName,
+        jobTitle: state.jobTitle,
+        email: state.email,
+        phoneNumber: state.phoneNumber,
+        address: state.address,
+        summary: state.summary,
+        workExperience: state.workExperience,
+        education: state.education,
+        languages: state.languages,
+        courses: state.courses,
+        references: state.references,
+        moreDetails: state.moreDetails,
+        skills: state.skills,
+      }),
+    }
+  )
+);

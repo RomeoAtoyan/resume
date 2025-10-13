@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -17,7 +16,7 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import { format } from "date-fns";
+import { parse, format } from "date-fns";
 import {
   Award,
   BookOpen,
@@ -76,9 +75,6 @@ const educationFields: readonly EducationField[] = [
 
 const Education = () => {
   const { education, setItemField, addItem, removeItem } = useCvDataStore();
-  const [dates, setDates] = useState<
-    Record<string, Record<string, Date | undefined>>
-  >({});
 
   const getIcon = (id: string) => {
     switch (id) {
@@ -95,31 +91,17 @@ const Education = () => {
     }
   };
 
-  const handleDateSelect = (
-    eduId: string,
-    fieldId: string,
-    date: Date | undefined
-  ) => {
-    setDates((prev) => ({
-      ...prev,
-      [eduId]: { ...prev[eduId], [fieldId]: date },
-    }));
-    if (date)
-      setItemField(
-        "education",
-        eduId,
-        fieldId as keyof (typeof education)[number],
-        format(date, "MMM yyyy")
-      );
+  const handleDateSelect = (eduId: string, fieldId: string, date: Date | undefined) => {
+    if (date) {
+      setItemField("education", eduId, fieldId as any, format(date, "MMM yyyy"));
+    }
   };
 
   return (
     <SectionBoxWrapper>
       <div className="space-y-6 overflow-y-auto">
         <div>
-          <Label className="text-lg font-semibold text-gray-800">
-            Education
-          </Label>
+          <Label className="text-lg font-semibold text-gray-800">Education</Label>
           <p className="text-xs text-gray-500">
             Add your academic background, including schools, degrees, and key
             areas of study. Highlight achievements or courses that best
@@ -133,23 +115,26 @@ const Education = () => {
               key={edu.id}
               className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
-              <div className="flex justify-end items-start absolute top-1 right-1">
+              <div className="absolute top-1 right-1">
                 <Button
                   className="group"
                   size="icon"
                   variant="ghost"
                   onClick={() => removeItem("education", edu.id)}
                 >
-                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-500/80" />
+                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-400" />
                 </Button>
               </div>
 
               {educationFields.map((field) => {
                 const icon = getIcon(field.id);
-                const value =
-                  (edu[field.id as keyof typeof edu] as string) ?? "";
+                const value = (edu[field.id as keyof typeof edu] as string) ?? "";
 
                 if (field.type === "date") {
+                  const parsedDate = value
+                    ? parse(value, "MMM yyyy", new Date())
+                    : undefined;
+
                   return (
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
@@ -158,14 +143,11 @@ const Education = () => {
                           <Button
                             variant="outline"
                             className={`w-full justify-start text-left font-normal bg-white ${
-                              !dates[edu.id]?.[field.id] &&
-                              "text-muted-foreground"
+                              !value && "text-muted-foreground"
                             }`}
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {dates[edu.id]?.[field.id]
-                              ? format(dates[edu.id]![field.id]!, "MMM yyyy")
-                              : field.placeholder}
+                            {value || field.placeholder}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent
@@ -175,7 +157,7 @@ const Education = () => {
                         >
                           <Calendar
                             mode="single"
-                            selected={dates[edu.id]?.[field.id]}
+                            selected={parsedDate}
                             onSelect={(date) =>
                               handleDateSelect(edu.id, field.id, date)
                             }
@@ -201,7 +183,7 @@ const Education = () => {
                           setItemField(
                             "education",
                             edu.id,
-                            field.id as keyof typeof edu,
+                            field.id as any,
                             e.target.value
                           )
                         }
@@ -215,7 +197,7 @@ const Education = () => {
                   return (
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
-                      <InputGroup className="overflow-hidden bg-white">
+                      <InputGroup className="bg-white overflow-hidden">
                         <InputGroupInput
                           id={`${field.id}-${edu.id}`}
                           placeholder={field.placeholder}
@@ -225,7 +207,7 @@ const Education = () => {
                             setItemField(
                               "education",
                               edu.id,
-                              field.id as keyof typeof edu,
+                              field.id as any,
                               e.target.value
                             )
                           }
@@ -248,7 +230,7 @@ const Education = () => {
                         setItemField(
                           "education",
                           edu.id,
-                          field.id as keyof typeof edu,
+                          field.id as any,
                           e.target.value
                         )
                       }

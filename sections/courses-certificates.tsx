@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Calendar as CalendarPicker } from "@/components/ui/calendar";
 import { Input } from "@/components/ui/input";
@@ -17,14 +16,14 @@ import {
 } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import { format } from "date-fns";
+import { parse, format } from "date-fns";
 import {
   BookOpen,
   Building2,
   CalendarIcon,
   Link2,
-  Trash2,
   Plus,
+  Trash2,
 } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
 
@@ -72,7 +71,6 @@ const coursesFields: readonly CourseField[] = [
 
 const CoursesAndCertificates = () => {
   const { courses, setItemField, addItem, removeItem } = useCvDataStore();
-  const [dates, setDates] = useState<Record<string, Date | undefined>>({});
 
   const getIcon = (id: string) => {
     switch (id) {
@@ -88,9 +86,9 @@ const CoursesAndCertificates = () => {
   };
 
   const handleDateSelect = (courseId: string, date: Date | undefined) => {
-    setDates((prev) => ({ ...prev, [courseId]: date }));
-    if (date)
+    if (date) {
       setItemField("courses", courseId, "date", format(date, "MMM yyyy"));
+    }
   };
 
   return (
@@ -105,30 +103,30 @@ const CoursesAndCertificates = () => {
             enhance your professional profile.
           </p>
         </div>
-
         <div className="space-y-8">
           {courses.map((course) => (
             <div
               key={course.id}
               className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
-              <div className="flex justify-endbetween items-start absolute top-1 right-1">
+              <div className="absolute top-1 right-1">
                 <Button
                   className="group"
                   size="icon"
                   variant="ghost"
                   onClick={() => removeItem("courses", course.id)}
                 >
-                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-500/80" />
+                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-400" />
                 </Button>
               </div>
-
               {coursesFields.map((field) => {
                 const icon = getIcon(field.id);
                 const value =
                   (course[field.id as keyof typeof course] as string) ?? "";
-
                 if (field.type === "date") {
+                  const parsedDate = value
+                    ? parse(value, "MMM yyyy", new Date())
+                    : undefined;
                   return (
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
@@ -137,13 +135,11 @@ const CoursesAndCertificates = () => {
                           <Button
                             variant="outline"
                             className={`w-full justify-start text-left font-normal bg-white ${
-                              !dates[course.id] && "text-muted-foreground"
+                              !value && "text-muted-foreground"
                             }`}
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {dates[course.id]
-                              ? format(dates[course.id]!, "MMM yyyy")
-                              : field.placeholder}
+                            {value || field.placeholder}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent
@@ -153,7 +149,7 @@ const CoursesAndCertificates = () => {
                         >
                           <CalendarPicker
                             mode="single"
-                            selected={dates[course.id]}
+                            selected={parsedDate}
                             onSelect={(date) =>
                               handleDateSelect(course.id, date)
                             }
@@ -167,7 +163,6 @@ const CoursesAndCertificates = () => {
                     </div>
                   );
                 }
-
                 if (field.textarea) {
                   return (
                     <div key={field.id} className="space-y-1">
@@ -188,7 +183,6 @@ const CoursesAndCertificates = () => {
                     </div>
                   );
                 }
-
                 if (icon) {
                   return (
                     <div key={field.id} className="space-y-1">
@@ -213,7 +207,6 @@ const CoursesAndCertificates = () => {
                     </div>
                   );
                 }
-
                 return (
                   <div key={field.id} className="space-y-1">
                     <Label>{field.label}</Label>
@@ -237,7 +230,6 @@ const CoursesAndCertificates = () => {
             </div>
           ))}
         </div>
-
         <div className="flex justify-end">
           <Button onClick={() => addItem("courses")}>
             <Plus className="h-4 w-4 mr-2" />

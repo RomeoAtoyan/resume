@@ -4,7 +4,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 
 const Summary = () => {
-  const { setField } = useCvDataStore();
+  const { setField, summary } = useCvDataStore();
   return (
     <SectionBoxWrapper>
       <div className="space-y-6">
@@ -19,6 +19,7 @@ const Summary = () => {
         </div>
 
         <Textarea
+          value={summary}
           onChange={(e) => setField("summary", e.target.value)}
           placeholder="E.g. Passionate front-end developer with 5+ years of experience building responsive web applications..."
           className="min-h-[120px] resize-none"

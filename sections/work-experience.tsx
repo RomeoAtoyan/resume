@@ -1,18 +1,22 @@
 "use client";
 
-import { useState } from "react";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import SectionBoxWrapper from "./section-box-wrapper";
 import { Button } from "@/components/ui/button";
-import { useCvDataStore } from "@/store/use-cv-data-store";
-import { Textarea } from "@/components/ui/textarea";
+import { Calendar } from "@/components/ui/calendar";
+import { Input } from "@/components/ui/input";
+import {
+  InputGroup,
+  InputGroupAddon,
+  InputGroupInput,
+} from "@/components/ui/input-group";
+import { Label } from "@/components/ui/label";
 import {
   Popover,
-  PopoverTrigger,
   PopoverContent,
+  PopoverTrigger,
 } from "@/components/ui/popover";
-import { Calendar } from "@/components/ui/calendar";
+import { Textarea } from "@/components/ui/textarea";
+import { useCvDataStore } from "@/store/use-cv-data-store";
+import { parse, format } from "date-fns";
 import {
   CalendarIcon,
   Briefcase,
@@ -21,12 +25,7 @@ import {
   Trash2,
   Plus,
 } from "lucide-react";
-import { format } from "date-fns";
-import {
-  InputGroup,
-  InputGroupInput,
-  InputGroupAddon,
-} from "@/components/ui/input-group";
+import SectionBoxWrapper from "./section-box-wrapper";
 
 type BaseField = {
   id: string;
@@ -66,9 +65,6 @@ const workExperienceFields: readonly WorkField[] = [
 const WorkExperience = () => {
   const { workExperience, setItemField, addItem, removeItem } =
     useCvDataStore();
-  const [dates, setDates] = useState<
-    Record<string, Record<string, Date | undefined>>
-  >({});
 
   const getIcon = (id: string) => {
     switch (id) {
@@ -83,23 +79,10 @@ const WorkExperience = () => {
     }
   };
 
-  const handleDateSelect = (
-    expId: string,
-    fieldId: string,
-    date: Date | undefined
-  ) => {
-    setDates((prev) => ({
-      ...prev,
-      [expId]: { ...prev[expId], [fieldId]: date },
-    }));
-
-    if (date)
-      setItemField(
-        "workExperience",
-        expId,
-        fieldId as keyof (typeof workExperience)[number],
-        format(date, "MMM yyyy")
-      );
+  const handleDateSelect = (expId: string, fieldId: string, date: Date | undefined) => {
+    if (date) {
+      setItemField("workExperience", expId, fieldId as any, format(date, "MMM yyyy"));
+    }
   };
 
   return (
@@ -122,25 +105,26 @@ const WorkExperience = () => {
               key={exp.id}
               className="bg-gray-100 p-4 rounded-md space-y-4 shadow-sm relative z-0"
             >
-              <div className="flex items-center justify-end absolute top-1 right-1">
+              <div className="absolute top-1 right-1">
                 <Button
                   className="group"
                   size="icon"
                   variant="ghost"
-                  onClick={() => {
-                    removeItem("workExperience", exp.id);
-                  }}
+                  onClick={() => removeItem("workExperience", exp.id)}
                 >
-                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-500/80" />
+                  <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-400" />
                 </Button>
               </div>
 
               {workExperienceFields.map((field) => {
                 const icon = getIcon(field.id);
-                const value =
-                  (exp[field.id as keyof typeof exp] as string) ?? "";
+                const value = (exp[field.id as keyof typeof exp] as string) ?? "";
 
                 if (field.type === "date") {
+                  const parsedDate = value
+                    ? parse(value, "MMM yyyy", new Date())
+                    : undefined;
+
                   return (
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
@@ -149,14 +133,11 @@ const WorkExperience = () => {
                           <Button
                             variant="outline"
                             className={`w-full justify-start text-left font-normal bg-white ${
-                              !dates[exp.id]?.[field.id] &&
-                              "text-muted-foreground"
+                              !value && "text-muted-foreground"
                             }`}
                           >
                             <CalendarIcon className="mr-2 h-4 w-4" />
-                            {dates[exp.id]?.[field.id]
-                              ? format(dates[exp.id]![field.id]!, "MMM yyyy")
-                              : field.placeholder}
+                            {value || field.placeholder}
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent
@@ -166,7 +147,7 @@ const WorkExperience = () => {
                         >
                           <Calendar
                             mode="single"
-                            selected={dates[exp.id]?.[field.id]}
+                            selected={parsedDate}
                             onSelect={(date) =>
                               handleDateSelect(exp.id, field.id, date)
                             }
@@ -192,7 +173,7 @@ const WorkExperience = () => {
                           setItemField(
                             "workExperience",
                             exp.id,
-                            field.id as keyof typeof exp,
+                            field.id as any,
                             e.target.value
                           )
                         }
@@ -216,7 +197,7 @@ const WorkExperience = () => {
                             setItemField(
                               "workExperience",
                               exp.id,
-                              field.id as keyof typeof exp,
+                              field.id as any,
                               e.target.value
                             )
                           }
@@ -239,7 +220,7 @@ const WorkExperience = () => {
                         setItemField(
                           "workExperience",
                           exp.id,
-                          field.id as keyof typeof exp,
+                          field.id as any,
                           e.target.value
                         )
                       }
@@ -251,7 +232,7 @@ const WorkExperience = () => {
           ))}
         </div>
 
-        <div className="flex items-center justify-end">
+        <div className="flex justify-end">
           <Button onClick={() => addItem("workExperience")}>
             <Plus className="h-4 w-4 mr-2" />
             Add Experience

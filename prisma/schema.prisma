@@ -49,7 +49,9 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  resumes       Resume[]
 }
+
 
 model VerificationToken {
   identifier String
@@ -58,3 +60,16 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model Resume {
+  id         String   @id @default(cuid())
+  title      String   @default("Untitled Resume")
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     String
+  template   String?  
+  data       Json    
+  lastSaved  DateTime @default(now())
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+

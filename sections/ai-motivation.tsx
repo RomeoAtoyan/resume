@@ -18,65 +18,16 @@ import {
 import { CircleCheck, CircleX, Info, Link2, Sparkles } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
 import { useState } from "react";
-import { z } from "zod";
 import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
+import { scanJob } from "@/lib/actions/scan-job";
 
-const AiMotivation = () => {
+const AiMotivation = ({ resumeId }: { resumeId: string }) => {
   const [jobLink, setJobLink] = useState<string>("");
   const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [data, setData] = useState(null);
-
-  const jobLinkSchema = z
-    .string()
-    .trim()
-    .min(1, "Please insert a link")
-    .max(500, "Your link is too long")
-    .regex(/^https:\/\/[^\s$.?#].[^\s]*$/, "Please enter a valid https:// URL");
-
-  const scanJob = async () => {
-    const validation = jobLinkSchema.safeParse(jobLink);
-
-    if (!validation.success) {
-      setError(validation.error.issues[0].message);
-      setTimeout(() => {
-        setError("");
-      }, 3000);
-      return;
-    }
-
-    try {
-      setIsLoading(true);
-      setError("");
-
-      const res = await fetch("/api/analyze-job", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: jobLink }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || "Failed to analyze job");
-      }
-
-      const data = await res.json();
-      setData(data);
-      console.log("Analysis result:", data);
-    } catch (err: any) {
-      console.error("Error while scanning job:", err);
-      setError(err.message || "Something went wrong. Please try again.");
-      setTimeout(() => {
-        setError("");
-      }, 3000);
-      setJobLink("");
-    } finally {
-      setIsLoading(false);
-      setJobLink("");
-    }
-  };
 
   return (
     <SectionBoxWrapper>
@@ -160,7 +111,19 @@ const AiMotivation = () => {
           </div>
 
           <div className="flex items-center justify-end">
-            <Button onClick={scanJob} disabled={isLoading}>
+            <Button
+              onClick={() =>
+                scanJob({
+                  jobLink,
+                  setJobLink,
+                  setData,
+                  setError,
+                  setIsLoading,
+                  resumeId,
+                })
+              }
+              disabled={isLoading}
+            >
               Scan Job
               <Sparkles />
             </Button>

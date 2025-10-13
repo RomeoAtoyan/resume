@@ -1,13 +1,10 @@
-"use client";
 import Sections from "@/components/sections";
 import { SectionBox } from "@/sections/section-box";
-import dynamic from "next/dynamic";
+import { ResumeCanvas } from "@/components/resume-canvas-client";
 
-const ResumeCanvas = dynamic(() => import("@/components/resume-canvas"), {
-  ssr: false,
-});
 
-const Page = () => {
+const Page = async ({ params }: { params: { resumeId: string } }) => {
+  const { resumeId } = await params;
   return (
     <div className="w-full flex items-start h-[calc(100vh-65px)]">
       <div className="max-w-xs w-full h-full">
@@ -15,12 +12,12 @@ const Page = () => {
       </div>
 
       <div className="max-w-lg w-full h-full overflow-y-auto border-l border-r border-b border-gray-200">
-        <SectionBox />
+        <SectionBox resumeId={resumeId} />
       </div>
 
-      <div className="w-full h-full">
+      {/* <div className="w-full h-full">
         <ResumeCanvas />
-      </div>
+      </div> */}
     </div>
   );
 };

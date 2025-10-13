@@ -1,3 +1,4 @@
+"use client"
 import { useSectionStore } from "@/store/use-sections-store";
 import AiMotivation from "./ai-motivation";
 import CoursesAndCertificates from "./courses-certificates";
@@ -10,7 +11,7 @@ import Skills from "./skills";
 import Summary from "./summary";
 import WorkExperience from "./work-experience";
 
-export const SectionBox = () => {
+export const SectionBox = ({ resumeId }: { resumeId: string }) => {
   const { activeSection } = useSectionStore();
 
   switch (activeSection.id) {
@@ -33,7 +34,7 @@ export const SectionBox = () => {
     case "more-details":
       return <MoreDetails />;
     case "ai-motivation":
-      return <AiMotivation />;
+      return <AiMotivation resumeId={resumeId} />;
     default:
       return <div className="p-6 text-gray-500">Select a section</div>;
   }

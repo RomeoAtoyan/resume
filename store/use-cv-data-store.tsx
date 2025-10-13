@@ -188,24 +188,63 @@ interface CvStore extends CvCollections {
 }
 
 // ---------- IMPLEMENTATION ----------
-export const useCvDataStore = create<CvStore>()(
-  persist(
-    (set, get) => ({
-      // --- base fields ---
-      title: "Untitled Resume",
-      resumeId: undefined,
-      saveStatus: "idle",
-      lastSaved: null,
+export const useCvDataStore = create<CvStore>((set, get) => ({
+  // --- base fields ---
+  title: "Untitled Resume",
+  resumeId: undefined,
+  saveStatus: "idle",
+  lastSaved: null,
 
-      profileImage: "",
+  profileImage: "",
+  fullName: "",
+  jobTitle: "",
+  email: "",
+  phoneNumber: "",
+  address: "",
+  summary: "",
+
+  // --- collections ---
+  workExperience: [factories.workExperience()],
+  education: [factories.education()],
+  languages: [factories.languages()],
+  courses: [factories.courses()],
+  references: [factories.references()],
+  moreDetails: [factories.moreDetails()],
+  skills: [factories.skills()],
+
+  // --- setters ---
+  setField: (field, value) => set(() => ({ [field]: value })),
+  setProfileImage: (url) => set({ profileImage: url }),
+
+  setItemField: (section, id, field, value) =>
+    set((state) => ({
+      [section]: state[section].map((item: any) =>
+        item.id === id ? { ...item, [field]: value } : item
+      ),
+    })),
+
+  addItem: (section) =>
+    set((state) => ({
+      [section]: [...state[section], factories[section]()],
+    })),
+
+  removeItem: (section, id) =>
+    set((state) => ({
+      [section]: state[section].filter((item: any) => item.id !== id),
+    })),
+
+  setResumeId: (id) => set({ resumeId: id }),
+  setSaveStatus: (status) => set({ saveStatus: status }),
+  setLastSaved: (date) => set({ lastSaved: date }),
+
+  reset: () =>
+    set({
       fullName: "",
       jobTitle: "",
       email: "",
       phoneNumber: "",
       address: "",
       summary: "",
-
-      // --- collections ---
       workExperience: [factories.workExperience()],
       education: [factories.education()],
       languages: [factories.languages()],
@@ -213,70 +252,5 @@ export const useCvDataStore = create<CvStore>()(
       references: [factories.references()],
       moreDetails: [factories.moreDetails()],
       skills: [factories.skills()],
-
-      // --- setters ---
-      setField: (field, value) => set(() => ({ [field]: value })),
-      setProfileImage: (url) => set({ profileImage: url }),
-
-      setItemField: (section, id, field, value) =>
-        set((state) => ({
-          [section]: state[section].map((item: any) =>
-            item.id === id ? { ...item, [field]: value } : item
-          ),
-        })),
-
-      addItem: (section) =>
-        set((state) => ({
-          [section]: [...state[section], factories[section]()],
-        })),
-
-      removeItem: (section, id) =>
-        set((state) => ({
-          [section]: state[section].filter((item: any) => item.id !== id),
-        })),
-
-      setResumeId: (id) => set({ resumeId: id }),
-      setSaveStatus: (status) => set({ saveStatus: status }),
-      setLastSaved: (date) => set({ lastSaved: date }),
-
-      reset: () =>
-        set({
-          fullName: "",
-          jobTitle: "",
-          email: "",
-          phoneNumber: "",
-          address: "",
-          summary: "",
-          workExperience: [factories.workExperience()],
-          education: [factories.education()],
-          languages: [factories.languages()],
-          courses: [factories.courses()],
-          references: [factories.references()],
-          moreDetails: [factories.moreDetails()],
-          skills: [factories.skills()],
-        }),
     }),
-
-    {
-      name: "cv-data-store",
-      partialize: (state) => ({
-        title: state.title,
-        resumeId: state.resumeId,
-        profileImage: state.profileImage,
-        fullName: state.fullName,
-        jobTitle: state.jobTitle,
-        email: state.email,
-        phoneNumber: state.phoneNumber,
-        address: state.address,
-        summary: state.summary,
-        workExperience: state.workExperience,
-        education: state.education,
-        languages: state.languages,
-        courses: state.courses,
-        references: state.references,
-        moreDetails: state.moreDetails,
-        skills: state.skills,
-      }),
-    }
-  )
-);
+}));

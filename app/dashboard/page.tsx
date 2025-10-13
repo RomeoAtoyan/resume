@@ -2,11 +2,9 @@ import { Button } from "@/components/ui/button";
 import { getResumes } from "@/lib/db/get-resumes";
 import { Plus } from "lucide-react";
 import Link from "next/link";
-import React from "react";
 
 const Page = async () => {
   const resumes = await getResumes();
-
   return (
     <div className="w-full flex flex-col items-start h-[calc(100vh-65px)]">
       <div className="w-full max-w-6xl mx-auto">

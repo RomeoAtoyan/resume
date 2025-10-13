@@ -2,9 +2,11 @@ import { Spinner } from "@/components/ui/spinner";
 import { getUser } from "@/lib/auth/get-user";
 import NavLogo from "./nav-logo";
 import SiteHeaderProfile from "./site-header-profile";
+import { getPathname } from "@/lib/helpers/get-pathname";
 
 export const SiteHeader = async () => {
   const user = await getUser();
+  const pathname = await getPathname();
   return (
     <header className="w-full border-b border-gray-200 bg-white overflow-hidden">
       <div className="flex items-center justify-between px-6 py-3">

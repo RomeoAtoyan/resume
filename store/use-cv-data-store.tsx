@@ -151,6 +151,7 @@ const factories = {
 
 // ---------- GENERIC STORE ----------
 interface CvStore extends CvCollections {
+  title: string;
   resumeId?: string;
   saveStatus: SaveStatus;
   lastSaved?: Date | null;
@@ -191,6 +192,7 @@ export const useCvDataStore = create<CvStore>()(
   persist(
     (set, get) => ({
       // --- base fields ---
+      title: "Untitled Resume",
       resumeId: undefined,
       saveStatus: "idle",
       lastSaved: null,
@@ -258,6 +260,7 @@ export const useCvDataStore = create<CvStore>()(
     {
       name: "cv-data-store",
       partialize: (state) => ({
+        title: state.title,
         resumeId: state.resumeId,
         profileImage: state.profileImage,
         fullName: state.fullName,

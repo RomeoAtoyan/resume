@@ -26,7 +26,7 @@ export const useAutoSaveResume = () => {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            title: data.fullName || "Untitled Resume",
+            title: data.title || "Untitled Resume",
             template: "default",
             data,
           }),

@@ -18,7 +18,7 @@ const GlobalModal = () => {
 
   return (
     <Dialog open={isOpen} onOpenChange={close}>
-      <DialogContent className="bg-inherit max-w-sm rounded lg:max-w-2xl">
+      <DialogContent className="bg-inherit max-h-[800px] h-fit max-w-sm rounded lg:max-w-2xl">
         {title ? (
           <DialogTitle>{title}</DialogTitle>
         ) : (

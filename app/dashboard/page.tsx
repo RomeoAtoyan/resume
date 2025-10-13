@@ -1,6 +1,5 @@
-import { Button } from "@/components/ui/button";
+import DashboardHero from "@/components/dashboard-hero";
 import { getResumes } from "@/lib/db/get-resumes";
-import { Plus } from "lucide-react";
 import Link from "next/link";
 
 const Page = async () => {
@@ -8,16 +7,7 @@ const Page = async () => {
   return (
     <div className="w-full flex flex-col items-start h-[calc(100vh-65px)]">
       <div className="w-full max-w-6xl mx-auto">
-        <div className="flex items-center justify-between p-6 w-full">
-          <div className="max-w-xl">
-            <h1 className="text-3xl font-semibold">Create a resume</h1>
-            <p>Create your own custom resume using AI</p>
-          </div>
-          <Button className="bg-blue-500 hover:bg-blue-500/90" size={"lg"}>
-            <Plus />
-            Create Resume
-          </Button>
-        </div>
+        <DashboardHero />
 
         <section className="p-6">
           <h3 className="text-xl font-semibold mb-4">Templates</h3>

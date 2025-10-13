@@ -12,7 +12,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { resumeId } = params;
+    const { resumeId } = await params;
     const { title, template, data } = await req.json();
 
     const updated = await prisma.resume.update({

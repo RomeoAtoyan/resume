@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import { useSectionStore } from "@/store/use-sections-store";
 import AiMotivation from "./ai-motivation";
@@ -14,12 +14,14 @@ import WorkExperience from "./work-experience";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useAutoSaveResume } from "@/hooks/use-auto-save-resume";
 import { useEffect } from "react";
+import { Resume } from "@prisma/client";
 
-export const SectionBox = ({ resumeId }: { resumeId: string }) => {
+export const SectionBox = ({ resume }: { resume: Resume }) => {
+  const { id: resumeId } = resume;
   const { activeSection } = useSectionStore();
   const { setResumeId } = useCvDataStore();
 
-   useEffect(() => {
+  useEffect(() => {
     setResumeId(resumeId);
   }, [resumeId, setResumeId]);
 

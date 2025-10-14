@@ -48,7 +48,7 @@ export const SectionBox = ({ resume }: { resume: Resume }) => {
     case "more-details":
       return <MoreDetails />;
     case "ai-motivation":
-      return <AiMotivation resumeId={resumeId} />;
+      return <AiMotivation />;
     default:
       return <div className="p-6 text-gray-500">Select a section</div>;
   }

@@ -12,13 +12,11 @@ export default function MotivationLetter({
   response,
   loading,
 }: {
-  response: { analysis: string };
+  response: string;
   loading: boolean;
 }) {
-  const { analysis } = response;
-
   const { displayedText } = useTextStream({
-    textStream: analysis,
+    textStream: response,
     mode: "typewriter",
     speed: 25,
   });

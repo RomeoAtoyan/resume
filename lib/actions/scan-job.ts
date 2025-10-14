@@ -59,7 +59,7 @@ export const scanJob = async ({
     }
 
     const data = await res.json();
-    setMotivationLetterText(data);
+    setMotivationLetterText(data.analysis);
   } catch (err: any) {
     console.error("Error while scanning job:", err);
     setError(err.message || "Something went wrong. Please try again.");

@@ -5,26 +5,26 @@ export type CanvasStore = "motivation-letter";
 
 interface CanvasStoreProps {
   isOpen: boolean;
-  motivationLetterText: { analysis: string };
+  motivationLetterText: string;
   id: CanvasStore | null;
   title: string;
   error: string;
   loading: boolean;
 
-  setLoading: (isLoading: boolean) => void
+  setLoading: (isLoading: boolean) => void;
   setError: (any: any) => void;
-  setMotivationLetterText: (text: { analysis: string }) => void;
+  setMotivationLetterText: (text: string) => void;
   openCanvas: (id: CanvasStore, title?: string) => void;
   close: () => void;
 }
 
 export const useCanvasStore = create<CanvasStoreProps>((set) => ({
-  motivationLetterText: { analysis: "" },
+  motivationLetterText: "",
   isOpen: false,
   id: null,
   title: "",
   error: "",
-  loading:false,
+  loading: false,
 
   setLoading: (isLoading) => set({ loading: isLoading }),
   setError: (any: any) => set({ error: any }),
@@ -32,4 +32,3 @@ export const useCanvasStore = create<CanvasStoreProps>((set) => ({
   openCanvas: (id, title = "") => set({ isOpen: true, id, title }),
   close: () => set({ isOpen: false, id: null, title: "" }),
 }));
-

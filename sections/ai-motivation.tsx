@@ -23,8 +23,9 @@ import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import { scanJob } from "@/lib/actions/scan-job";
 import { useCanvasStore } from "@/store/use-canvas-store";
+import { useCvDataStore } from "@/store/use-cv-data-store";
 
-const AiMotivation = ({ resumeId }: { resumeId: string }) => {
+const AiMotivation = () => {
   const [jobLink, setJobLink] = useState<string>("");
   const {
     openCanvas,
@@ -34,6 +35,8 @@ const AiMotivation = ({ resumeId }: { resumeId: string }) => {
     loading,
     setLoading,
   } = useCanvasStore();
+
+  const { resumeId } = useCvDataStore();
 
   return (
     <SectionBoxWrapper>

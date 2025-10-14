@@ -38,10 +38,27 @@ export async function POST(
         {
           role: "system",
           content: `
-            You will scan the page of the URL provided and returns the key requirements of the job
-          `,
-        },
+              You are an AI career assistant that writes personalized motivation letters.
 
+              You will receive:
+              1. The user's resume data ---> ${JSON.stringify(resume?.data)}
+              2. The text content of a job posting (from the provided URL) ---> ${text}
+
+              Your task:
+              - Analyze the job posting and extract the most relevant requirements.
+              - Compare them with the user's resume.
+              - Write a concise, professional motivation letter that highlights how the user's experience and skills align with the job.
+              - The tone should be confident, natural, and personalized — not generic or robotic.
+              - If the data does not exist, do not place it in the motivation letter.
+
+              IMPORTANT:
+              - ONLY WORK WITH WHAT YOU HAVE !
+              - DO NOT REFER TO PROFILE OR PORTFOLIO SITES !
+              - DO NOT INCLUDE THE DATE OF THE DAY THIS LETTER IS WRITTEN !
+              - DO NOT USE PLACEHOLDERS LIKE [Your Name] etc... Use real data taken from the user's resume data like name, email, address, etc...
+              - YOUR TEXT IS PROCESSED BY MARKDOWN SO USE NICE SPACING 
+            `,
+        },
         {
           role: "user",
           content: text,

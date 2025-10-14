@@ -23,12 +23,8 @@ export const SectionBox = ({ resume }: { resume: Resume }) => {
 
   useEffect(() => {
     setResumeId(resumeId);
-    syncFromDB({
-      title,
-      template,
-      data,
-    });
-  }, [resumeId, data, setResumeId, syncFromDB, title, template]);
+    syncFromDB({ ...(data as Record<string, any>), title, template });
+  }, [resumeId, data, title, template, setResumeId, syncFromDB]);
 
   useAutoSaveResume();
 

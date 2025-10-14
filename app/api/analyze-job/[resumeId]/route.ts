@@ -1,3 +1,4 @@
+import { getResume } from "@/lib/db/get-resume";
 import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
@@ -9,56 +10,70 @@ export async function POST(
   req: Request,
   { params }: { params: { resumeId: string } }
 ) {
-  const { resumeId } = await params;
-  return NextResponse.json({
-    resumeId,
-  });
-  // const body = await req.json();
-  // const { url } = body;
+  try {
+    const { resumeId } = await params;
+    const resume = await getResume(resumeId);
 
-  // if (!url) {
-  //   return NextResponse.json({ error: "Missing job URL" }, { status: 400 });
-  // }
+    const body = await req.json();
+    const { url } = body;
 
-  // const pageResponse = await fetch(url);
-  // const html = await pageResponse.text();
+    if (!url) {
+      return NextResponse.json({ error: "Missing job URL" }, { status: 400 });
+    }
 
-  // const text = html
-  //   .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
-  //   .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
-  //   .replace(/<\/?[^>]+(>|$)/g, "")
-  //   .replace(/\s+/g, " ")
-  //   .trim()
-  //   .slice(0, 8000);
+    const pageResponse = await fetch(url);
+    const html = await pageResponse.text();
 
-  // const completion = await openai.chat.completions.create({
-  //   model: "gpt-4o-mini",
-  //   response_format: { type: "json_object" },
-  //   messages: [
-  //     {
-  //       role: "system",
-  //       content:
-  //         "You are a job posting analyzer. Extract and summarize the following fields: title, company, responsibilities, requirements, and skills. Respond in JSON only.",
-  //     },
-  //     {
-  //       role: "user",
-  //       content: text,
-  //     },
-  //   ],
-  // });
+    const text = html
+      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, "")
+      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
+      .replace(/<\/?[^>]+(>|$)/g, "")
+      .replace(/\s+/g, " ")
+      .trim()
+      .slice(0, 8000);
 
-  // const analysis = completion.choices[0]?.message?.content;
+    const completion = await openai.chat.completions.create({
+      model: "gpt-4o-mini",
+      response_format: { type: "json_object" },
+      messages: [
+        {
+          role: "system",
+          content: `
+            You are an expert career writer. 
+            Your task is to write a short, personalized motivation letter for a job application. 
 
-  //   return NextResponse.json({
-  //     message: "Job analyzed successfully",
-  //     url,
-  //     // analysis: JSON.parse(analysis || "{}"),
-  //   });
-  // } catch (error) {
-  //   console.error("Error in analyze-job:", error);
-  //   return NextResponse.json(
-  //     { error: "Something went wrong while analyzing the job" },
-  //     { status: 500 }
-  //   );
-  // }
+            You will receive:
+            - The candidate's resume data -> ${resume}.
+            - The job posting text or description.
+
+            Use the resume to highlight the candidate's most relevant experience, skills, and qualities that fit the job.
+            Keep the tone professional, confident, and natural.
+            Avoid generic phrases; make it sound human and tailored to the position.
+
+            Respond with the complete motivation letter in plain text — no JSON or markdown.
+          `,
+        },
+
+        {
+          role: "user",
+          content: text,
+        },
+      ],
+    });
+
+    const analysis = completion.choices[0]?.message?.content;
+
+    return NextResponse.json({
+      message: "Job analyzed successfully",
+      resumeId,
+      url,
+      analysis: JSON.parse(analysis || "{}"),
+    });
+  } catch (error) {
+    console.error("Error in analyze-job:", error);
+    return NextResponse.json(
+      { error: "Something went wrong while analyzing the job" },
+      { status: 500 }
+    );
+  }
 }

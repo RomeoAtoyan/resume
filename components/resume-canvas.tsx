@@ -18,7 +18,11 @@ const ResumeCanvas = () => {
     }
   };
 
-  return <>{renderTemplate()}</>;
+  return (
+    <div className="h-full bg-[radial-gradient(circle,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px]">
+      {renderTemplate()}
+    </div>
+  );
 };
 
 export default ResumeCanvas;

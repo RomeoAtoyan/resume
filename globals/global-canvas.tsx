@@ -5,12 +5,15 @@ import { useCanvasStore } from "@/store/use-canvas-store";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const GlobalCanvas = () => {
-  const { isOpen, close, id, title, motivationLetterText } = useCanvasStore();
+  const { isOpen, close, id, title, motivationLetterText, loading } =
+    useCanvasStore();
 
   const content = () => {
     switch (id) {
       case "motivation-letter":
-        return <MotivationLetter response={motivationLetterText} />;
+        return (
+          <MotivationLetter loading={loading} response={motivationLetterText} />
+        );
       default:
         break;
     }
@@ -26,7 +29,8 @@ const GlobalCanvas = () => {
             <DialogTitle>{title}</DialogTitle>
           </VisuallyHidden>
         )}
-        <MotivationLetter response={motivationLetterText} />
+
+        {content()}
       </DialogContent>
     </Dialog>
   );

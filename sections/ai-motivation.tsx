@@ -26,8 +26,14 @@ import { useCanvasStore } from "@/store/use-canvas-store";
 
 const AiMotivation = ({ resumeId }: { resumeId: string }) => {
   const [jobLink, setJobLink] = useState<string>("");
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { openCanvas, setError, motivationLetterText, error, setMotivationLetterText } = useCanvasStore();
+  const {
+    openCanvas,
+    setError,
+    error,
+    setMotivationLetterText,
+    loading,
+    setLoading,
+  } = useCanvasStore();
 
   return (
     <SectionBoxWrapper>
@@ -61,12 +67,12 @@ const AiMotivation = ({ resumeId }: { resumeId: string }) => {
                 <Link2 />
               </InputGroupAddon>
               <InputGroupAddon align="inline-end">
-                {isLoading ? (
+                {loading ? (
                   <>
                     <InputGroupText className="text-green-500">
                       Scanning...
                     </InputGroupText>
-                    <Spinner className={clsx(isLoading && "text-green-500")} />
+                    <Spinner className={clsx(loading && "text-green-500")} />
                   </>
                 ) : (
                   <Tooltip>
@@ -117,13 +123,13 @@ const AiMotivation = ({ resumeId }: { resumeId: string }) => {
                   jobLink,
                   setJobLink,
                   setError,
-                  setIsLoading,
+                  setLoading,
                   setMotivationLetterText,
                   resumeId,
                   openCanvas,
                 });
               }}
-              disabled={isLoading}
+              disabled={loading}
             >
               Scan Job
               <Sparkles />

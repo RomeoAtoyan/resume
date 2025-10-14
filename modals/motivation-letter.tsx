@@ -1,15 +1,19 @@
 "use client";
 
+import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
 import { useTextStream } from "@/components/response-stream";
 import { Button } from "@/components/ui/button";
 import { Download, Pencil } from "lucide-react";
+import React, { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
 export default function MotivationLetter({
   response,
+  loading,
 }: {
   response: { analysis: string };
+  loading: boolean;
 }) {
   const { analysis } = response;
 
@@ -19,24 +23,48 @@ export default function MotivationLetter({
     speed: 25,
   });
 
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: "smooth",
+    });
+  }, [displayedText]);
+
   return (
     <div className="relative z-0 flex flex-col min-h-full">
-      <div className="flex-1 overflow-auto pb-32 prose prose-neutral dark:prose-invert max-w-none">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {displayedText}
-        </ReactMarkdown>
-      </div>
+      {loading ? (
+        <MotivationLetterSkeleton />
+      ) : (
+        <>
+          <div
+            ref={scrollRef}
+            className="flex-1 overflow-auto pb-16 prose prose-neutral dark:prose-invert max-w-none p-10 scroll-smooth"
+          >
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {displayedText}
+            </ReactMarkdown>
+          </div>
 
-      <div className="fixed bottom-0 left-0 right-0 flex items-center justify-end gap-2 p-4 bg-background/80 backdrop-blur-sm border-t border-border">
-        <Button variant="outline" className="flex items-center gap-1">
-          <Pencil size={16} />
-          Edit
-        </Button>
-        <Button className="flex items-center gap-1">
-          <Download size={16} />
-          Download
-        </Button>
-      </div>
+          <div className="fixed bottom-0 left-0 right-0 flex items-center justify-end gap-2 p-4 bg-background/80 backdrop-blur-sm border-t border-border">
+            <Button
+              disabled={loading}
+              variant="outline"
+              className="flex items-center gap-1"
+            >
+              <Pencil size={16} />
+              Edit
+            </Button>
+            <Button disabled={loading} className="flex items-center gap-1">
+              <Download size={16} />
+              Download
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

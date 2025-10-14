@@ -13,7 +13,7 @@ interface ScanJobProps {
   jobLink: string;
   setJobLink: React.Dispatch<React.SetStateAction<string>>;
   setError: (any: any) => void;
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
+  setLoading: (isLoading: boolean) => void;
   setMotivationLetterText: (any: any) => void;
   resumeId?: string;
   openCanvas: (id: CanvasStore, title?: string) => void;
@@ -23,7 +23,7 @@ export const scanJob = async ({
   jobLink,
   setJobLink,
   setError,
-  setIsLoading,
+  setLoading,
   setMotivationLetterText,
   resumeId,
   openCanvas,
@@ -43,7 +43,7 @@ export const scanJob = async ({
   }
 
   try {
-    setIsLoading(true);
+    setLoading(true);
     setError("");
     openCanvas("motivation-letter");
 
@@ -68,7 +68,7 @@ export const scanJob = async ({
     }, 3000);
     setJobLink("");
   } finally {
-    setIsLoading(false);
+    setLoading(false);
     setJobLink("");
   }
 };

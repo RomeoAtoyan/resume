@@ -6,8 +6,15 @@ import { useCvDataStore } from "@/store/use-cv-data-store";
 let timeout: NodeJS.Timeout | null = null;
 
 export const useAutoSaveResume = () => {
-  const { title, resumeId, setSaveStatus, setLastSaved, saveStatus, ...data } =
-    useCvDataStore();
+  const {
+    title,
+    template,
+    resumeId,
+    setSaveStatus,
+    setLastSaved,
+    saveStatus,
+    ...data
+  } = useCvDataStore();
 
   useEffect(() => {
     if (!resumeId) return;
@@ -22,7 +29,7 @@ export const useAutoSaveResume = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             title: title || "Untitled Resume",
-            template: "default",
+            template: template,
             data,
           }),
         });
@@ -37,6 +44,7 @@ export const useAutoSaveResume = () => {
     }, 1500);
   }, [
     title,
+    template,
     resumeId,
     data.profileImage,
     data.fullName,

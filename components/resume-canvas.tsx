@@ -2,12 +2,11 @@
 
 import Default from "@/app/resume-templates/default";
 import Modern from "@/app/resume-templates/modern";
+import { useCvDataStore } from "@/store/use-cv-data-store";
 
-interface ResumeCanvasProps {
-  template?: "default" | "modern";
-}
+const ResumeCanvas = () => {
+  const { template } = useCvDataStore();
 
-const ResumeCanvas = ({ template = "default" }: ResumeCanvasProps) => {
   const renderTemplate = () => {
     switch (template) {
       case "default":

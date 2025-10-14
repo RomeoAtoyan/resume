@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist } from "zustand/middleware";
 
 interface Section {
   id: string;
@@ -10,10 +11,18 @@ interface SectionStore {
   setActiveSection: (section: Section) => void;
 }
 
-export const useSectionStore = create<SectionStore>((set) => ({
-  activeSection: {
-    id: "ai-motivation",
-    title: "AI Motivation Letter",
-  },
-  setActiveSection: (section) => set({ activeSection: section }),
-}));
+export const useSectionStore = create<SectionStore>()(
+  persist(
+    (set) => ({
+      activeSection: {
+        id: "personal-info",
+        title: "Personal Info",
+      },
+      setActiveSection: (section) => set({ activeSection: section }),
+    }),
+    {
+      name: "section-storage",
+      partialize: (state) => ({ activeSection: state.activeSection }),
+    }
+  )
+);

@@ -63,7 +63,10 @@ export const scanJob = async ({
     const data = await res.json();
     const { analysis } = data;
     await saveMotivationLetter({ resumeId, analysis });
-    setField("motivationLetterText", analysis);
+    setField("motivationLetter", {
+      letter: analysis,
+      date: new Date(),
+    });
   } catch (err: any) {
     console.error("Error while scanning job:", err);
     setError(err.message || "Something went wrong. Please try again.");

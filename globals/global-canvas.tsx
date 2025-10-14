@@ -7,14 +7,14 @@ import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const GlobalCanvas = () => {
   const { isOpen, close, id, title, loading, disableClose } = useCanvasStore();
-  const { motivationLetterText } = useCvDataStore();
+  const {
+    motivationLetter: { letter },
+  } = useCvDataStore();
 
   const content = () => {
     switch (id) {
       case "motivation-letter":
-        return (
-          <MotivationLetter loading={loading} response={motivationLetterText} />
-        );
+        return <MotivationLetter loading={loading} response={letter} />;
       default:
         break;
     }

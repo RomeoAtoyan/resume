@@ -22,8 +22,7 @@ export const SectionBox = ({ resume }: { resume: Resume }) => {
     data,
     title,
     template,
-    motivationLetter,
-    motivationLetterDate,
+    motivationLetter
   } = resume;
   const { activeSection } = useSectionStore();
   const { setResumeId, syncFromDB } = useCvDataStore();
@@ -35,7 +34,6 @@ export const SectionBox = ({ resume }: { resume: Resume }) => {
       title,
       template,
       motivationLetter,
-      motivationLetterDate,
     });
   }, [
     resumeId,
@@ -43,7 +41,7 @@ export const SectionBox = ({ resume }: { resume: Resume }) => {
     title,
     template,
     motivationLetter,
-    motivationLetterDate,
+    motivationLetter,
     setResumeId,
     syncFromDB,
   ]);

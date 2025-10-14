@@ -33,8 +33,10 @@ export async function PATCH(
     await prisma.resume.update({
       where: { id: resumeId },
       data: {
-        motivationLetter: analysis,
-        motivationLetterDate: new Date(),
+        motivationLetter: {
+          letter: analysis,
+          date: new Date(),
+        },
       },
     });
 

@@ -10,6 +10,7 @@ interface CanvasStoreProps {
   title: string;
   error: string;
   loading: boolean;
+  disableClose: boolean;
 
   setLoading: (isLoading: boolean) => void;
   setError: (any: any) => void;
@@ -25,8 +26,9 @@ export const useCanvasStore = create<CanvasStoreProps>((set) => ({
   title: "",
   error: "",
   loading: false,
+  disableClose: false,
 
-  setLoading: (isLoading) => set({ loading: isLoading }),
+  setLoading: (isLoading) => set({ loading: isLoading, disableClose: isLoading ? true : false }),
   setError: (any: any) => set({ error: any }),
   setMotivationLetterText: (text) => set({ motivationLetterText: text }),
   openCanvas: (id, title = "") => set({ isOpen: true, id, title }),

@@ -34,3 +34,43 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { resumeId: string } }
+) {
+  try {
+    const session = await getSessionServer();
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const { resumeId } = await params;
+    const resumeToRemove = await prisma.resume.findUnique({
+      where: {
+        id: resumeId,
+      },
+    });
+
+    if (!resumeToRemove) {
+      return NextResponse.json(
+        { message: "Resume not found" },
+        { status: 404 }
+      );
+    }
+
+    await prisma.resume.delete({
+      where: {
+        id: resumeId,
+      },
+    });
+
+    return NextResponse.json({ message: "Resume removed" }, { status: 200 });
+  } catch (error: any) {
+    console.error("Error removing resume:", error);
+    return NextResponse.json(
+      { error: error.message || "Failed to remove resume" },
+      { status: 500 }
+    );
+  }
+}

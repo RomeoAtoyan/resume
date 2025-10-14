@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type ModalType = "add-cv";
+type ModalType = "add-cv" | "remove-resume";
 
 interface ModalStore {
   isOpen: boolean;

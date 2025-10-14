@@ -1,6 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import AddCV from "@/modals/add-cv";
+import RemoveResume from "@/modals/remove-resume";
 import { useModalStore } from "@/store/use-modal-store";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
@@ -11,6 +12,8 @@ const GlobalModal = () => {
     switch (id) {
       case "add-cv":
         return <AddCV />;
+      case "remove-resume":
+        return <RemoveResume />;
       default:
         break;
     }

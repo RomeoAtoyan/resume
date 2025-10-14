@@ -67,7 +67,9 @@ model Resume {
   user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId     String
   template   String?  
-  data       Json    
+  data       Json
+  motivationLetter  String?
+  motivationLetterDate  DateTime?    
   lastSaved  DateTime @default(now())
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt

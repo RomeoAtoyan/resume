@@ -43,7 +43,7 @@ export const Breadcrumbs = ({ title }: { title: string }) => {
 
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="">
+          <Button variant="ghost" size="icon" className="border">
             <Ellipsis className="h-5 w-5" />
           </Button>
         </DropdownMenuTrigger>

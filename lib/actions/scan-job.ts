@@ -1,6 +1,7 @@
 import { CanvasStore } from "@/store/use-canvas-store";
 import React from "react";
 import { z } from "zod";
+import { saveMotivationLetter } from "./save-motivation-letter";
 
 const jobLinkSchema = z
   .string()
@@ -59,7 +60,9 @@ export const scanJob = async ({
     }
 
     const data = await res.json();
-    setMotivationLetterText(data.analysis);
+    const { analysis } = data;
+    await saveMotivationLetter({ resumeId, analysis });
+    setMotivationLetterText(analysis);
   } catch (err: any) {
     console.error("Error while scanning job:", err);
     setError(err.message || "Something went wrong. Please try again.");

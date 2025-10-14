@@ -86,6 +86,8 @@ export interface CvStore extends CvCollections {
   saveStatus: SaveStatus;
   lastSaved?: Date | null;
   template: TemplateTypes;
+  motivationLetter: string,
+  motivationLetterDate: Date | null,
 
   fullName: string;
   jobTitle: string;

@@ -7,7 +7,7 @@ import {
   MoreDetails,
   Reference,
   Skill,
-  WorkExperience,
+  WorkExperience
 } from "./types/cv-data-types";
 
 // ---------- DEFAULT ITEM FACTORY ----------
@@ -84,6 +84,8 @@ export const useCvDataStore = create<CvStore>((set, get) => ({
   saveStatus: "idle",
   lastSaved: null,
   template: "default",
+  motivationLetter: "",
+  motivationLetterDate: null,
 
   profileImage: "",
   fullName: "",
@@ -136,6 +138,7 @@ export const useCvDataStore = create<CvStore>((set, get) => ({
     set({
       title: safe("title") ?? "Untitled Resume",
       template: safe("template") ?? "default",
+      motivationLetter: safe("motivationLetter") ?? "",
       fullName: safe("fullName") ?? "",
       jobTitle: safe("jobTitle") ?? "",
       email: safe("email") ?? "",

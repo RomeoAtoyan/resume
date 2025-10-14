@@ -17,14 +17,36 @@ import { useEffect } from "react";
 import { Resume } from "@prisma/client";
 
 export const SectionBox = ({ resume }: { resume: Resume }) => {
-  const { id: resumeId, data, title, template } = resume;
+  const {
+    id: resumeId,
+    data,
+    title,
+    template,
+    motivationLetter,
+    motivationLetterDate,
+  } = resume;
   const { activeSection } = useSectionStore();
   const { setResumeId, syncFromDB } = useCvDataStore();
 
   useEffect(() => {
     setResumeId(resumeId);
-    syncFromDB({ ...(data as Record<string, any>), title, template });
-  }, [resumeId, data, title, template, setResumeId, syncFromDB]);
+    syncFromDB({
+      ...(data as Record<string, any>),
+      title,
+      template,
+      motivationLetter,
+      motivationLetterDate,
+    });
+  }, [
+    resumeId,
+    data,
+    title,
+    template,
+    motivationLetter,
+    motivationLetterDate,
+    setResumeId,
+    syncFromDB,
+  ]);
 
   useAutoSaveResume();
 

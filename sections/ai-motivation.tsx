@@ -22,12 +22,12 @@ import { Spinner } from "@/components/ui/spinner";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import { scanJob } from "@/lib/actions/scan-job";
+import { useCanvasStore } from "@/store/use-canvas-store";
 
 const AiMotivation = ({ resumeId }: { resumeId: string }) => {
   const [jobLink, setJobLink] = useState<string>("");
-  const [error, setError] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [data, setData] = useState(null);
+  const { openCanvas, setError, motivationLetterText, error, setMotivationLetterText } = useCanvasStore();
 
   return (
     <SectionBoxWrapper>
@@ -112,29 +112,23 @@ const AiMotivation = ({ resumeId }: { resumeId: string }) => {
 
           <div className="flex items-center justify-end">
             <Button
-              onClick={() =>
+              onClick={() => {
                 scanJob({
                   jobLink,
                   setJobLink,
-                  setData,
                   setError,
                   setIsLoading,
+                  setMotivationLetterText,
                   resumeId,
-                })
-              }
+                  openCanvas,
+                });
+              }}
               disabled={isLoading}
             >
               Scan Job
               <Sparkles />
             </Button>
           </div>
-          {data && (
-            <div className="mt-4 p-4 rounded-md border bg-gray-50">
-              <pre className="text-sm whitespace-pre-wrap">
-                {JSON.stringify(data, null, 2)}
-              </pre>
-            </div>
-          )}
         </div>
       </TooltipProvider>
     </SectionBoxWrapper>

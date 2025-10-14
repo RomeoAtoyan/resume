@@ -1,3 +1,4 @@
+import { CanvasStore } from "@/store/use-canvas-store";
 import React from "react";
 import { z } from "zod";
 
@@ -11,10 +12,11 @@ const jobLinkSchema = z
 interface ScanJobProps {
   jobLink: string;
   setJobLink: React.Dispatch<React.SetStateAction<string>>;
-  setError: React.Dispatch<React.SetStateAction<string>>;
+  setError: (any: any) => void;
   setIsLoading: React.Dispatch<React.SetStateAction<boolean>>;
-  setData: React.Dispatch<React.SetStateAction<any>>;
+  setMotivationLetterText: (any: any) => void;
   resumeId?: string;
+  openCanvas: (id: CanvasStore, title?: string) => void;
 }
 
 export const scanJob = async ({
@@ -22,10 +24,10 @@ export const scanJob = async ({
   setJobLink,
   setError,
   setIsLoading,
-  setData,
+  setMotivationLetterText,
   resumeId,
+  openCanvas,
 }: ScanJobProps) => {
-    
   if (!resumeId) {
     return null;
   }
@@ -43,6 +45,7 @@ export const scanJob = async ({
   try {
     setIsLoading(true);
     setError("");
+    openCanvas("motivation-letter");
 
     const res = await fetch(`/api/analyze-job/${resumeId}`, {
       method: "POST",
@@ -56,8 +59,7 @@ export const scanJob = async ({
     }
 
     const data = await res.json();
-    setData(data);
-    console.log("Analysis result:", data);
+    setMotivationLetterText(data);
   } catch (err: any) {
     console.error("Error while scanning job:", err);
     setError(err.message || "Something went wrong. Please try again.");

@@ -1,5 +1,6 @@
 import "@/app/globals.css";
 import { SiteHeader } from "@/components/site-header";
+import GlobalCanvas from "@/globals/global-canvas";
 import GlobalModal from "@/globals/global-modal";
 import { requireAuthWithRedirections } from "@/lib/auth/require-auth-with-redirections";
 import SessionProvider from "@/providers/session-provider";
@@ -34,6 +35,7 @@ export default async function RootLayout({
           <SiteHeader />
           <main>{children}</main>
           <GlobalModal />
+          <GlobalCanvas />
         </SessionProvider>
       </body>
     </html>

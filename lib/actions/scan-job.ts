@@ -10,7 +10,7 @@ const jobLinkSchema = z
   .max(500, "Your link is too long")
   .regex(/^https:\/\/[^\s$.?#].[^\s]*$/, "Please enter a valid https:// URL");
 
-interface ScanJobProps {
+export interface ScanJobProps {
   jobLink: string;
   setJobLink: React.Dispatch<React.SetStateAction<string>>;
   setError: (any: any) => void;

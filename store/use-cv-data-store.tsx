@@ -84,7 +84,7 @@ export const useCvDataStore = create<CvStore>((set, get) => ({
   saveStatus: "idle",
   lastSaved: null,
   template: "default",
-  motivationLetter: "",
+  motivationLetterText: "",
   motivationLetterDate: null,
 
   profileImage: "",
@@ -138,7 +138,7 @@ export const useCvDataStore = create<CvStore>((set, get) => ({
     set({
       title: safe("title") ?? "Untitled Resume",
       template: safe("template") ?? "default",
-      motivationLetter: safe("motivationLetter") ?? "",
+      motivationLetterText: safe("motivationLetter") ?? "",
       fullName: safe("fullName") ?? "",
       jobTitle: safe("jobTitle") ?? "",
       email: safe("email") ?? "",

@@ -42,6 +42,7 @@ export const useAutoSaveResume = () => {
     }, 1500);
   }, [
     resumeId,
+    data.profileImage,
     data.fullName,
     data.jobTitle,
     data.email,

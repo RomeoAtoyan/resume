@@ -1,15 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
+import { createResume } from "@/lib/actions/create-resume";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import Image from "next/image";
-import clsx from "clsx";
 import { useModalStore } from "@/store/use-modal-store";
+import clsx from "clsx";
+import { TemplateTypes } from "@/store/types/cv-data-types";
+import { useRouter } from "next/navigation";
 
 const templates = [
   { id: "default", name: "Default", thumbnail: "/templates/default.png" },
@@ -24,41 +26,13 @@ const templates = [
 ];
 
 const AddCV = () => {
-  const router = useRouter();
   const { title, setField } = useCvDataStore();
   const { close } = useModalStore();
-  const [selectedTemplate, setSelectedTemplate] = useState("default");
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<TemplateTypes>("default");
+
   const [loading, setLoading] = useState(false);
-
-  const handleCreate = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    try {
-      const res = await fetch("/api/resumes", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          title: title || "Untitled Resume",
-          template: selectedTemplate,
-          data: {},
-        }),
-      });
-
-      const data = await res.json();
-
-      if (res.ok && data.resume?.id) {
-        router.push(`/builder/${data.resume.id}`);
-      } else {
-        console.error("Failed to create resume:", data.error);
-      }
-    } catch (err) {
-      console.error("Error creating resume:", err);
-    } finally {
-      close();
-      setLoading(false);
-    }
-  };
+  const router = useRouter();
 
   return (
     <div className="space-y-6 overflow-hidden">
@@ -90,7 +64,7 @@ const AddCV = () => {
             {templates.map((t) => (
               <div
                 key={t.id}
-                onClick={() => setSelectedTemplate(t.id)}
+                onClick={() => setSelectedTemplate(t.id as TemplateTypes)}
                 className={clsx(
                   "relative w-40 flex-shrink-0 cursor-pointer snap-center rounded-xl border overflow-hidden transition-all group",
                   selectedTemplate === t.id
@@ -115,7 +89,19 @@ const AddCV = () => {
         <Button variant="outline" type="button">
           Cancel
         </Button>
-        <Button onClick={handleCreate} disabled={loading}>
+        <Button
+          onClick={() =>
+            createResume({
+              loading,
+              setLoading,
+              selectedTemplate,
+              title,
+              close,
+              router,
+            })
+          }
+          disabled={loading}
+        >
           {loading ? <Spinner /> : "Create Resume"}
         </Button>
       </div>

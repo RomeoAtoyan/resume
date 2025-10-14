@@ -78,14 +78,14 @@ export type CvCollections = {
 };
 
 export type SaveStatus = "idle" | "saving" | "saved" | "error";
-
+export type TemplateTypes = "default" | "modern";
 // ---------- GENERIC STORE ----------
 export interface CvStore extends CvCollections {
   title: string;
   resumeId?: string;
   saveStatus: SaveStatus;
   lastSaved?: Date | null;
-  template: "default" | "modern";
+  template: TemplateTypes;
 
   fullName: string;
   jobTitle: string;

@@ -1,7 +1,7 @@
 "use client";
 
-import Default from "@/app/resume-templates/default";
-import Modern from "@/app/resume-templates/modern";
+import Default from "@/resume-templates/default";
+import Modern from "@/resume-templates/modern";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 
 const ResumeCanvas = () => {

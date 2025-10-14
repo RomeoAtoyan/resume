@@ -2,24 +2,22 @@
 
 import { useEffect } from "react";
 import { useCvDataStore } from "@/store/use-cv-data-store";
+import { usePathname } from "next/navigation";
 
 let timeout: NodeJS.Timeout | null = null;
 
 export const useAutoSaveResume = () => {
-  const {
-    title,
-    template,
-    resumeId,
-    setSaveStatus,
-    setLastSaved,
-    saveStatus,
-    ...data
-  } = useCvDataStore();
+  const pathname = usePathname();
+  const isInBuilder = pathname?.startsWith("/builder/");
+
+  const { title, template, resumeId, setSaveStatus, setLastSaved, ...data } =
+    useCvDataStore();
 
   useEffect(() => {
+    if (!isInBuilder) return;
     if (!resumeId) return;
-    if (timeout) clearTimeout(timeout);
 
+    if (timeout) clearTimeout(timeout);
     setSaveStatus("saving");
 
     timeout = setTimeout(async () => {
@@ -29,7 +27,7 @@ export const useAutoSaveResume = () => {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             title: title || "Untitled Resume",
-            template: template,
+            template,
             data,
           }),
         });
@@ -43,6 +41,7 @@ export const useAutoSaveResume = () => {
       }
     }, 1500);
   }, [
+    isInBuilder,
     title,
     template,
     resumeId,

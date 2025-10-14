@@ -1,10 +1,9 @@
 "use client";
 
 import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
-import { useTextStream } from "@/components/response-stream";
 import { Button } from "@/components/ui/button";
 import { Download, Pencil, Save } from "lucide-react";
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -15,35 +14,15 @@ export default function MotivationLetter({
   response: string;
   loading: boolean;
 }) {
-  const { displayedText } = useTextStream({
-    textStream: response,
-    mode: "typewriter",
-    speed: 25,
-  });
-
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = scrollRef.current;
-    if (!el) return;
-    el.scrollTo({
-      top: el.scrollHeight,
-      behavior: "smooth",
-    });
-  }, [displayedText]);
-
   return (
     <div className="relative z-0 flex flex-col min-h-full">
       {loading ? (
         <MotivationLetterSkeleton />
       ) : (
         <>
-          <div
-            ref={scrollRef}
-            className="flex-1 overflow-auto pb-16 prose prose-neutral dark:prose-invert max-w-none p-10 scroll-smooth"
-          >
+          <div className="flex-1 overflow-auto pb-16 prose prose-neutral dark:prose-invert max-w-none p-10 scroll-smooth">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {displayedText}
+              {response}
             </ReactMarkdown>
           </div>
 

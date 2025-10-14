@@ -184,6 +184,8 @@ interface CvStore extends CvCollections {
   setSaveStatus: (status: SaveStatus) => void;
   setLastSaved: (date: Date) => void;
 
+  syncFromDB: (resumeData: any) => void;
+
   reset: () => void;
 }
 
@@ -236,6 +238,31 @@ export const useCvDataStore = create<CvStore>((set, get) => ({
   setResumeId: (id) => set({ resumeId: id }),
   setSaveStatus: (status) => set({ saveStatus: status }),
   setLastSaved: (date) => set({ lastSaved: date }),
+
+  syncFromDB: (resumeData: any) => {
+    if (!resumeData || typeof resumeData !== "object") return;
+
+    const safe = (key: string) =>
+      resumeData[key] ? resumeData[key] : undefined;
+
+    set({
+      title: safe("title") ?? "Untitled Resume",
+      fullName: safe("fullName") ?? "",
+      jobTitle: safe("jobTitle") ?? "",
+      email: safe("email") ?? "",
+      phoneNumber: safe("phoneNumber") ?? "",
+      address: safe("address") ?? "",
+      summary: safe("summary") ?? "",
+      profileImage: safe("profileImage") ?? "",
+      workExperience: safe("workExperience") ?? [factories.workExperience()],
+      education: safe("education") ?? [factories.education()],
+      languages: safe("languages") ?? [factories.languages()],
+      courses: safe("courses") ?? [factories.courses()],
+      references: safe("references") ?? [factories.references()],
+      moreDetails: safe("moreDetails") ?? [factories.moreDetails()],
+      skills: safe("skills") ?? [factories.skills()],
+    });
+  },
 
   reset: () =>
     set({

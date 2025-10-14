@@ -3,7 +3,7 @@
 import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
 import { useTextStream } from "@/components/response-stream";
 import { Button } from "@/components/ui/button";
-import { Download, Pencil } from "lucide-react";
+import { Download, Pencil, Save } from "lucide-react";
 import React, { useEffect, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
@@ -55,6 +55,10 @@ export default function MotivationLetter({
             >
               <Pencil size={16} />
               Edit
+            </Button>
+            <Button disabled={loading} className="flex items-center gap-1">
+              <Save size={16} />
+              Save
             </Button>
             <Button disabled={loading} className="flex items-center gap-1">
               <Download size={16} />

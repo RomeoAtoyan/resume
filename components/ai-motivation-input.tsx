@@ -27,7 +27,7 @@ const AiMotivationInput = ({
   error,
   setError,
   setLoading,
-  setMotivationLetterText,
+  setField,
   resumeId,
   openCanvas,
 }: ScanJobProps & { loading: boolean; error: string }) => {
@@ -117,7 +117,7 @@ const AiMotivationInput = ({
               setJobLink,
               setError,
               setLoading,
-              setMotivationLetterText,
+              setField,
               resumeId,
               openCanvas,
             });

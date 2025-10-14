@@ -6,7 +6,7 @@ export async function PATCH(
   { params }: { params: { resumeId: string } }
 ) {
   try {
-    const { resumeId } = params;
+    const { resumeId } = await params;
     const { analysis } = await req.json();
 
     if (!resumeId) {

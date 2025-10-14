@@ -9,15 +9,9 @@ import SectionBoxWrapper from "./section-box-wrapper";
 
 const AiMotivation = () => {
   const [jobLink, setJobLink] = useState<string>("");
-  const {
-    openCanvas,
-    setError,
-    error,
-    setMotivationLetterText,
-    loading,
-    setLoading,
-    motivationLetterText,
-  } = useCanvasStore();
+  const { openCanvas, setError, error, loading, setLoading } = useCanvasStore();
+
+  const { setField } = useCvDataStore();
 
   const { resumeId } = useCvDataStore();
 
@@ -28,7 +22,7 @@ const AiMotivation = () => {
           openCanvas={openCanvas}
           setError={setError}
           error={error}
-          setMotivationLetterText={setMotivationLetterText}
+          setField={setField}
           loading={loading}
           setLoading={setLoading}
           jobLink={jobLink}

@@ -2,6 +2,7 @@ import { CanvasStore } from "@/store/use-canvas-store";
 import React from "react";
 import { z } from "zod";
 import { saveMotivationLetter } from "./save-motivation-letter";
+import { CvStore } from "@/store/types/cv-data-types";
 
 const jobLinkSchema = z
   .string()
@@ -15,7 +16,7 @@ export interface ScanJobProps {
   setJobLink: React.Dispatch<React.SetStateAction<string>>;
   setError: (any: any) => void;
   setLoading: (isLoading: boolean) => void;
-  setMotivationLetterText: (any: any) => void;
+  setField: (field: keyof CvStore, value: any) => void;
   resumeId?: string;
   openCanvas: (id: CanvasStore, title?: string) => void;
 }
@@ -25,7 +26,7 @@ export const scanJob = async ({
   setJobLink,
   setError,
   setLoading,
-  setMotivationLetterText,
+  setField,
   resumeId,
   openCanvas,
 }: ScanJobProps) => {
@@ -62,7 +63,7 @@ export const scanJob = async ({
     const data = await res.json();
     const { analysis } = data;
     await saveMotivationLetter({ resumeId, analysis });
-    setMotivationLetterText(analysis);
+    setField("motivationLetterText", analysis);
   } catch (err: any) {
     console.error("Error while scanning job:", err);
     setError(err.message || "Something went wrong. Please try again.");

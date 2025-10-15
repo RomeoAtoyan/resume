@@ -3,6 +3,7 @@
 import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { handleDownloadPDF } from "@/lib/actions/download-motivation-letter";
 import { saveMotivationLetter } from "@/lib/actions/save-motivation-letter";
 import { CvStore } from "@/store/types/cv-data-types";
 import clsx from "clsx";
@@ -162,7 +163,7 @@ export default function MotivationLetter({
                   <Pencil size={16} />
                   Edit
                 </Button>
-                <Button disabled={loading} className="flex items-center gap-1">
+                <Button onClick={handleDownloadPDF} disabled={loading} className="flex items-center gap-1">
                   <Download size={16} />
                   Download
                 </Button>

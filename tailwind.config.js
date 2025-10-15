@@ -13,6 +13,17 @@ module.exports = {
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  safelist: [
+    "prose",
+    "prose-neutral",
+    "dark:prose-invert",
+    "prose-h1:text-2xl",
+    "prose-h1:font-bold",
+    "prose-h2:text-xl",
+    "prose-ul:list-disc",
+    "prose-ul:ml-5",
+    "prose-li:my-1",
+  ],
   theme: {
     extend: {
       borderRadius: {
@@ -74,8 +85,5 @@ module.exports = {
       },
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    require("@tailwindcss/typography"),
-  ],
+  plugins: [require("tailwindcss-animate"), require("@tailwindcss/typography")],
 };

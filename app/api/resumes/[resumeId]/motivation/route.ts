@@ -49,3 +49,43 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  _req: Request,
+  { params }: { params: { resumeId: string } }
+) {
+  try {
+    const { resumeId } = params;
+
+    if (!resumeId) {
+      return NextResponse.json({ error: "Missing resumeId" }, { status: 400 });
+    }
+
+    const resume = await prisma.resume.findUnique({
+      where: { id: resumeId },
+      select: { motivationLetter: true },
+    });
+
+    if (!resume) {
+      return NextResponse.json({ error: "Resume not found" }, { status: 404 });
+    }
+
+    await prisma.resume.update({
+      where: { id: resumeId },
+      data: {
+        motivationLetter: {
+          letter: "",
+          date: new Date(),
+        },
+      },
+    });
+
+    return NextResponse.json({ deleted: true });
+  } catch (error) {
+    console.error("Error in DELETE /motivation:", error);
+    return NextResponse.json(
+      { error: "Failed to delete motivation letter" },
+      { status: 500 }
+    );
+  }
+}

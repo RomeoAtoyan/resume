@@ -4,10 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm run build:pdfcss && next build",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "build:pdfcss": "tailwindcss -i ./styles/pdf.css -o ./public/pdf.css --minify"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^41.4.2",

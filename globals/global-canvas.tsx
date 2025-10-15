@@ -20,6 +20,7 @@ const GlobalCanvas = () => {
   const {
     motivationLetter: { letter },
     resumeId,
+    setField
   } = useCvDataStore();
 
   const content = () => {
@@ -32,6 +33,7 @@ const GlobalCanvas = () => {
             loading={loading}
             response={letter}
             resumeId={resumeId ?? ""}
+            setField={setField}
           />
         );
       default:

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import { Download, LogOut, Pencil, Save } from "lucide-react";
 import { saveMotivationLetter } from "@/lib/actions/save-motivation-letter";
+import { CvStore } from "@/store/types/cv-data-types";
 
 const CKEditor = dynamic(
   async () => {
@@ -54,12 +55,14 @@ export default function MotivationLetter({
   editMode,
   setEditMode,
   resumeId,
+  setField,
 }: {
   response: string;
   loading: boolean;
   editMode: boolean;
   setEditMode: (val: boolean) => void;
   resumeId: string;
+  setField: (field: keyof CvStore, value: any) => void;
 }) {
   const [value, setValue] = useState<string>("");
 
@@ -89,11 +92,13 @@ export default function MotivationLetter({
             )}
           >
             {editMode ? (
-              <div className="bg-white dark:bg-zinc-900 rounded-xl w-full max-w-full p-4 shadow-sm prose dark:prose-invert">
-                <CKEditor value={value} onChange={setValue} />
+              <div className="bg-white dark:bg-zinc-900 w-full max-w-full p-4 h-full">
+                <div className="prose dark:prose-invert h-full">
+                  <CKEditor value={value} onChange={setValue} />
+                </div>
               </div>
             ) : (
-              <div className="bg-white dark:bg-zinc-900 rounded-xl p-8 shadow-sm">
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 h-full">
                 <article
                   className={clsx(
                     "prose prose-neutral dark:prose-invert max-w-none",
@@ -124,6 +129,10 @@ export default function MotivationLetter({
                     await saveMotivationLetter({
                       resumeId,
                       analysis: value,
+                    });
+                    setField("motivationLetter", {
+                      letter: value,
+                      date: new Date(),
                     });
                     setEditMode(false);
                   }}

@@ -1,23 +1,79 @@
 "use client";
 
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
+import { marked } from "marked";
 import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import { Download, LogOut, Pencil, Save } from "lucide-react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
+import { saveMotivationLetter } from "@/lib/actions/save-motivation-letter";
+
+const CKEditor = dynamic(
+  async () => {
+    const { CKEditor } = await import("@ckeditor/ckeditor5-react");
+    const ClassicEditor = (await import("@ckeditor/ckeditor5-build-classic"))
+      .default;
+
+    return function WrappedEditor({
+      value,
+      onChange,
+    }: {
+      value: string;
+      onChange: (val: string) => void;
+    }) {
+      return (
+        <CKEditor
+          editor={ClassicEditor as any}
+          data={value}
+          onChange={(_, editor) => onChange(editor.getData())}
+          config={{
+            toolbar: [
+              "bold",
+              "italic",
+              "underline",
+              "|",
+              "bulletedList",
+              "numberedList",
+              "|",
+              "link",
+              "undo",
+              "redo",
+            ],
+          }}
+        />
+      );
+    };
+  },
+  { ssr: false }
+);
 
 export default function MotivationLetter({
   response,
   loading,
   editMode,
   setEditMode,
+  resumeId,
 }: {
   response: string;
   loading: boolean;
   editMode: boolean;
   setEditMode: (val: boolean) => void;
+  resumeId: string;
 }) {
+  const [value, setValue] = useState<string>("");
+
+  useEffect(() => {
+    if (!response) return;
+
+    const convertMarkdown = async () => {
+      const html = await marked.parse(response);
+      setValue(html);
+    };
+
+    convertMarkdown();
+  }, [response]);
+
   return (
     <div className="relative z-0 flex flex-col min-h-full">
       {loading ? (
@@ -25,44 +81,60 @@ export default function MotivationLetter({
       ) : (
         <>
           <div
-            contentEditable={editMode}
-            suppressContentEditableWarning
             className={clsx(
-              "flex-1 overflow-auto mb-16 prose prose-neutral dark:prose-invert max-w-none p-6 rounded-xl scroll-smooth transition-all duration-300",
+              "flex-1 overflow-auto mb-16 max-w-none rounded-xl scroll-smooth transition-all duration-300",
               editMode
-                ? "border-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-900/20 focus:outline-none focus:ring-0"
+                ? "border-0 border-blue-500/40 bg-blue-50/40 dark:bg-blue-900/20"
                 : "bg-transparent border-2 border-transparent"
             )}
           >
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
-              {response}
-            </ReactMarkdown>
+            {editMode ? (
+              <div className="bg-white dark:bg-zinc-900 rounded-xl w-full max-w-full p-4 shadow-sm prose dark:prose-invert">
+                <CKEditor value={value} onChange={setValue} />
+              </div>
+            ) : (
+              <div className="bg-white dark:bg-zinc-900 rounded-xl p-8 shadow-sm">
+                <article
+                  className={clsx(
+                    "prose prose-neutral dark:prose-invert max-w-none",
+                    "prose-h1:text-2xl prose-h1:font-bold prose-h2:text-xl",
+                    "prose-p:leading-relaxed prose-strong:text-gray-900 dark:prose-strong:text-gray-50",
+                    "prose-ul:list-disc prose-ul:ml-5 prose-li:my-1"
+                  )}
+                  dangerouslySetInnerHTML={{ __html: value }}
+                />
+              </div>
+            )}
           </div>
 
           <div className="fixed bottom-0 left-0 right-0 flex items-center justify-end gap-2 p-4 bg-background/80 backdrop-blur-sm border-t border-border">
-            {editMode && (
-              <div className="w-full flex items-center justify-between">
-                <div className="w-full flex items-center justify-end gap-2">
-                  <Button
-                    onClick={() => setEditMode(false)}
-                    disabled={loading}
-                    variant="outline"
-                    className="flex items-center gap-1"
-                  >
-                    <LogOut size={16} />
-                    Quit Edit Mode
-                  </Button>
-                  <Button
-                    disabled={loading}
-                    className="flex items-center gap-1"
-                  >
-                    <Save size={16} />
-                    Save
-                  </Button>
-                </div>
+            {editMode ? (
+              <div className="flex items-center justify-end gap-2 w-full">
+                <Button
+                  onClick={() => setEditMode(false)}
+                  disabled={loading}
+                  variant="outline"
+                  className="flex items-center gap-1"
+                >
+                  <LogOut size={16} />
+                  Quit Edit Mode
+                </Button>
+                <Button
+                  onClick={async () => {
+                    await saveMotivationLetter({
+                      resumeId,
+                      analysis: value,
+                    });
+                    setEditMode(false);
+                  }}
+                  disabled={loading}
+                  className="flex items-center gap-1"
+                >
+                  <Save size={16} />
+                  Save
+                </Button>
               </div>
-            )}
-            {!editMode && (
+            ) : (
               <>
                 <Button
                   onClick={() => setEditMode(true)}

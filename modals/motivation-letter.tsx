@@ -88,17 +88,13 @@ export default function MotivationLetter({
             className={clsx(
               "flex-1 overflow-auto mb-16 max-w-none rounded-xl scroll-smooth transition-all duration-300",
               editMode
-                ? "border-2 border-green-500/40 bg-blue-50/40 dark:bg-blue-900/20"
+                ? "border-2 border-green-500/40"
                 : "bg-transparent border-2 border-transparent"
             )}
           >
             {editMode ? (
-              <div className="bg-white dark:bg-zinc-900 w-full max-w-full p-4 h-full relative z-0">
-                <Badge className="absolute top-4 right-4 pointer-events-none flex items-center justify-center font-semibold gap-1 bg-green-200 border border-green-600 text-green-700">
-                  <div className="size-2 bg-green-600 rounded-full"></div>
-                  Edit mode
-                </Badge>
-                <div className="prose dark:prose-invert h-full">
+              <div className="bg-white dark:bg-zinc-900 w-full max-w-full p-4 h-full">
+                <div className="prose max-w-full dark:prose-invert h-full">
                   <CKEditor value={value} onChange={setValue} />
                 </div>
               </div>
@@ -106,6 +102,7 @@ export default function MotivationLetter({
               <div className="bg-white dark:bg-zinc-900 rounded-xl p-4 h-full">
                 <article
                   className={clsx(
+                    "max-w-full",
                     "prose prose-neutral dark:prose-invert max-w-none",
                     "prose-h1:text-2xl prose-h1:font-bold prose-h2:text-xl",
                     "prose-p:leading-relaxed prose-strong:text-gray-900 dark:prose-strong:text-gray-50",
@@ -119,34 +116,40 @@ export default function MotivationLetter({
 
           <div className="fixed bottom-0 left-0 right-0 flex items-center justify-end gap-2 p-4 bg-background/80 backdrop-blur-sm border-t border-border">
             {editMode ? (
-              <div className="flex items-center justify-end gap-2 w-full">
-                <Button
-                  onClick={() => setEditMode(false)}
-                  disabled={loading}
-                  variant="outline"
-                  className="flex items-center gap-1"
-                >
-                  <LogOut size={16} />
-                  Quit Edit Mode
-                </Button>
-                <Button
-                  onClick={async () => {
-                    await saveMotivationLetter({
-                      resumeId,
-                      analysis: value,
-                    });
-                    setField("motivationLetter", {
-                      letter: value,
-                      date: new Date(),
-                    });
-                    setEditMode(false);
-                  }}
-                  disabled={loading}
-                  className="flex items-center gap-1"
-                >
-                  <Save size={16} />
-                  Save
-                </Button>
+              <div className="flex items-center justify-between w-full">
+                <Badge className="pointer-events-none flex items-center justify-center font-semibold gap-1 bg-green-200 border border-green-600 text-green-700">
+                  <div className="size-2 bg-green-600 rounded-full"></div>
+                  Edit mode
+                </Badge>
+                <div className="flex items-center justify-end gap-1">
+                  <Button
+                    onClick={() => setEditMode(false)}
+                    disabled={loading}
+                    variant="outline"
+                    className="flex items-center gap-1"
+                  >
+                    <LogOut size={16} />
+                    Quit Edit Mode
+                  </Button>
+                  <Button
+                    onClick={async () => {
+                      await saveMotivationLetter({
+                        resumeId,
+                        analysis: value,
+                      });
+                      setField("motivationLetter", {
+                        letter: value,
+                        date: new Date(),
+                      });
+                      setEditMode(false);
+                    }}
+                    disabled={loading}
+                    className="flex items-center gap-1"
+                  >
+                    <Save size={16} />
+                    Save
+                  </Button>
+                </div>
               </div>
             ) : (
               <>

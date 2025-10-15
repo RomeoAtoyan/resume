@@ -55,7 +55,7 @@ const Sections = () => {
     },
     {
       id: "ai-motivation",
-      title: "AI motivation letter",
+      title: "AI Motivation Letter",
       icon: Brain,
       highlight: true,
     },

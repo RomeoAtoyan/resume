@@ -1,0 +1,37 @@
+"use client";
+
+import { User } from "@/types/user";
+import SiteHeaderProfile from "./site-header-profile";
+import AutoSaveStatus from "./autosave-status";
+import NavLogo from "./nav-logo";
+import clsx from "clsx";
+import { useIsInBuilder } from "@/hooks/use-is-in-builder";
+
+const SiteHeaderClient = ({ user }: { user: User | null }) => {
+  const isInBuilder = useIsInBuilder();
+
+  return (
+    <header
+      className={clsx(
+        "w-full border-b border-gray-200 overflow-hidden",
+        !isInBuilder && "sticky top-0 z-50 bg-white"
+      )}
+    >
+      <div className="flex items-center justify-between px-6 py-3">
+        <div className="flex items-center gap-8">
+          <NavLogo />
+        </div>
+
+        <AutoSaveStatus />
+
+        {user && (
+          <div className="flex items-center gap-3">
+            <SiteHeaderProfile user={user} />
+          </div>
+        )}
+      </div>
+    </header>
+  );
+};
+
+export default SiteHeaderClient;

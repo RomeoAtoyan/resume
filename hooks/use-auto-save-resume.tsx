@@ -1,14 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import { usePathname } from "next/navigation";
+import { useEffect } from "react";
+import { useIsInBuilder } from "./use-is-in-builder";
 
 let timeout: NodeJS.Timeout | null = null;
 
 export const useAutoSaveResume = () => {
-  const pathname = usePathname();
-  const isInBuilder = pathname?.startsWith("/builder/");
+  const isInBuilder = useIsInBuilder();
 
   const { title, template, resumeId, setSaveStatus, setLastSaved, ...data } =
     useCvDataStore();

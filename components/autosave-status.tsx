@@ -1,16 +1,15 @@
 "use client";
 
-import React from "react";
-import moment from "moment";
+import { useIsInBuilder } from "@/hooks/use-is-in-builder";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import { Spinner } from "./ui/spinner";
 import { CheckCircle, X } from "lucide-react";
-import { usePathname } from "next/navigation";
+import moment from "moment";
+import React from "react";
+import { Spinner } from "./ui/spinner";
 
 const AutoSaveStatus = () => {
-  const pathname = usePathname();
   const { saveStatus, lastSaved } = useCvDataStore();
-  const isInBuilder = pathname?.startsWith("/builder/");
+  const isInBuilder = useIsInBuilder();
 
   const formattedTime = React.useMemo(() => {
     if (!lastSaved) return null;

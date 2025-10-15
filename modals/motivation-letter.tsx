@@ -1,14 +1,15 @@
 "use client";
 
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-import { marked } from "marked";
 import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import clsx from "clsx";
-import { Download, LogOut, Pencil, Save } from "lucide-react";
 import { saveMotivationLetter } from "@/lib/actions/save-motivation-letter";
 import { CvStore } from "@/store/types/cv-data-types";
+import clsx from "clsx";
+import { Download, LogOut, Pencil, Save } from "lucide-react";
+import { marked } from "marked";
+import dynamic from "next/dynamic";
+import { useEffect, useState } from "react";
 
 const CKEditor = dynamic(
   async () => {
@@ -87,12 +88,16 @@ export default function MotivationLetter({
             className={clsx(
               "flex-1 overflow-auto mb-16 max-w-none rounded-xl scroll-smooth transition-all duration-300",
               editMode
-                ? "border-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-900/20"
+                ? "border-2 border-green-500/40 bg-blue-50/40 dark:bg-blue-900/20"
                 : "bg-transparent border-2 border-transparent"
             )}
           >
             {editMode ? (
-              <div className="bg-white dark:bg-zinc-900 w-full max-w-full p-4 h-full">
+              <div className="bg-white dark:bg-zinc-900 w-full max-w-full p-4 h-full relative z-0">
+                <Badge className="absolute top-4 right-4 pointer-events-none flex items-center justify-center font-semibold gap-1 bg-green-200 border border-green-600 text-green-700">
+                  <div className="size-2 bg-green-600 rounded-full"></div>
+                  Edit mode
+                </Badge>
                 <div className="prose dark:prose-invert h-full">
                   <CKEditor value={value} onChange={setValue} />
                 </div>

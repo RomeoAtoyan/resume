@@ -87,7 +87,7 @@ export default function MotivationLetter({
             className={clsx(
               "flex-1 overflow-auto mb-16 max-w-none rounded-xl scroll-smooth transition-all duration-300",
               editMode
-                ? "border-0 border-blue-500/40 bg-blue-50/40 dark:bg-blue-900/20"
+                ? "border-2 border-blue-500/40 bg-blue-50/40 dark:bg-blue-900/20"
                 : "bg-transparent border-2 border-transparent"
             )}
           >

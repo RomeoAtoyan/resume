@@ -10,7 +10,9 @@ interface CanvasStoreProps {
   error: string;
   loading: boolean;
   disableClose: boolean;
+  editMode: boolean;
 
+  setEditMode: (val: boolean) => void;
   setLoading: (isLoading: boolean) => void;
   setError: (any: any) => void;
   openCanvas: (id: CanvasStore, title?: string) => void;
@@ -24,8 +26,11 @@ export const useCanvasStore = create<CanvasStoreProps>((set) => ({
   error: "",
   loading: false,
   disableClose: false,
+  editMode: false,
 
-  setLoading: (isLoading) => set({ loading: isLoading, disableClose: isLoading ? true : false }),
+  setEditMode: (val) => set({ editMode: val }),
+  setLoading: (isLoading) =>
+    set({ loading: isLoading, disableClose: isLoading ? true : false }),
   setError: (any: any) => set({ error: any }),
   openCanvas: (id, title = "") => set({ isOpen: true, id, title }),
   close: () => set({ isOpen: false, id: null, title: "" }),

@@ -24,18 +24,15 @@ const ResumeCanvas = () => {
   };
 
   return (
-    <div className="h-full bg-[radial-gradient(circle,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px]">
-      <Button
-        onClick={() =>
-          handleDownloadResumePDF({
-            html: getResumeContent(),
-            setDownloading,
-          })
-        }
-      >
-        Download
-      </Button>
-      {renderTemplate()}
+    <div className="w-full h-full bg-[radial-gradient(circle,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px] overflow-auto  flex items-center justify-center">
+      <div className="w-full h-full overflow-auto flex flex-col items-center gap-10 py-10">
+        <div
+          style={{ width: "210mm", minHeight: "297mm" }}
+          className="bg-white border shadow-sm"
+        >
+          {renderTemplate()}
+        </div>
+      </div>
     </div>
   );
 };

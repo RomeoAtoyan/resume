@@ -25,7 +25,7 @@ const templates = [
   },
 ];
 
-const ChangeResumeTemplate = () => {
+const EditResumeTemplate = () => {
   const { title, setField, template, resumeId } = useCvDataStore();
   const { close } = useModalStore();
   const [selectedTemplate, setSelectedTemplate] =
@@ -112,4 +112,4 @@ const ChangeResumeTemplate = () => {
   );
 };
 
-export default ChangeResumeTemplate;
+export default EditResumeTemplate;

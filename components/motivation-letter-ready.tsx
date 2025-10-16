@@ -7,11 +7,15 @@ import { Clock, Download, Eye, File, RotateCcw } from "lucide-react";
 import moment from "moment";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
+import { LoadingState } from "@/store/use-download-store";
+import { Spinner } from "./ui/spinner";
 
 const MotivationLetterReady = ({
   motivationLetter,
   openCanvas,
   openModal,
+  setDownloading,
+  downloading,
 }: {
   motivationLetter: {
     letter: string;
@@ -19,6 +23,8 @@ const MotivationLetterReady = ({
   };
   openCanvas: (id: CanvasStore, title?: string) => void;
   openModal: (id: ModalType, title?: string) => void;
+  setDownloading: (id: LoadingState, val: boolean) => void;
+  downloading: boolean;
 }) => {
   const formattedDate = (() => {
     if (!motivationLetter?.date) return null;
@@ -68,9 +74,20 @@ const MotivationLetterReady = ({
           <RotateCcw />
           Regenerate
         </Button>
-        <Button onClick={() => handleDownloadPDF(motivationLetter.letter)} className="flex items-center gap-1">
-          <Download size={16} />
-          Download
+        <Button
+          onClick={() =>
+            handleDownloadPDF({ html: motivationLetter.letter, setDownloading })
+          }
+          className="flex items-center gap-1"
+        >
+          {downloading ? (
+            <Spinner className="size-4" />
+          ) : (
+            <>
+              <Download size={16} />
+              Download
+            </>
+          )}
         </Button>
       </div>
     </div>

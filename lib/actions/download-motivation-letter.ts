@@ -1,4 +1,13 @@
-export const handleDownloadPDF = async (html: string) => {
+import { LoadingState } from "@/store/use-download-store";
+
+export const handleDownloadPDF = async ({
+  html,
+  setDownloading,
+}: {
+  html: string;
+  setDownloading: (id: LoadingState, val: boolean) => void;
+}) => {
+  setDownloading("download-motivation-letter", true)
   const res = await fetch("/api/pdf", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -18,4 +27,5 @@ export const handleDownloadPDF = async (html: string) => {
   a.download = "motivation-letter.pdf";
   a.click();
   URL.revokeObjectURL(url);
+  setDownloading("download-motivation-letter", false)
 };

@@ -3,9 +3,11 @@
 import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { handleDownloadPDF } from "@/lib/actions/download-motivation-letter";
 import { saveMotivationLetter } from "@/lib/actions/save-motivation-letter";
 import { CvStore } from "@/store/types/cv-data-types";
+import { LoadingState } from "@/store/use-download-store";
 import clsx from "clsx";
 import { Download, LogOut, Pencil, Save } from "lucide-react";
 import { marked } from "marked";
@@ -58,6 +60,8 @@ export default function MotivationLetter({
   setEditMode,
   resumeId,
   setField,
+  setDownloading,
+  downloading,
 }: {
   response: string;
   loading: boolean;
@@ -65,6 +69,8 @@ export default function MotivationLetter({
   setEditMode: (val: boolean) => void;
   resumeId: string;
   setField: (field: keyof CvStore, value: any) => void;
+  setDownloading: (id: LoadingState, val: boolean) => void;
+  downloading: boolean;
 }) {
   const [value, setValue] = useState<string>("");
 
@@ -163,9 +169,21 @@ export default function MotivationLetter({
                   <Pencil size={16} />
                   Edit
                 </Button>
-                <Button onClick={() => handleDownloadPDF(value)} disabled={loading} className="flex items-center gap-1">
-                  <Download size={16} />
-                  Download
+                <Button
+                  onClick={() =>
+                    handleDownloadPDF({ html: value, setDownloading })
+                  }
+                  disabled={loading}
+                  className="flex items-center gap-1"
+                >
+                  {downloading ? (
+                    <Spinner className="size-4" />
+                  ) : (
+                    <>
+                      <Download size={16} />
+                      Download
+                    </>
+                  )}
                 </Button>
               </>
             )}

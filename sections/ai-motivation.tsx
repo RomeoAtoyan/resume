@@ -11,12 +11,14 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { RotateCcw } from "lucide-react";
 import { useModalStore } from "@/store/use-modal-store";
+import { useDownloadStore } from "@/store/use-download-store";
 
 const AiMotivation = () => {
   const [jobLink, setJobLink] = useState<string>("");
   const { openCanvas, setError, error, loading, setLoading } = useCanvasStore();
   const { resumeId, setField, motivationLetter } = useCvDataStore();
   const { openModal } = useModalStore();
+  const { setDownloading, downloading } = useDownloadStore();
 
   return (
     <SectionBoxWrapper>
@@ -36,6 +38,8 @@ const AiMotivation = () => {
         ) : (
           <div className="space-y-6">
             <MotivationLetterReady
+              setDownloading={setDownloading}
+              downloading={downloading}
               openModal={openModal}
               openCanvas={openCanvas}
               motivationLetter={motivationLetter}

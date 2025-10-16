@@ -4,6 +4,7 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import MotivationLetter from "@/modals/motivation-letter";
 import { useCanvasStore } from "@/store/use-canvas-store";
 import { useCvDataStore } from "@/store/use-cv-data-store";
+import { useDownloadStore } from "@/store/use-download-store";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const GlobalCanvas = () => {
@@ -20,8 +21,10 @@ const GlobalCanvas = () => {
   const {
     motivationLetter: { letter },
     resumeId,
-    setField
+    setField,
   } = useCvDataStore();
+
+  const { setDownloading, downloading } = useDownloadStore();
 
   const content = () => {
     switch (id) {
@@ -34,6 +37,8 @@ const GlobalCanvas = () => {
             response={letter}
             resumeId={resumeId ?? ""}
             setField={setField}
+            setDownloading={setDownloading}
+            downloading={downloading}
           />
         );
       default:

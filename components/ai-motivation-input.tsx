@@ -5,8 +5,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput,
-  InputGroupText,
+  InputGroupInput
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -17,7 +16,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { scanJob, ScanJobProps } from "@/lib/actions/scan-job";
-import clsx from "clsx";
 import { CircleCheck, CircleX, Info, Link2, Sparkles } from "lucide-react";
 
 const AiMotivationInput = ({

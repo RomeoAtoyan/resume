@@ -5,13 +5,10 @@ import MotivationLetterReady from "@/components/motivation-letter-ready";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useCanvasStore } from "@/store/use-canvas-store";
 import { useCvDataStore } from "@/store/use-cv-data-store";
+import { useDownloadStore } from "@/store/use-download-store";
+import { useModalStore } from "@/store/use-modal-store";
 import { useState } from "react";
 import SectionBoxWrapper from "./section-box-wrapper";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { RotateCcw } from "lucide-react";
-import { useModalStore } from "@/store/use-modal-store";
-import { useDownloadStore } from "@/store/use-download-store";
 
 const AiMotivation = () => {
   const [jobLink, setJobLink] = useState<string>("");

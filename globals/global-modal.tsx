@@ -1,6 +1,7 @@
 "use client";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import AddCV from "@/modals/add-cv";
+import ChangeResumeTemplate from "@/modals/change-resume-template";
 import RegenerateLetter from "@/modals/regenerate-letter";
 import RemoveResume from "@/modals/remove-resume";
 import { useModalStore } from "@/store/use-modal-store";
@@ -17,6 +18,8 @@ const GlobalModal = () => {
         return <RemoveResume />;
       case "regenerate-letter":
         return <RegenerateLetter />;
+      case "change-resume-template":
+        return <ChangeResumeTemplate />;
       default:
         break;
     }

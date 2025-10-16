@@ -16,7 +16,7 @@ const Page = async ({ params }: { params: Promise<{ resumeId: string }> }) => {
 
   return (
     <div className="w-full h-[calc(100vh-65px)] flex flex-col">
-      <Breadcrumbs title={resume?.title ?? "New Resume"} />
+      <Breadcrumbs />
       <div className="flex-1 flex items-start overflow-hidden">
         <div className="max-w-xs w-full h-full">
           <Sections />

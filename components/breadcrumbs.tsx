@@ -19,13 +19,16 @@ import { handleDownloadResumePDF } from "@/lib/actions/download-pdf-resume";
 import { getResumeContent } from "@/lib/helpers/get-resume-content";
 import { useDownloadStore } from "@/store/use-download-store";
 import { useModalStore } from "@/store/use-modal-store";
-import { Ellipsis, Trash } from "lucide-react";
+import { Ellipsis, File, Trash } from "lucide-react";
 import Link from "next/link";
 import { DownloadButton } from "./download-button";
+import { useCvDataStore } from "@/store/use-cv-data-store";
+import { ROUTES } from "@/constants/routes";
 
-export const Breadcrumbs = ({ title }: { title: string }) => {
+export const Breadcrumbs = () => {
   const { openModal } = useModalStore();
   const { setDownloading, downloading } = useDownloadStore();
+  const { title } = useCvDataStore();
 
   return (
     <div className="px-6 py-2 border-b flex items-center justify-between">
@@ -33,13 +36,11 @@ export const Breadcrumbs = ({ title }: { title: string }) => {
         <BreadcrumbList>
           <BreadcrumbItem>
             <BreadcrumbLink asChild>
-              <Link href="/dashboard">Dashboard</Link>
+              <Link href={ROUTES.DASHBOARD}>Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
-          <BreadcrumbItem>
-            <BreadcrumbLink>Resume</BreadcrumbLink>
-          </BreadcrumbItem>
+          <BreadcrumbItem>Resume</BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <BreadcrumbPage>{title}</BreadcrumbPage>
@@ -74,6 +75,15 @@ export const Breadcrumbs = ({ title }: { title: string }) => {
             >
               <Trash />
               Delete resume
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => {
+                openModal("change-resume-template", "Change Template");
+              }}
+            >
+              <File />
+              Edit template
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

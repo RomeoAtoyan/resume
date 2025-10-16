@@ -68,7 +68,7 @@ const MotivationLetterReady = ({
           <RotateCcw />
           Regenerate
         </Button>
-        <Button onClick={handleDownloadPDF} className="flex items-center gap-1">
+        <Button onClick={() => handleDownloadPDF(motivationLetter.letter)} className="flex items-center gap-1">
           <Download size={16} />
           Download
         </Button>

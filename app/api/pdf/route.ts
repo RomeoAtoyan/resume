@@ -1,7 +1,5 @@
-import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
 import { getBrowser } from "@/lib/helpers/get-browser";
+import { NextResponse } from "next/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

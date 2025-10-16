@@ -163,7 +163,7 @@ export default function MotivationLetter({
                   <Pencil size={16} />
                   Edit
                 </Button>
-                <Button onClick={handleDownloadPDF} disabled={loading} className="flex items-center gap-1">
+                <Button onClick={() => handleDownloadPDF(value)} disabled={loading} className="flex items-center gap-1">
                   <Download size={16} />
                   Download
                 </Button>

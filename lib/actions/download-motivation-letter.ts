@@ -1,9 +1,4 @@
-export const handleDownloadPDF = async () => {
-  const article = document.querySelector("article");
-  if (!article) return;
-
-  const html = article.outerHTML;
-
+export const handleDownloadPDF = async (html: string) => {
   const res = await fetch("/api/pdf", {
     method: "POST",
     headers: { "Content-Type": "application/json" },

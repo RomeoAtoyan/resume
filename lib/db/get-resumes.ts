@@ -1,4 +1,5 @@
 import { getUser } from "../auth/get-user";
+import { prisma } from "../prisma";
 
 export const getResumes = async () => {
   const user = await getUser();

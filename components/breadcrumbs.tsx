@@ -24,6 +24,7 @@ import Link from "next/link";
 import { DownloadButton } from "./download-button";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { ROUTES } from "@/constants/routes";
+import { Separator } from "./ui/separator";
 
 export const Breadcrumbs = () => {
   const { openModal } = useModalStore();
@@ -68,15 +69,6 @@ export const Breadcrumbs = () => {
 
           <DropdownMenuContent align="end" className="w-48">
             <DropdownMenuItem
-              className="text-red-600 cursor-pointer"
-              onClick={() => {
-                openModal("remove-resume", "Delete Resume?");
-              }}
-            >
-              <Trash />
-              Delete resume
-            </DropdownMenuItem>
-            <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => {
                 openModal("change-resume-template", "Change Template");
@@ -84,6 +76,16 @@ export const Breadcrumbs = () => {
             >
               <File />
               Edit template
+            </DropdownMenuItem>
+
+            <DropdownMenuItem
+              className="text-red-600 cursor-pointer"
+              onClick={() => {
+                openModal("remove-resume", "Delete Resume?");
+              }}
+            >
+              <Trash />
+              Delete resume
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

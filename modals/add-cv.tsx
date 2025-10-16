@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-
 import TemplatesCarousel from "@/components/templates-carousel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
 import { createResume } from "@/lib/actions/create-resume";
 import { TemplateTypes } from "@/store/types/cv-data-types";
-import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useModalStore } from "@/store/use-modal-store";
 import { useRouter } from "next/navigation";
 
@@ -26,12 +24,12 @@ const templates = [
 ];
 
 const AddCV = () => {
-  const { title, setField } = useCvDataStore();
-  const { close } = useModalStore();
+  const [localTitle, setLocalTitle] = useState("");
   const [selectedTemplate, setSelectedTemplate] =
     useState<TemplateTypes>("default");
-
   const [loading, setLoading] = useState(false);
+
+  const { close } = useModalStore();
   const router = useRouter();
 
   return (
@@ -51,15 +49,14 @@ const AddCV = () => {
           <Input
             id="title"
             placeholder="e.g. Product Designer Resume"
-            value={title || ""}
-            onChange={(e) => setField("title", e.target.value)}
+            value={localTitle}
+            onChange={(e) => setLocalTitle(e.target.value)}
             className="mt-1"
           />
         </div>
 
         <div className="space-y-2">
           <Label>Choose a Template</Label>
-
           <TemplatesCarousel
             selectedTemplate={selectedTemplate}
             setSelectedTemplate={setSelectedTemplate}
@@ -69,7 +66,7 @@ const AddCV = () => {
       </div>
 
       <div className="flex justify-end gap-2 pt-4 border-t">
-        <Button variant="outline" type="button">
+        <Button variant="outline" onClick={close}>
           Cancel
         </Button>
         <Button
@@ -78,7 +75,7 @@ const AddCV = () => {
               loading,
               setLoading,
               selectedTemplate,
-              title,
+              title: localTitle,
               close,
               router,
             })

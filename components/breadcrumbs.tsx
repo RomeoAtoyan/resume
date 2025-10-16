@@ -22,7 +22,7 @@ import { getResumeContent } from "@/lib/helpers/get-resume-content";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useDownloadStore } from "@/store/use-download-store";
 import { useModalStore } from "@/store/use-modal-store";
-import { Ellipsis, File, Trash } from "lucide-react";
+import { Ellipsis, File, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { DownloadButton } from "./download-button";
 
@@ -50,6 +50,9 @@ export const Breadcrumbs = () => {
       </Breadcrumb>
 
       <div className="flex items-center justify-end gap-2">
+        <Button onClick={() => openModal("add-cv", "")}>
+          <Plus />
+        </Button>
         <DownloadButton
           downloading={downloading}
           downloadKey="resume"

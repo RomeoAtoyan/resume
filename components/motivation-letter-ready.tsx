@@ -1,5 +1,9 @@
+"use client";
+
+import { handleDownloadPDF } from "@/lib/actions/download-motivation-letter";
 import { CanvasStore } from "@/store/use-canvas-store";
-import { Clock, Eye, File } from "lucide-react";
+import { ModalType } from "@/store/use-modal-store";
+import { Clock, Download, Eye, File, RotateCcw } from "lucide-react";
 import moment from "moment";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -7,12 +11,14 @@ import { Button } from "./ui/button";
 const MotivationLetterReady = ({
   motivationLetter,
   openCanvas,
+  openModal,
 }: {
   motivationLetter: {
     letter: string;
     date: Date | null;
   };
   openCanvas: (id: CanvasStore, title?: string) => void;
+  openModal: (id: ModalType, title?: string) => void;
 }) => {
   const formattedDate = (() => {
     if (!motivationLetter?.date) return null;
@@ -29,7 +35,7 @@ const MotivationLetterReady = ({
     }
   })();
   return (
-    <div className="relative z-0 px-4 py-8 border rounded-xl flex items-center justify-between w-full">
+    <div className="relative z-0 px-4 py-8 border rounded-xl flex flex-col items-start justify-between w-full">
       {formattedDate && (
         <Badge className="absolute -top-3 right-3 px-2 py-1 text-xs bg-purple-500/90 text-white flex items-center gap-1 shadow-sm pointer-events-none">
           <Clock size={12} className="opacity-90" />
@@ -37,7 +43,7 @@ const MotivationLetterReady = ({
         </Badge>
       )}
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-3 mb-6">
         <File strokeWidth={1} size={48} className="text-gray-700" />
         <div>
           <p className="font-semibold text-gray-900">
@@ -49,7 +55,7 @@ const MotivationLetterReady = ({
         </div>
       </div>
 
-      <div className="flex flex-col items-end gap-2">
+      <div className="w-full flex justify-end gap-2">
         <Button
           variant="outline"
           onClick={() => openCanvas("motivation-letter")}
@@ -57,6 +63,14 @@ const MotivationLetterReady = ({
         >
           <Eye size={16} />
           View
+        </Button>
+        <Button onClick={() => openModal("regenerate-letter", "Are you sure?")}>
+          <RotateCcw />
+          Regenerate
+        </Button>
+        <Button onClick={handleDownloadPDF} className="flex items-center gap-1">
+          <Download size={16} />
+          Download
         </Button>
       </div>
     </div>

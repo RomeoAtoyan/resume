@@ -36,18 +36,10 @@ const AiMotivation = () => {
         ) : (
           <div className="space-y-6">
             <MotivationLetterReady
+              openModal={openModal}
               openCanvas={openCanvas}
               motivationLetter={motivationLetter}
             />
-
-            <Separator />
-
-            <div className="flex items-center justify-end gap-1">
-              <Button onClick={() => openModal("regenerate-letter", "Are you sure?")}>
-                <RotateCcw />
-                Regenerate
-              </Button>
-            </div>
           </div>
         )}
       </TooltipProvider>

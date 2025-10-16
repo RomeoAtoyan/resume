@@ -6,7 +6,7 @@ import { Breadcrumbs } from "@/components/breadcrumbs";
 import { redirect } from "next/navigation";
 import { ROUTES } from "@/constants/routes";
 
-const Page = async ({ params }: { params: { resumeId: string } }) => {
+const Page = async ({ params }: { params: Promise<{ resumeId: string }> }) => {
   const { resumeId } = await params;
   const resume = await getResume(resumeId);
 

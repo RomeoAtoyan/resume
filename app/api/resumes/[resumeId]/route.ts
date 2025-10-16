@@ -4,7 +4,7 @@ import { getSessionServer } from "@/lib/auth/get-session-server";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { resumeId: string } }
+  context: { params: Promise<{ resumeId: string }> }
 ) {
   try {
     const session = await getSessionServer();
@@ -12,7 +12,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { resumeId } = await params;
+    const { resumeId } = await context.params;
     const { title, template, data } = await req.json();
 
     const updated = await prisma.resume.update({
@@ -37,7 +37,7 @@ export async function PATCH(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { resumeId: string } }
+  context: { params: Promise<{ resumeId: string }> }
 ) {
   try {
     const session = await getSessionServer();
@@ -45,7 +45,7 @@ export async function DELETE(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { resumeId } = await params;
+    const { resumeId } = await context.params;
     const resumeToRemove = await prisma.resume.findUnique({
       where: {
         id: resumeId,

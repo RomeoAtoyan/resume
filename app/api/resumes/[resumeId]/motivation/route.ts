@@ -3,10 +3,10 @@ import { prisma } from "@/lib/prisma";
 
 export async function PATCH(
   req: Request,
-  { params }: { params: { resumeId: string } }
+  context: { params: Promise<{ resumeId: string }> }
 ) {
   try {
-    const { resumeId } = await params;
+    const { resumeId } = await context.params;
     const { analysis } = await req.json();
 
     if (!resumeId) {
@@ -52,10 +52,10 @@ export async function PATCH(
 
 export async function DELETE(
   _req: Request,
-  { params }: { params: { resumeId: string } }
+  context: { params: Promise<{ resumeId: string }> }
 ) {
   try {
-    const { resumeId } = params;
+    const { resumeId } = await context.params;
 
     if (!resumeId) {
       return NextResponse.json({ error: "Missing resumeId" }, { status: 400 });

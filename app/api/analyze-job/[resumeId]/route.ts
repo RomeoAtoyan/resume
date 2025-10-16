@@ -8,10 +8,10 @@ const openai = new OpenAI({
 
 export async function POST(
   req: Request,
-  { params }: { params: { resumeId: string } }
+  context: { params: Promise<{ resumeId: string }> }
 ) {
   try {
-    const { resumeId } = await params;
+    const { resumeId } = await context.params;
     const resume = await getResume(resumeId);
 
     const body = await req.json();

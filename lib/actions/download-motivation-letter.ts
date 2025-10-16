@@ -8,7 +8,7 @@ export const handleDownloadPDF = async ({
   setDownloading: (id: LoadingState, val: boolean) => void;
 }) => {
   setDownloading("download-motivation-letter", true)
-  const res = await fetch("/api/pdf", {
+  const res = await fetch("/api/pdf-motivation-letter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ html }),

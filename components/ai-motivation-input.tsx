@@ -5,7 +5,7 @@ import {
   InputGroup,
   InputGroupAddon,
   InputGroupButton,
-  InputGroupInput
+  InputGroupInput,
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
@@ -17,6 +17,47 @@ import {
 } from "@/components/ui/tooltip";
 import { scanJob, ScanJobProps } from "@/lib/actions/scan-job";
 import { CircleCheck, CircleX, Info, Link2, Sparkles } from "lucide-react";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+
+const tone = {
+  label: "Tone",
+  options: [
+    {
+      id: "formal",
+      label: "Formal",
+    },
+    {
+      id: "friendly",
+      label: "Friendly",
+    },
+    {
+      id: "enthousiastic",
+      label: "Enthousiastic",
+    },
+    {
+      id: "neutral",
+      label: "Neutral",
+    },
+  ],
+};
+
+const length = {
+  label: "Length",
+  options: [
+    {
+      id: "Short",
+      label: "short",
+    },
+    {
+      id: "medium",
+      label: "Medium",
+    },
+    {
+      id: "detailed",
+      label: "Detailed",
+    },
+  ],
+};
 
 const AiMotivationInput = ({
   jobLink,
@@ -95,6 +136,30 @@ const AiMotivationInput = ({
         <span className="block text-xs text-red-400 font-semibold">
           {error}
         </span>
+      </div>
+
+      <div className="space-y-1">
+        <Label>{tone.label}</Label>
+        <RadioGroup defaultValue={tone.options[0].id}>
+          {tone.options.map((t) => (
+            <div key={t.id} className="flex items-center space-x-2">
+              <RadioGroupItem value={t.id} id={t.id} />
+              <Label htmlFor={t.id}>{t.label}</Label>
+            </div>
+          ))}
+        </RadioGroup>
+      </div>
+
+      <div className="space-y-1">
+        <Label>{length.label}</Label>
+        <RadioGroup defaultValue={length.options[0].id}>
+          {length.options.map((l) => (
+            <div key={l.id} className="flex items-center space-x-2">
+              <RadioGroupItem value={l.id} id={l.id} />
+              <Label htmlFor={l.id}>{l.label}</Label>
+            </div>
+          ))}
+        </RadioGroup>
       </div>
 
       <div className="flex items-center justify-end">

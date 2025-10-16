@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export type LoadingState = "download-motivation-letter";
+export type LoadingState = "download-motivation-letter" | "download-resume";
 
 interface DownloadStore {
   id: LoadingState | undefined;

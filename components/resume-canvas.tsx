@@ -3,9 +3,14 @@
 import Default from "@/resume-templates/default";
 import Modern from "@/resume-templates/modern";
 import { useCvDataStore } from "@/store/use-cv-data-store";
+import { Button } from "./ui/button";
+import { handleDownloadResumePDF } from "@/lib/actions/download-pdf-resume";
+import { useDownloadStore } from "@/store/use-download-store";
+import { getResumeContent } from "@/lib/helpers/get-resume-content";
 
 const ResumeCanvas = () => {
   const { template } = useCvDataStore();
+  const { setDownloading } = useDownloadStore();
 
   const renderTemplate = () => {
     switch (template) {
@@ -20,6 +25,16 @@ const ResumeCanvas = () => {
 
   return (
     <div className="h-full bg-[radial-gradient(circle,_#e5e7eb_1px,_transparent_1px)] [background-size:20px_20px]">
+      <Button
+        onClick={() =>
+          handleDownloadResumePDF({
+            html: getResumeContent(),
+            setDownloading,
+          })
+        }
+      >
+        Download
+      </Button>
       {renderTemplate()}
     </div>
   );

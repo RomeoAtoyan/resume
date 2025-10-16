@@ -7,25 +7,30 @@ export const handleDownloadPDF = async ({
   html: string;
   setDownloading: (id: LoadingState, val: boolean) => void;
 }) => {
-  setDownloading("motivation-letter", true)
-  const res = await fetch("/api/pdf-motivation-letter", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ html }),
-  });
+  setDownloading("motivation-letter", true);
+  try {
+    const res = await fetch("/api/pdf-motivation-letter", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ html }),
+    });
 
-  if (!res.ok) {
-    const { error } = await res.json().catch(() => ({ error: "Failed" }));
-    console.error(error);
-    return;
+    if (!res.ok) {
+      const { error } = await res.json().catch(() => ({ error: "Failed" }));
+      console.error(error);
+      return;
+    }
+
+    const blob = await res.blob();
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "motivation-letter.pdf";
+    a.click();
+    URL.revokeObjectURL(url);
+  } catch (error) {
+    console.error("Resume PDF download failed:", error);
+  } finally {
+    setDownloading("motivation-letter", false);
   }
-
-  const blob = await res.blob();
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "motivation-letter.pdf";
-  a.click();
-  URL.revokeObjectURL(url);
-  setDownloading("motivation-letter", false)
 };

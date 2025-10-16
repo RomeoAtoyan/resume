@@ -9,6 +9,7 @@ module.exports = {
     "./modals/**/*.{js,ts,jsx,tsx,mdx}",
     "./globals/**/*.{js,ts,jsx,tsx,mdx}",
     "./sections/**/*.{js,ts,jsx,tsx,mdx}",
+    "./resume-templates/**/*.{js,ts,jsx,tsx,mdx}",
 
     // Or if using `src` directory:
     "./src/**/*.{js,ts,jsx,tsx,mdx}",

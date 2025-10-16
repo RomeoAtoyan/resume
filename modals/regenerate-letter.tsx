@@ -35,7 +35,7 @@ const RegenerateLetter = () => {
           variant="destructive"
         >
           {loading ? (
-            <div>
+            <div className="flex items-center gap-2">
               Deleting
               <Spinner className="size-6" />
             </div>

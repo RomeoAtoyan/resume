@@ -15,7 +15,6 @@ export const editResumeGlobalDetails = async ({
   title: string;
   selectedTemplate: TemplateTypes;
   close: () => void;
-  router: ReturnType<typeof import("next/navigation").useRouter>;
   resumeId: string;
   setField: (field: keyof CvStore, value: any) => void;
 }) => {

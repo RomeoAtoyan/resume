@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import TemplatesCarousel from "@/components/templates-carousel";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,7 +11,6 @@ import { editResumeGlobalDetails } from "@/lib/actions/edit-resume-global-detail
 import { TemplateTypes } from "@/store/types/cv-data-types";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useModalStore } from "@/store/use-modal-store";
-import clsx from "clsx";
 import { useRouter } from "next/navigation";
 
 const templates = [
@@ -35,14 +35,10 @@ const EditResumeTemplate = () => {
   const router = useRouter();
 
   return (
-    <div className="space-y-6 overflow-hidden">
-      <div>
-        <h2 className="text-lg font-semibold text-gray-800">
-          Create a new resume
-        </h2>
-        <p className="text-sm text-gray-500">
-          Pick a name and select a template to begin your CV.
-        </p>
+    <div className="overflow-hidden">
+      <div className="mb-6">
+        <h2 className="text-lg font-semibold text-gray-800">Edit resume</h2>
+        <p className="text-sm text-gray-500">Edit the title and/or template</p>
       </div>
 
       <div className="space-y-4">
@@ -60,28 +56,11 @@ const EditResumeTemplate = () => {
         <div className="space-y-2">
           <Label>Choose a Template</Label>
 
-          <div className="flex gap-4 overflow-x-scroll scroll-smooth snap-x snap-mandatory pb-3 mt-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-            {templates.map((t) => (
-              <div
-                key={t.id}
-                onClick={() => setSelectedTemplate(t.id as TemplateTypes)}
-                className={clsx(
-                  "relative w-40 flex-shrink-0 cursor-pointer snap-center rounded-xl border overflow-hidden transition-all group",
-                  selectedTemplate === t.id
-                    ? "border-blue-500 ring-2 ring-blue-300"
-                    : "border-gray-200 hover:border-gray-400"
-                )}
-              >
-                <div className="relative aspect-[3/4] bg-gray-100"></div>
-                <div className="p-2 text-center text-sm font-medium text-gray-700">
-                  {t.name}
-                </div>
-                {selectedTemplate === t.id && (
-                  <div className="absolute inset-0 bg-blue-500/10 ring-2 ring-blue-500 rounded-xl pointer-events-none" />
-                )}
-              </div>
-            ))}
-          </div>
+          <TemplatesCarousel
+            selectedTemplate={selectedTemplate}
+            setSelectedTemplate={setSelectedTemplate}
+            templates={templates}
+          />
         </div>
       </div>
 
@@ -98,7 +77,6 @@ const EditResumeTemplate = () => {
                 selectedTemplate,
                 title,
                 close,
-                router,
                 resumeId,
               });
             }

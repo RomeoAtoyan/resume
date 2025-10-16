@@ -71,7 +71,7 @@ export const Breadcrumbs = () => {
             <DropdownMenuItem
               className="cursor-pointer"
               onClick={() => {
-                openModal("change-resume-template", "Change Template");
+                openModal("change-resume-template", "");
               }}
             >
               <File />

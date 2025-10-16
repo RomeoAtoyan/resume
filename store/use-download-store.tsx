@@ -1,15 +1,16 @@
 import { create } from "zustand";
 
-export type LoadingState = "download-motivation-letter" | "download-resume";
+export type LoadingState = "motivation-letter" | "resume";
 
 interface DownloadStore {
-  id: LoadingState | undefined;
-  downloading: boolean;
+  downloading: { [key in LoadingState]?: boolean };
   setDownloading: (id: LoadingState, val: boolean) => void;
 }
 
 export const useDownloadStore = create<DownloadStore>((set) => ({
-  id: undefined,
-  downloading: false,
-  setDownloading: (id, val) => set({ id: id, downloading: val }),
+  downloading: {},
+  setDownloading: (id, val) =>
+    set((state) => ({
+      downloading: { ...state.downloading, [id]: val },
+    })),
 }));

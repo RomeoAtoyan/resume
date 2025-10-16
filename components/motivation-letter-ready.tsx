@@ -14,8 +14,8 @@ const MotivationLetterReady = ({
   motivationLetter,
   openCanvas,
   openModal,
-  setDownloading,
   downloading,
+  setDownloading,
 }: {
   motivationLetter: {
     letter: string;
@@ -23,8 +23,8 @@ const MotivationLetterReady = ({
   };
   openCanvas: (id: CanvasStore, title?: string) => void;
   openModal: (id: ModalType, title?: string) => void;
+  downloading: { [key in LoadingState]?: boolean };
   setDownloading: (id: LoadingState, val: boolean) => void;
-  downloading: boolean;
 }) => {
   const formattedDate = (() => {
     if (!motivationLetter?.date) return null;
@@ -80,7 +80,7 @@ const MotivationLetterReady = ({
           }
           className="flex items-center gap-1"
         >
-          {downloading ? (
+          {downloading["motivation-letter"] ? (
             <Spinner className="size-4" />
           ) : (
             <>

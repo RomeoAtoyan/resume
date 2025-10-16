@@ -60,8 +60,8 @@ export default function MotivationLetter({
   setEditMode,
   resumeId,
   setField,
-  setDownloading,
   downloading,
+  setDownloading,
 }: {
   response: string;
   loading: boolean;
@@ -69,8 +69,8 @@ export default function MotivationLetter({
   setEditMode: (val: boolean) => void;
   resumeId: string;
   setField: (field: keyof CvStore, value: any) => void;
+  downloading: { [key in LoadingState]?: boolean };
   setDownloading: (id: LoadingState, val: boolean) => void;
-  downloading: boolean;
 }) {
   const [value, setValue] = useState<string>("");
 
@@ -176,7 +176,7 @@ export default function MotivationLetter({
                   disabled={loading}
                   className="flex items-center gap-1"
                 >
-                  {downloading ? (
+                  {downloading["motivation-letter"] ? (
                     <Spinner className="size-4" />
                   ) : (
                     <>

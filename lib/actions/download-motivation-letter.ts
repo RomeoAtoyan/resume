@@ -7,7 +7,7 @@ export const handleDownloadPDF = async ({
   html: string;
   setDownloading: (id: LoadingState, val: boolean) => void;
 }) => {
-  setDownloading("download-motivation-letter", true)
+  setDownloading("motivation-letter", true)
   const res = await fetch("/api/pdf-motivation-letter", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -27,5 +27,5 @@ export const handleDownloadPDF = async ({
   a.download = "motivation-letter.pdf";
   a.click();
   URL.revokeObjectURL(url);
-  setDownloading("download-motivation-letter", false)
+  setDownloading("motivation-letter", false)
 };

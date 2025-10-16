@@ -7,7 +7,7 @@ export const handleDownloadResumePDF = async ({
   html: string;
   setDownloading: (id: LoadingState, val: boolean) => void;
 }) => {
-  setDownloading("download-resume", true);
+  setDownloading("resume", true);
 
   try {
     const res = await fetch("/api/pdf-resume", {
@@ -32,6 +32,6 @@ export const handleDownloadResumePDF = async ({
   } catch (error) {
     console.error("Resume PDF download failed:", error);
   } finally {
-    setDownloading("download-resume", false);
+    setDownloading("resume", false);
   }
 };

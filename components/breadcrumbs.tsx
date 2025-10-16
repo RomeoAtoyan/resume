@@ -56,7 +56,7 @@ export const Breadcrumbs = ({ title }: { title: string }) => {
             })
           }
         >
-          {downloading ? (
+          {downloading["resume"] ? (
             <Spinner className="size-4" />
           ) : (
             <>

@@ -10,10 +10,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ROUTES } from "@/constants/routes";
 import { getInitials } from "@/lib/helpers/get-initials";
 import { User } from "@/types/user";
 import { LogOut, UserCircle2 } from "lucide-react";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 const SiteHeaderProfile = ({ user }: { user: User }) => {
   return (
@@ -51,10 +53,12 @@ const SiteHeaderProfile = ({ user }: { user: User }) => {
 
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem className="cursor-pointer">
-            <UserCircle2 className="mr-2 size-4 text-gray-500" />
-            Account
-          </DropdownMenuItem>
+          <Link href={ROUTES.ACCOUNT}>
+            <DropdownMenuItem className="cursor-pointer">
+              <UserCircle2 className="mr-2 size-4 text-gray-500" />
+              Account
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

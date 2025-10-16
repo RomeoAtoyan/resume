@@ -28,7 +28,7 @@ const ResumeCanvas = () => {
       <div className="w-full h-full overflow-auto flex flex-col items-center gap-10 py-10">
         <div
           style={{ width: "210mm", minHeight: "297mm" }}
-          className="bg-white border shadow-sm"
+          className="bg-white border shadow-sm p-6"
         >
           {renderTemplate()}
         </div>

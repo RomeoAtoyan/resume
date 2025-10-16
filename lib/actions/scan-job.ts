@@ -47,7 +47,10 @@ export const scanJob = async ({
   try {
     setLoading(true);
     setError("");
-    openCanvas("motivation-letter");
+
+    setTimeout(() => {
+      openCanvas("motivation-letter");
+    }, 1500);
 
     const res = await fetch(`/api/analyze-job/${resumeId}`, {
       method: "POST",

@@ -61,47 +61,37 @@ const AiMotivationInput = ({
             <Link2 />
           </InputGroupAddon>
           <InputGroupAddon align="inline-end">
-            {loading ? (
-              <>
-                <InputGroupText className="text-green-500">
-                  Scanning...
-                </InputGroupText>
-                <Spinner className={clsx(loading && "text-green-500")} />
-              </>
-            ) : (
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <InputGroupButton className="rounded-full" size="icon-xs">
-                    <Info />
-                  </InputGroupButton>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="top"
-                  className="max-w-xs text-sm space-y-2 py-3 bg-white border text-gray-600"
-                >
-                  <p>
-                    Paste a <strong>public job link</strong> below. The AI will
-                    scan the page and extract key details automatically.
-                  </p>
-                  <Separator className="bg-muted-foreground" />
-                  <div className="space-y-1 text-xs">
-                    <div className="flex items-start gap-1">
-                      <CircleCheck className="text-green-500" size={18} />
-                      <span>
-                        Works with: Indeed, company career pages, public
-                        listings.
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <CircleX className="text-red-500" size={18} />
-                      <span>
-                        Won’t work with: LinkedIn, pages requiring login.
-                      </span>
-                    </div>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <InputGroupButton className="rounded-full" size="icon-xs">
+                  <Info />
+                </InputGroupButton>
+              </TooltipTrigger>
+              <TooltipContent
+                side="top"
+                className="max-w-xs text-sm space-y-2 py-3 bg-white border text-gray-600"
+              >
+                <p>
+                  Paste a <strong>public job link</strong> below. The AI will
+                  scan the page and extract key details automatically.
+                </p>
+                <Separator className="bg-muted-foreground" />
+                <div className="space-y-1 text-xs">
+                  <div className="flex items-start gap-1">
+                    <CircleCheck className="text-green-500" size={18} />
+                    <span>
+                      Works with: Indeed, company career pages, public listings.
+                    </span>
                   </div>
-                </TooltipContent>
-              </Tooltip>
-            )}
+                  <div className="flex items-center gap-1">
+                    <CircleX className="text-red-500" size={18} />
+                    <span>
+                      Won’t work with: LinkedIn, pages requiring login.
+                    </span>
+                  </div>
+                </div>
+              </TooltipContent>
+            </Tooltip>
           </InputGroupAddon>
         </InputGroup>
         <span className="block text-xs text-red-400 font-semibold">
@@ -124,8 +114,17 @@ const AiMotivationInput = ({
           }}
           disabled={loading}
         >
-          Scan Job
-          <Sparkles />
+          {loading ? (
+            <>
+              Scanning
+              <Spinner className="size-4" />
+            </>
+          ) : (
+            <>
+              Scan Job
+              <Sparkles />
+            </>
+          )}
         </Button>
       </div>
     </div>

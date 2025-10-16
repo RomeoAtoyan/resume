@@ -13,18 +13,18 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { ROUTES } from "@/constants/routes";
 import { handleDownloadResumePDF } from "@/lib/actions/download-pdf-resume";
 import { getResumeContent } from "@/lib/helpers/get-resume-content";
+import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useDownloadStore } from "@/store/use-download-store";
 import { useModalStore } from "@/store/use-modal-store";
 import { Ellipsis, File, Trash } from "lucide-react";
 import Link from "next/link";
 import { DownloadButton } from "./download-button";
-import { useCvDataStore } from "@/store/use-cv-data-store";
-import { ROUTES } from "@/constants/routes";
-import { Separator } from "./ui/separator";
 
 export const Breadcrumbs = () => {
   const { openModal } = useModalStore();
@@ -77,9 +77,9 @@ export const Breadcrumbs = () => {
               <File />
               Edit template
             </DropdownMenuItem>
-
+            <DropdownMenuSeparator />
             <DropdownMenuItem
-              className="text-red-600 cursor-pointer"
+              className="text-red-600 cursor-pointer hover:!text-red-500 hover:!bg-red-50"
               onClick={() => {
                 openModal("remove-resume", "Delete Resume?");
               }}

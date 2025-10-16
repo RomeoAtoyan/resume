@@ -25,6 +25,12 @@ import { useModalStore } from "@/store/use-modal-store";
 import { Ellipsis, File, Plus, Trash } from "lucide-react";
 import Link from "next/link";
 import { DownloadButton } from "./download-button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 export const Breadcrumbs = () => {
   const { openModal } = useModalStore();
@@ -50,9 +56,19 @@ export const Breadcrumbs = () => {
       </Breadcrumb>
 
       <div className="flex items-center justify-end gap-2">
-        <Button onClick={() => openModal("add-cv", "")}>
-          <Plus />
-        </Button>
+        <TooltipProvider>
+          <Tooltip delayDuration={0}>
+            <TooltipTrigger
+              onClick={() => openModal("add-cv", "")}
+              className="bg-blue-400 hover:bg-blue-400/80 py-1.5 px-3 rounded-md"
+            >
+              <Plus color="white" />
+              <TooltipContent className="bg-white font-semibold border text-black">
+                Create a new CV
+              </TooltipContent>
+            </TooltipTrigger>
+          </Tooltip>
+        </TooltipProvider>
         <DownloadButton
           downloading={downloading}
           downloadKey="resume"

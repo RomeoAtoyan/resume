@@ -14,15 +14,16 @@ const RegenerateLetter = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   return (
-    <div>
+    <div className="space-y-4">
       <p>
         Regenerating your motivation letter means that you lose your previous
         motivation letter.
       </p>
 
-      <Separator className="my-6" />
-
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end gap-2">
+        <Button onClick={() => close()} variant={"outline"}>
+          Cancel
+        </Button>
         <Button
           onClick={() =>
             deleteMotivationLetter({

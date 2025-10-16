@@ -19,9 +19,9 @@ import { handleDownloadResumePDF } from "@/lib/actions/download-pdf-resume";
 import { getResumeContent } from "@/lib/helpers/get-resume-content";
 import { useDownloadStore } from "@/store/use-download-store";
 import { useModalStore } from "@/store/use-modal-store";
-import { Download, Ellipsis, EllipsisVertical } from "lucide-react";
+import { Ellipsis, Trash } from "lucide-react";
 import Link from "next/link";
-import { Spinner } from "./ui/spinner";
+import { DownloadButton } from "./download-button";
 
 export const Breadcrumbs = ({ title }: { title: string }) => {
   const { openModal } = useModalStore();
@@ -48,23 +48,16 @@ export const Breadcrumbs = ({ title }: { title: string }) => {
       </Breadcrumb>
 
       <div className="flex items-center justify-end gap-2">
-        <Button
-          onClick={() =>
+        <DownloadButton
+          downloading={downloading}
+          downloadKey="resume"
+          handleDownload={() =>
             handleDownloadResumePDF({
               html: getResumeContent(),
               setDownloading,
             })
           }
-        >
-          {downloading["resume"] ? (
-            <Spinner className="size-4" />
-          ) : (
-            <>
-              <Download />
-              Download CV
-            </>
-          )}
-        </Button>
+        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="border">
@@ -79,6 +72,7 @@ export const Breadcrumbs = ({ title }: { title: string }) => {
                 openModal("remove-resume", "Delete Resume?");
               }}
             >
+              <Trash />
               Delete resume
             </DropdownMenuItem>
           </DropdownMenuContent>

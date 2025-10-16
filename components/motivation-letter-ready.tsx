@@ -2,13 +2,15 @@
 
 import { handleDownloadPDF } from "@/lib/actions/download-motivation-letter";
 import { CanvasStore } from "@/store/use-canvas-store";
+import { LoadingState } from "@/store/use-download-store";
 import { ModalType } from "@/store/use-modal-store";
-import { Clock, Download, Eye, File, RotateCcw } from "lucide-react";
+import { Clock, Eye, File, RotateCcw } from "lucide-react";
 import moment from "moment";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
-import { LoadingState } from "@/store/use-download-store";
-import { Spinner } from "./ui/spinner";
+import { DownloadButton } from "./download-button";
+import { useMarkdownToHtml } from "@/hooks/use-markdown-to-html";
+;
 
 const MotivationLetterReady = ({
   motivationLetter,
@@ -26,6 +28,8 @@ const MotivationLetterReady = ({
   downloading: { [key in LoadingState]?: boolean };
   setDownloading: (id: LoadingState, val: boolean) => void;
 }) => {
+
+  const htmlValue = useMarkdownToHtml(motivationLetter.letter)
   const formattedDate = (() => {
     if (!motivationLetter?.date) return null;
 
@@ -74,21 +78,16 @@ const MotivationLetterReady = ({
           <RotateCcw />
           Regenerate
         </Button>
-        <Button
-          onClick={() =>
-            handleDownloadPDF({ html: motivationLetter.letter, setDownloading })
+        <DownloadButton
+          downloading={downloading}
+          downloadKey="motivation-letter"
+          handleDownload={() =>
+            handleDownloadPDF({
+              html: htmlValue,
+              setDownloading,
+            })
           }
-          className="flex items-center gap-1"
-        >
-          {downloading["motivation-letter"] ? (
-            <Spinner className="size-4" />
-          ) : (
-            <>
-              <Download size={16} />
-              Download
-            </>
-          )}
-        </Button>
+        />
       </div>
     </div>
   );

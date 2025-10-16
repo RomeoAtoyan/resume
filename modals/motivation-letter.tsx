@@ -1,16 +1,16 @@
 "use client";
 
+import { DownloadButton } from "@/components/download-button";
 import MotivationLetterSkeleton from "@/components/motivation-letter-skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
+import { useMarkdownToHtml } from "@/hooks/use-markdown-to-html";
 import { handleDownloadPDF } from "@/lib/actions/download-motivation-letter";
 import { saveMotivationLetter } from "@/lib/actions/save-motivation-letter";
 import { CvStore } from "@/store/types/cv-data-types";
 import { LoadingState } from "@/store/use-download-store";
 import clsx from "clsx";
-import { Download, LogOut, Pencil, Save } from "lucide-react";
-import { marked } from "marked";
+import { LogOut, Pencil, Save } from "lucide-react";
 import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 
@@ -72,18 +72,12 @@ export default function MotivationLetter({
   downloading: { [key in LoadingState]?: boolean };
   setDownloading: (id: LoadingState, val: boolean) => void;
 }) {
-  const [value, setValue] = useState<string>("");
+  const htmlValue = useMarkdownToHtml(response);
+  const [editorValue, setEditorValue] = useState<string>(htmlValue);
 
   useEffect(() => {
-    if (!response) return;
-
-    const convertMarkdown = async () => {
-      const html = await marked.parse(response);
-      setValue(html);
-    };
-
-    convertMarkdown();
-  }, [response]);
+    setEditorValue(htmlValue);
+  }, [htmlValue]);
 
   return (
     <div className="relative z-0 flex flex-col min-h-full">
@@ -102,7 +96,7 @@ export default function MotivationLetter({
             {editMode ? (
               <div className="bg-white dark:bg-zinc-900 w-full max-w-full p-4 h-full">
                 <div className="prose max-w-full dark:prose-invert h-full">
-                  <CKEditor value={value} onChange={setValue} />
+                  <CKEditor value={editorValue} onChange={setEditorValue} />
                 </div>
               </div>
             ) : (
@@ -115,7 +109,7 @@ export default function MotivationLetter({
                     "prose-p:leading-relaxed prose-strong:text-gray-900 dark:prose-strong:text-gray-50",
                     "prose-ul:list-disc prose-ul:ml-5 prose-li:my-1"
                   )}
-                  dangerouslySetInnerHTML={{ __html: value }}
+                  dangerouslySetInnerHTML={{ __html: htmlValue }}
                 />
               </div>
             )}
@@ -142,10 +136,10 @@ export default function MotivationLetter({
                     onClick={async () => {
                       await saveMotivationLetter({
                         resumeId,
-                        analysis: value,
+                        analysis: editorValue,
                       });
                       setField("motivationLetter", {
-                        letter: value,
+                        letter: editorValue,
                         date: new Date(),
                       });
                       setEditMode(false);
@@ -169,22 +163,16 @@ export default function MotivationLetter({
                   <Pencil size={16} />
                   Edit
                 </Button>
-                <Button
-                  onClick={() =>
-                    handleDownloadPDF({ html: value, setDownloading })
+                <DownloadButton
+                  downloading={downloading}
+                  downloadKey="motivation-letter"
+                  handleDownload={() =>
+                    handleDownloadPDF({
+                      html: htmlValue,
+                      setDownloading,
+                    })
                   }
-                  disabled={loading}
-                  className="flex items-center gap-1"
-                >
-                  {downloading["motivation-letter"] ? (
-                    <Spinner className="size-4" />
-                  ) : (
-                    <>
-                      <Download size={16} />
-                      Download
-                    </>
-                  )}
-                </Button>
+                />
               </>
             )}
           </div>

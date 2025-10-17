@@ -10,8 +10,6 @@ import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
 import { DownloadButton } from "./download-button";
 import { useMarkdownToHtml } from "@/hooks/use-markdown-to-html";
-;
-
 const MotivationLetterReady = ({
   motivationLetter,
   openCanvas,
@@ -28,8 +26,7 @@ const MotivationLetterReady = ({
   downloading: { [key in LoadingState]?: boolean };
   setDownloading: (id: LoadingState, val: boolean) => void;
 }) => {
-
-  const htmlValue = useMarkdownToHtml(motivationLetter.letter)
+  const htmlValue = useMarkdownToHtml(motivationLetter.letter);
   const formattedDate = (() => {
     if (!motivationLetter?.date) return null;
 
@@ -47,7 +44,7 @@ const MotivationLetterReady = ({
   return (
     <div className="relative z-0 px-4 py-8 border rounded-xl flex flex-col items-start justify-between w-full">
       {formattedDate && (
-        <Badge className="absolute -top-3 right-3 px-2 py-1 text-xs bg-purple-500/90 text-white flex items-center gap-1 shadow-sm pointer-events-none">
+        <Badge className="absolute -top-3 right-3 px-2 py-1 text-xs bg-purple-500 text-white flex items-center gap-1 shadow-sm pointer-events-none">
           <Clock size={12} className="opacity-90" />
           {formattedDate}
         </Badge>

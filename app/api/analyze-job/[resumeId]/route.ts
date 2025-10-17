@@ -15,11 +15,37 @@ export async function POST(
     const resume = await getResume(resumeId);
 
     const body = await req.json();
-    const { url } = body;
+    const { url, tone, length } = body;
 
     if (!url) {
       return NextResponse.json({ error: "Missing job URL" }, { status: 400 });
     }
+
+    if (!tone) {
+      return NextResponse.json(
+        { error: "Missing behaviour tone" },
+        { status: 400 }
+      );
+    }
+
+    if (!length) {
+      return NextResponse.json(
+        { error: "Missing behaviour length" },
+        { status: 400 }
+      );
+    }
+
+    const lengthGuidelines: Record<string, string> = {
+      short:
+        "Write around 180-250 words, approximately 3 well-structured paragraphs (introduction, motivation/skills, closing).",
+      medium:
+        "Write around 300-400 words, approximately 4 paragraphs (introduction, key experience, motivation, and closing).",
+      detailed:
+        "Write around 450-600 words, approximately 5 paragraphs with full motivation, achievements, and reasoning for fit.",
+    };
+
+    const lengthInstruction =
+      lengthGuidelines[length] || lengthGuidelines.medium;
 
     const pageResponse = await fetch(url);
     const html = await pageResponse.text();
@@ -52,11 +78,18 @@ export async function POST(
               - If the data does not exist, do not place it in the motivation letter.
 
               IMPORTANT:
+              - DO NOT MAKE ASSUMPTIONS
               - ONLY WORK WITH WHAT YOU HAVE !
               - DO NOT REFER TO PROFILE OR PORTFOLIO SITES !
               - DO NOT INCLUDE THE DATE OF THE DAY THIS LETTER IS WRITTEN !
               - DO NOT USE PLACEHOLDERS LIKE [Your Name] etc... Use real data taken from the user's resume data like name, email, address, etc...
-              - YOUR TEXT IS PROCESSED BY MARKDOWN SO USE NICE SPACING 
+              - YOUR TEXT IS PROCESSED BY MARKDOWN SO USE NICE SPACING
+
+              TONE:
+              - ${tone}
+
+              LENGTH:
+              - ${length} - ${lengthInstruction}
             `,
         },
         {

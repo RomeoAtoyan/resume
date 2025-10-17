@@ -3,6 +3,7 @@ import React from "react";
 import { z } from "zod";
 import { saveMotivationLetter } from "./save-motivation-letter";
 import { CvStore } from "@/store/types/cv-data-types";
+import { MLLength, MLTone } from "@/components/ai-motivation-input";
 
 const jobLinkSchema = z
   .string()
@@ -29,7 +30,9 @@ export const scanJob = async ({
   setField,
   resumeId,
   openCanvas,
-}: ScanJobProps) => {
+  tone,
+  length
+}: ScanJobProps & { tone: MLTone; length: MLLength }) => {
   if (!resumeId) {
     return null;
   }
@@ -55,7 +58,7 @@ export const scanJob = async ({
     const res = await fetch(`/api/analyze-job/${resumeId}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ url: jobLink }),
+      body: JSON.stringify({ url: jobLink, tone, length }),
     });
 
     if (!res.ok) {

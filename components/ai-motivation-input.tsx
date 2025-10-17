@@ -8,6 +8,7 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
 import {
@@ -17,45 +18,27 @@ import {
 } from "@/components/ui/tooltip";
 import { scanJob, ScanJobProps } from "@/lib/actions/scan-job";
 import { CircleCheck, CircleX, Info, Link2, Sparkles } from "lucide-react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useState } from "react";
 
-const tone = {
+export type MLTone = "formal" | "friendly" | "enthousiastic" | "neutral";
+export type MLLength = "short" | "medium" | "detailed";
+
+const tones = {
   label: "Tone",
   options: [
-    {
-      id: "formal",
-      label: "Formal",
-    },
-    {
-      id: "friendly",
-      label: "Friendly",
-    },
-    {
-      id: "enthousiastic",
-      label: "Enthousiastic",
-    },
-    {
-      id: "neutral",
-      label: "Neutral",
-    },
+    { id: "formal", label: "Formal" },
+    { id: "friendly", label: "Friendly" },
+    { id: "enthousiastic", label: "Enthousiastic" },
+    { id: "neutral", label: "Neutral" },
   ],
 };
 
-const length = {
+const lengths = {
   label: "Length",
   options: [
-    {
-      id: "Short",
-      label: "short",
-    },
-    {
-      id: "medium",
-      label: "Medium",
-    },
-    {
-      id: "detailed",
-      label: "Detailed",
-    },
+    { id: "short", label: "Short" },
+    { id: "medium", label: "Medium" },
+    { id: "detailed", label: "Detailed" },
   ],
 };
 
@@ -70,18 +53,18 @@ const AiMotivationInput = ({
   resumeId,
   openCanvas,
 }: ScanJobProps & { loading: boolean; error: string }) => {
+  const [tone, setTone] = useState<MLTone>("neutral");
+  const [length, setLength] = useState<MLLength>("short");
+
   return (
     <div className="space-y-6">
       <div>
         <Label className="text-lg font-semibold text-gray-800 flex items-center gap-1">
-          <div>
-            <span className="bg-purple-500 text-white px-1.5 py-1 rounded-sm font-mono">
-              AI
-            </span>{" "}
-            Motivation Letter
-          </div>
+          <span className="bg-purple-500 text-white px-1.5 py-1 rounded-sm font-mono">
+            AI
+          </span>{" "}
+          Motivation Letter
         </Label>
-
         <p className="text-xs text-gray-500 mt-1">
           Paste the job link you want to apply for, and let AI craft a
           personalized motivation letter for you.
@@ -138,25 +121,106 @@ const AiMotivationInput = ({
         </span>
       </div>
 
-      <div className="space-y-1">
-        <Label>{tone.label}</Label>
-        <RadioGroup defaultValue={tone.options[0].id}>
-          {tone.options.map((t) => (
-            <div key={t.id} className="flex items-center space-x-2">
+      <div className="space-y-2">
+        <div className="flex items-center gap-1">
+          <Label>{tones.label}</Label>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="h-4 w-4 text-gray-500 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              className="max-w-xs text-sm space-y-2 py-3 bg-white border text-gray-600"
+            >
+              <p>
+                The <strong>tone</strong> sets the voice of your motivation
+                letter — how it sounds to the reader.
+              </p>
+              <ul className="list-disc list-inside text-xs space-y-1">
+                <li>
+                  <strong>Formal:</strong> Professional and polite.
+                </li>
+                <li>
+                  <strong>Friendly:</strong> Conversational and warm.
+                </li>
+                <li>
+                  <strong>Enthusiastic:</strong> Passionate and energetic.
+                </li>
+                <li>
+                  <strong>Neutral:</strong> Balanced and objective.
+                </li>
+              </ul>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+
+        <RadioGroup
+          onValueChange={(val) => setTone(val as MLTone)}
+          defaultValue={tones.options[0].id}
+          className="grid grid-cols-3"
+        >
+          {tones.options.map((t) => (
+            <div
+              key={t.id}
+              className="border rounded-md py-1.5 px-3 flex items-center space-x-2"
+            >
               <RadioGroupItem value={t.id} id={t.id} />
-              <Label htmlFor={t.id}>{t.label}</Label>
+              <Label className="cursor-pointer" htmlFor={t.id}>
+                {t.label}
+              </Label>
             </div>
           ))}
         </RadioGroup>
       </div>
 
-      <div className="space-y-1">
-        <Label>{length.label}</Label>
-        <RadioGroup defaultValue={length.options[0].id}>
-          {length.options.map((l) => (
-            <div key={l.id} className="flex items-center space-x-2">
+      <div className="space-y-2">
+        <div className="flex items-center gap-1">
+          <Label>{lengths.label}</Label>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Info className="h-4 w-4 text-gray-500 cursor-pointer" />
+            </TooltipTrigger>
+            <TooltipContent
+              side="top"
+              className="max-w-xs text-sm space-y-2 py-3 bg-white border text-gray-600"
+            >
+              <p>
+                The <strong>length</strong> controls how detailed and
+                comprehensive the AI will make your motivation letter.
+              </p>
+              <ul className="list-disc list-inside text-xs space-y-1">
+                <li>
+                  <strong>Short:</strong> Around <em>150–200 words</em> (~3
+                  paragraphs) — concise but complete.
+                </li>
+                <li>
+                  <strong>Medium:</strong> Around <em>250–350 words</em> (~4
+                  paragraphs) — the ideal balance for most applications.
+                </li>
+                <li>
+                  <strong>Detailed:</strong> Around <em>400–550 words</em> (~5+
+                  paragraphs) — thorough and persuasive, best for competitive
+                  roles.
+                </li>
+              </ul>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+
+        <RadioGroup
+          onValueChange={(val) => setLength(val as MLLength)}
+          className="grid grid-cols-3"
+          defaultValue={lengths.options[0].id}
+        >
+          {lengths.options.map((l) => (
+            <div
+              key={l.id}
+              className="border rounded-md py-1.5 px-3 flex items-center space-x-2"
+            >
               <RadioGroupItem value={l.id} id={l.id} />
-              <Label htmlFor={l.id}>{l.label}</Label>
+              <Label className="cursor-pointer" htmlFor={l.id}>
+                {l.label}
+              </Label>
             </div>
           ))}
         </RadioGroup>
@@ -164,7 +228,7 @@ const AiMotivationInput = ({
 
       <div className="flex items-center justify-end">
         <Button
-          onClick={() => {
+          onClick={() =>
             scanJob({
               jobLink,
               setJobLink,
@@ -173,8 +237,10 @@ const AiMotivationInput = ({
               setField,
               resumeId,
               openCanvas,
-            });
-          }}
+              tone,
+              length,
+            })
+          }
           disabled={loading}
         >
           {loading ? (

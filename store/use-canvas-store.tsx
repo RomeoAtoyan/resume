@@ -1,4 +1,3 @@
-import { error } from "console";
 import { create } from "zustand";
 
 export type CanvasStore = "motivation-letter";

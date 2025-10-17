@@ -14,6 +14,12 @@ import type { User } from "@prisma/client";
 import { Mail, Pencil, Save, User as UserIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { z } from "zod";
+
+const userSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters long"),
+  email: z.email("Please enter a valid email address"),
+});
 
 const AccountInfo = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -21,29 +27,35 @@ const AccountInfo = ({ user }: { user: User }) => {
   const [loading, setLoading] = useState(false);
   const [updatedName, setUpdatedName] = useState(user.name ?? "");
   const [updatedEmail, setUpdatedEmail] = useState(user.email ?? "");
+  const [errors, setErrors] = useState<{ name?: string; email?: string }>({});
 
-  const fields = [
-    {
-      id: "name",
-      label: "Full Name",
-      value: updatedName,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setUpdatedName(e.target.value),
-      placeholder: "Enter your name",
-      icon: <UserIcon className="h-4 w-4 text-gray-400" />,
-    },
-    {
-      id: "email",
-      label: "Email",
-      value: updatedEmail,
-      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
-        setUpdatedEmail(e.target.value),
-      placeholder: "Enter your email",
-      icon: <Mail className="h-4 w-4 text-gray-400" />,
-    },
-  ];
+  const validateForm = () => {
+    const result = userSchema.safeParse({
+      name: updatedName,
+      email: updatedEmail,
+    });
+
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+
+      result.error.issues.forEach((issue) => {
+        const field = issue.path[0] as string;
+        if (field) {
+          fieldErrors[field] = issue.message;
+        }
+      });
+
+      setErrors(fieldErrors);
+      return false;
+    }
+
+    setErrors({});
+    return true;
+  };
 
   const saveUser = async () => {
+    if (!validateForm()) return; 
+
     try {
       setLoading(true);
       await updateUser({
@@ -60,9 +72,31 @@ const AccountInfo = ({ user }: { user: User }) => {
     }
   };
 
+  const fields = [
+    {
+      id: "name",
+      label: "Full Name",
+      value: updatedName,
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+        setUpdatedName(e.target.value),
+      placeholder: "Enter your name",
+      icon: <UserIcon className="h-4 w-4 text-gray-400" />,
+      error: errors.name,
+    },
+    {
+      id: "email",
+      label: "Email",
+      value: updatedEmail,
+      onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
+        setUpdatedEmail(e.target.value),
+      placeholder: "Enter your email",
+      icon: <Mail className="h-4 w-4 text-gray-400" />,
+      error: errors.email,
+    },
+  ];
+
   return (
     <section className="w-full bg-white border rounded-2xl shadow-sm p-6 sm:p-8 space-y-8 transition-all">
-      {/* Header */}
       <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
         <div className="flex items-center gap-5">
           <div className="relative">
@@ -131,7 +165,6 @@ const AccountInfo = ({ user }: { user: User }) => {
         </div>
       </div>
 
-      {/* Editable Fields */}
       <div className="grid sm:grid-cols-2 gap-6 mt-4">
         {fields.map((field) => (
           <div key={field.id} className="flex flex-col gap-2">
@@ -150,10 +183,13 @@ const AccountInfo = ({ user }: { user: User }) => {
                 placeholder={field.placeholder}
                 className={`${
                   editMode ? "focus:ring-2 focus:ring-blue-500" : ""
-                }`}
+                } ${field.error ? "border-red-500" : ""}`}
               />
               <InputGroupAddon>{field.icon}</InputGroupAddon>
             </InputGroup>
+            {field.error && (
+              <p className="text-sm text-red-500 mt-1">{field.error}</p>
+            )}
           </div>
         ))}
       </div>

@@ -4,6 +4,7 @@ import GlobalCanvas from "@/globals/global-canvas";
 import GlobalModal from "@/globals/global-modal";
 import { requireAuthWithRedirections } from "@/lib/auth/require-auth-with-redirections";
 import SessionProvider from "@/providers/session-provider";
+import { ThemeProvider } from "@/providers/theme-provider";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
@@ -29,13 +30,20 @@ export default async function RootLayout({
 }>) {
   await requireAuthWithRedirections();
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <SessionProvider>
-          <SiteHeader />
-          <main>{children}</main>
-          <GlobalModal />
-          <GlobalCanvas />
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <SiteHeader />
+            <main>{children}</main>
+            <GlobalModal />
+            <GlobalCanvas />
+          </ThemeProvider>
         </SessionProvider>
       </body>
     </html>

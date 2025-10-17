@@ -16,6 +16,7 @@ import { User } from "@/types/user";
 import { LogOut, UserCircle2 } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Link from "next/link";
+import ThemeSwitcherButton from "./theme-switcher-button";
 
 const SiteHeaderProfile = ({ user }: { user: User }) => {
   return (
@@ -55,10 +56,14 @@ const SiteHeaderProfile = ({ user }: { user: User }) => {
         <DropdownMenuGroup>
           <Link href={ROUTES.ACCOUNT}>
             <DropdownMenuItem className="cursor-pointer">
-              <UserCircle2 className="mr-2 size-4 text-gray-500" />
+              <UserCircle2 className="size-4 text-gray-500" />
               Account
             </DropdownMenuItem>
           </Link>
+        </DropdownMenuGroup>
+
+        <DropdownMenuGroup>
+          <ThemeSwitcherButton />
         </DropdownMenuGroup>
 
         <DropdownMenuSeparator />

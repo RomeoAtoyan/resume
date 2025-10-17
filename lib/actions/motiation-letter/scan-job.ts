@@ -1,7 +1,7 @@
 import { CanvasStore } from "@/store/use-canvas-store";
 import React from "react";
 import { z } from "zod";
-import { saveMotivationLetter } from "./save-motivation-letter";
+import { saveMotivationLetter } from "@/lib/actions/motiation-letter/save-motivation-letter";
 import { CvStore } from "@/store/types/cv-data-types";
 import { MLLength, MLTone } from "@/components/ai-motivation-input";
 
@@ -31,7 +31,7 @@ export const scanJob = async ({
   resumeId,
   openCanvas,
   tone,
-  length
+  length,
 }: ScanJobProps & { tone: MLTone; length: MLLength }) => {
   if (!resumeId) {
     return null;

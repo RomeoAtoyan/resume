@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { removeResume } from "@/lib/actions/remove-resume";
+import { removeResume } from "@/lib/actions/resume/remove-resume";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useModalStore } from "@/store/use-modal-store";
 import { useRouter } from "next/navigation";

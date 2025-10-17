@@ -1,6 +1,6 @@
 "use client";
 
-import { handleDownloadPDF } from "@/lib/actions/download-motivation-letter";
+import { handleDownloadPDF } from "@/lib/actions/motiation-letter/download-motivation-letter";
 import { CanvasStore } from "@/store/use-canvas-store";
 import { LoadingState } from "@/store/use-download-store";
 import { ModalType } from "@/store/use-modal-store";

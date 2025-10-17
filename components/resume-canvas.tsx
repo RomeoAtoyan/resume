@@ -4,7 +4,7 @@ import Default from "@/resume-templates/default";
 import Modern from "@/resume-templates/modern";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { Button } from "./ui/button";
-import { handleDownloadResumePDF } from "@/lib/actions/download-pdf-resume";
+import { handleDownloadResumePDF } from "@/lib/actions/resume/download-pdf-resume";
 import { useDownloadStore } from "@/store/use-download-store";
 import { getResumeContent } from "@/lib/helpers/get-resume-content";
 

@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ROUTES } from "@/constants/routes";
-import { handleDownloadResumePDF } from "@/lib/actions/download-pdf-resume";
+import { handleDownloadResumePDF } from "@/lib/actions/resume/download-pdf-resume";
 import { getResumeContent } from "@/lib/helpers/get-resume-content";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useDownloadStore } from "@/store/use-download-store";

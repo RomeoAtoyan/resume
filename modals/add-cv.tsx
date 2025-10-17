@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Spinner } from "@/components/ui/spinner";
-import { createResume } from "@/lib/actions/create-resume";
+import { createResume } from "@/lib/actions/resume/create-resume";
 import { TemplateTypes } from "@/store/types/cv-data-types";
 import { useModalStore } from "@/store/use-modal-store";
 import { useRouter } from "next/navigation";

@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Spinner } from "@/components/ui/spinner";
-import { deleteMotivationLetter } from "@/lib/actions/delete-motivation-letter";
+import { deleteMotivationLetter } from "@/lib/actions/motiation-letter/delete-motivation-letter";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { useModalStore } from "@/store/use-modal-store";
 import React, { useState } from "react";

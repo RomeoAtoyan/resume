@@ -16,7 +16,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { scanJob, ScanJobProps } from "@/lib/actions/scan-job";
+import { scanJob, ScanJobProps } from "@/lib/actions/motiation-letter/scan-job";
 import { CircleCheck, CircleX, Info, Link2, Sparkles } from "lucide-react";
 import { useState } from "react";
 

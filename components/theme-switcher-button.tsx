@@ -14,7 +14,7 @@ const ThemeSwitcherButton = () => {
             className="cursor-pointer"
           >
             <Moon className="size-4 text-gray-500" />
-            Dark
+            Switch to Dark
           </DropdownMenuItem>
         </>
       ) : (
@@ -23,7 +23,7 @@ const ThemeSwitcherButton = () => {
           className="cursor-pointer"
         >
           <Sun className="size-4 text-gray-500" />
-          Light
+          Switch to Light
         </DropdownMenuItem>
       )}
     </>

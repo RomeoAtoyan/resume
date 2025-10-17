@@ -56,19 +56,22 @@ export const Breadcrumbs = () => {
       </Breadcrumb>
 
       <div className="flex items-center justify-end gap-2">
-        <TooltipProvider>
-          <Tooltip delayDuration={0}>
-            <TooltipTrigger
-              onClick={() => openModal("add-cv", "")}
-              className="bg-blue-400 hover:bg-blue-400/80 py-1.5 px-3 rounded-md"
-            >
-              <Plus color="white" />
-              <TooltipContent className="bg-white font-semibold border text-black">
-                Create a new CV
-              </TooltipContent>
+        <TooltipProvider delayDuration={0}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={() => openModal("add-cv", "")}
+                className="flex items-center gap-1.5 bg-gray-800 hover:bg-gray-900 text-white px-3 py-1.5 rounded-md shadow-sm transition-colors"
+              >
+                <Plus className="h-4 w-4 text-white" />
+              </Button>
             </TooltipTrigger>
+            <TooltipContent className="bg-white font-semibold border text-black shadow-sm">
+              Create a new CV
+            </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+
         <DownloadButton
           downloading={downloading}
           downloadKey="resume"

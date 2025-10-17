@@ -6,15 +6,18 @@ import AutoSaveStatus from "./autosave-status";
 import NavLogo from "./nav-logo";
 import clsx from "clsx";
 import { useIsInBuilder } from "@/hooks/use-is-in-builder";
+import { shouldHideHeader } from "@/lib/helpers/should-show-header";
 
 const SiteHeaderClient = ({ user }: { user: User | null }) => {
   const isInBuilder = useIsInBuilder();
+  const hideHeader = shouldHideHeader();
 
   return (
     <header
       className={clsx(
         "w-full border-b border-gray-200 overflow-hidden",
-        !isInBuilder && "sticky top-0 z-50 bg-white"
+        !isInBuilder && "sticky top-0 z-50 bg-white",
+        hideHeader && "hidden"
       )}
     >
       <div className="flex items-center justify-between px-6 py-3">

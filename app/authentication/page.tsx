@@ -1,25 +1,23 @@
+"use client";
+
 import AuthForm from "@/components/auth-form";
+import MockResume from "@/components/mock-resume";
 import NavLogo from "@/components/nav-logo";
 
 const Page = () => {
   return (
-    <div className="grid min-h-svh lg:grid-cols-2">
+    <div className="grid min-h-svh lg:grid-cols-2 overflow-hidden">
       <div className="flex flex-col gap-4 p-6 md:p-10">
         <div className="flex justify-center gap-2 md:justify-start">
           <NavLogo />
         </div>
         <div className="flex flex-1 items-center justify-center">
-          <div className="w-full max-w-xs">
-            <AuthForm />
-          </div>
+          <AuthForm />
         </div>
       </div>
-      <div className="relative hidden bg-muted lg:block">
-        <img
-          src="/placeholder.svg"
-          alt="Image"
-          className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
-        />
+
+      <div className="relative hidden lg:flex items-center justify-center overflow-hidden bg-blue-50">
+        <MockResume />
       </div>
     </div>
   );

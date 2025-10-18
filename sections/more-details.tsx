@@ -81,6 +81,7 @@ const MoreDetails = () => {
               <div className="space-y-2">
                 <Label>Personal Statement</Label>
                 <Textarea
+                  rows={4}
                   placeholder="Write a short paragraph describing your personality, values, or goals..."
                   value={section.personalStatement}
                   onChange={(e) =>

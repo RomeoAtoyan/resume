@@ -14,7 +14,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { parse, format } from "date-fns";
 import {
@@ -27,6 +26,7 @@ import {
   Plus,
 } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
+import { RichTextEditor } from "@/components/rich-text-editor";
 
 type BaseField = {
   id: string;
@@ -190,19 +190,16 @@ const Education = () => {
                   return (
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
-                      <Textarea
-                        rows={field.rows}
-                        placeholder={field.placeholder}
+                      <RichTextEditor
                         value={value}
-                        onChange={(e) =>
+                        onChange={(val) =>
                           setItemField(
                             "education",
                             edu.id,
                             field.id as any,
-                            e.target.value
+                            val
                           )
                         }
-                        className="bg-white"
                       />
                     </div>
                   );

@@ -83,7 +83,6 @@
   }
 }
 
-/* Remove borders inside CKEditor editable area */
 .ck.ck-content.ck-editor__editable.ck-rounded-corners.ck-editor__editable_inline {
   border: none !important;
   box-shadow: none !important;
@@ -91,4 +90,12 @@
 
 .ck .ck-sticky-panel__content {
   @apply !border-none;
+}
+
+.ck-powered-by-balloon {
+  @apply !hidden;
+}
+
+.ck.ck-editor__top .ck-sticky-panel .ck-sticky-panel__content {
+  @apply !rounded-sm !overflow-hidden;
 }

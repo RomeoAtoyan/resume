@@ -6,11 +6,10 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { useCvDataStore } from "@/store/use-cv-data-store";
-import { Heart, Info, Trophy, Trash2, Plus } from "lucide-react";
+import { Heart, Info, Trophy } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
+import { RichTextEditor } from "@/components/rich-text-editor"; // ✅ reusable CKEditor
 
 const MoreDetails = () => {
   const { moreDetails, setItemField } = useCvDataStore();
@@ -80,19 +79,16 @@ const MoreDetails = () => {
 
               <div className="space-y-2">
                 <Label>Personal Statement</Label>
-                <Textarea
-                  rows={4}
-                  placeholder="Write a short paragraph describing your personality, values, or goals..."
-                  value={section.personalStatement}
-                  onChange={(e) =>
+                <RichTextEditor
+                  value={section.personalStatement ?? ""}
+                  onChange={(val) =>
                     setItemField(
                       "moreDetails",
                       section.id,
                       "personalStatement",
-                      e.target.value
+                      val
                     )
                   }
-                  className="bg-white"
                 />
               </div>
 

@@ -14,7 +14,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { parse, format } from "date-fns";
 import {
@@ -26,6 +25,7 @@ import {
   Plus,
 } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
+import { RichTextEditor } from "@/components/rich-text-editor"; // ✅ new reusable editor
 
 type BaseField = {
   id: string;
@@ -79,9 +79,18 @@ const WorkExperience = () => {
     }
   };
 
-  const handleDateSelect = (expId: string, fieldId: string, date: Date | undefined) => {
+  const handleDateSelect = (
+    expId: string,
+    fieldId: string,
+    date: Date | undefined
+  ) => {
     if (date) {
-      setItemField("workExperience", expId, fieldId as any, format(date, "MMM yyyy"));
+      setItemField(
+        "workExperience",
+        expId,
+        fieldId as any,
+        format(date, "MMM yyyy")
+      );
     }
   };
 
@@ -118,7 +127,8 @@ const WorkExperience = () => {
 
               {workExperienceFields.map((field) => {
                 const icon = getIcon(field.id);
-                const value = (exp[field.id as keyof typeof exp] as string) ?? "";
+                const value =
+                  (exp[field.id as keyof typeof exp] as string) ?? "";
 
                 if (field.type === "date") {
                   const parsedDate = value
@@ -166,18 +176,16 @@ const WorkExperience = () => {
                   return (
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
-                      <Textarea
-                        placeholder={field.placeholder}
+                      <RichTextEditor
                         value={value}
-                        onChange={(e) =>
+                        onChange={(val) =>
                           setItemField(
                             "workExperience",
                             exp.id,
                             field.id as any,
-                            e.target.value
+                            val
                           )
                         }
-                        className="bg-white"
                       />
                     </div>
                   );

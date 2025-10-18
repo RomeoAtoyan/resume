@@ -14,7 +14,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { Textarea } from "@/components/ui/textarea";
 import { useCvDataStore } from "@/store/use-cv-data-store";
 import { parse, format } from "date-fns";
 import {
@@ -26,6 +25,7 @@ import {
   Trash2,
 } from "lucide-react";
 import SectionBoxWrapper from "./section-box-wrapper";
+import { RichTextEditor } from "@/components/rich-text-editor";
 
 type BaseField = {
   id: string;
@@ -103,6 +103,7 @@ const CoursesAndCertificates = () => {
             enhance your professional profile.
           </p>
         </div>
+
         <div className="space-y-8">
           {courses.map((course) => (
             <div
@@ -119,10 +120,12 @@ const CoursesAndCertificates = () => {
                   <Trash2 className="h-4 w-4 text-red-500 group-hover:text-red-400" />
                 </Button>
               </div>
+
               {coursesFields.map((field) => {
                 const icon = getIcon(field.id);
                 const value =
                   (course[field.id as keyof typeof course] as string) ?? "";
+
                 if (field.type === "date") {
                   const parsedDate = value
                     ? parse(value, "MMM yyyy", new Date())
@@ -163,26 +166,26 @@ const CoursesAndCertificates = () => {
                     </div>
                   );
                 }
+
                 if (field.textarea) {
                   return (
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
-                      <Textarea
-                        placeholder={field.placeholder}
+                      <RichTextEditor
                         value={value}
-                        onChange={(e) =>
+                        onChange={(val) =>
                           setItemField(
                             "courses",
                             course.id,
                             field.id as keyof typeof course,
-                            e.target.value
+                            val
                           )
                         }
-                        className="bg-white"
                       />
                     </div>
                   );
                 }
+
                 if (icon) {
                   return (
                     <div key={field.id} className="space-y-1">
@@ -207,6 +210,7 @@ const CoursesAndCertificates = () => {
                     </div>
                   );
                 }
+
                 return (
                   <div key={field.id} className="space-y-1">
                     <Label>{field.label}</Label>
@@ -230,6 +234,7 @@ const CoursesAndCertificates = () => {
             </div>
           ))}
         </div>
+
         <div className="flex justify-end">
           <Button onClick={() => addItem("courses")}>
             <Plus className="h-4 w-4 mr-2" />

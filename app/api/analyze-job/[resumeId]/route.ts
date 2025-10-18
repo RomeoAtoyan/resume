@@ -55,7 +55,7 @@ export async function POST(
       .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, "")
       .replace(/<\/?[^>]+(>|$)/g, "")
       .replace(/\s+/g, " ")
-      .trim()
+      .trim();
 
     const completion = await openai.chat.completions.create({
       model: "gpt-4o-mini",

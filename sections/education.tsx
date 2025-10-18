@@ -33,6 +33,7 @@ type BaseField = {
   label: string;
   placeholder: string;
   textarea?: boolean;
+  rows?: number;
 };
 
 type DateField = BaseField & { type: "date" };
@@ -70,6 +71,7 @@ const educationFields: readonly EducationField[] = [
     placeholder:
       "Briefly describe your studies, focus areas, or relevant projects...",
     textarea: true,
+    rows: 4,
   },
 ] as const;
 
@@ -91,9 +93,18 @@ const Education = () => {
     }
   };
 
-  const handleDateSelect = (eduId: string, fieldId: string, date: Date | undefined) => {
+  const handleDateSelect = (
+    eduId: string,
+    fieldId: string,
+    date: Date | undefined
+  ) => {
     if (date) {
-      setItemField("education", eduId, fieldId as any, format(date, "MMM yyyy"));
+      setItemField(
+        "education",
+        eduId,
+        fieldId as any,
+        format(date, "MMM yyyy")
+      );
     }
   };
 
@@ -101,7 +112,9 @@ const Education = () => {
     <SectionBoxWrapper>
       <div className="space-y-6 overflow-y-auto">
         <div>
-          <Label className="text-lg font-semibold text-gray-800">Education</Label>
+          <Label className="text-lg font-semibold text-gray-800">
+            Education
+          </Label>
           <p className="text-xs text-gray-500">
             Add your academic background, including schools, degrees, and key
             areas of study. Highlight achievements or courses that best
@@ -128,7 +141,8 @@ const Education = () => {
 
               {educationFields.map((field) => {
                 const icon = getIcon(field.id);
-                const value = (edu[field.id as keyof typeof edu] as string) ?? "";
+                const value =
+                  (edu[field.id as keyof typeof edu] as string) ?? "";
 
                 if (field.type === "date") {
                   const parsedDate = value
@@ -177,6 +191,7 @@ const Education = () => {
                     <div key={field.id} className="space-y-1">
                       <Label>{field.label}</Label>
                       <Textarea
+                        rows={field.rows}
                         placeholder={field.placeholder}
                         value={value}
                         onChange={(e) =>

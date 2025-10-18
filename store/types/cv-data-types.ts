@@ -78,7 +78,18 @@ export type CvCollections = {
 };
 
 export type SaveStatus = "idle" | "saving" | "saved" | "error";
-export type TemplateTypes = "default" | "modern";
+export type TemplateTypes =
+  | "default"
+  | "modern"
+  | "minimal"
+  | "creative"
+  | "professional"
+  | "elegant"
+  | "compact"
+  | "technical"
+  | "designer"
+  | "gradient";
+
 // ---------- GENERIC STORE ----------
 export interface CvStore extends CvCollections {
   title: string;

@@ -18,7 +18,7 @@ const Page = async ({ params }: { params: Promise<{ resumeId: string }> }) => {
     <div className="w-full h-[calc(100vh-65px)] flex flex-col">
       <Breadcrumbs />
       <div className="flex-1 flex items-start overflow-hidden">
-        <div className="max-w-xs w-full h-full">
+        <div className="max-w-xs w-full h-full p-2 space-y-2">
           <Sections />
         </div>
 

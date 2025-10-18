@@ -71,7 +71,7 @@ const Sections = () => {
             key={section.id}
             id={section.id}
             className={clsx(
-              "w-full flex items-center justify-between p-6 border-b border-gray-200",
+              "w-full flex items-center justify-between p-3 border rounded-md border-gray-200",
               isActive && "bg-gray-100",
               section.highlight && "bg-purple-500 text-white"
             )}

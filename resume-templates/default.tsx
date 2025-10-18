@@ -1,166 +1,108 @@
 "use client";
 
-import React from "react";
-
 const Default = () => {
   return (
-    <div
-      className="resume-container"
-      style={{
-        fontFamily: "system-ui, sans-serif",
-        display: "flex",
-        flexDirection: "column",
-        background: "#fff",
-        color: "#111",
-        padding: "20px",
-        lineHeight: 1.5,
-        width: "100%",
-        maxWidth: "800px",
-        margin: "0 auto",
-      }}
-    >
-      {/* Header */}
-      <header
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "20px",
-          borderBottom: "2px solid #e5e7eb",
-          paddingBottom: "15px",
-          marginBottom: "20px",
-        }}
-      >
-        <img
-          src="https://randomuser.me/api/portraits/men/32.jpg"
-          alt="Profile"
-          style={{
-            width: "100px",
-            height: "100px",
-            borderRadius: "100%",
-            objectFit: "cover",
-            border: "2px solid #ccc",
-          }}
-        />
-        <div>
-          <h1 style={{ fontSize: "1.75rem", margin: 0 }}>John Doe</h1>
-          <h2 style={{ fontSize: "1.1rem", color: "#555", margin: "4px 0 0" }}>
-            Front-End Developer
-          </h2>
-          <p style={{ fontSize: "0.9rem", color: "#777", marginTop: "4px" }}>
-            Passionate about crafting elegant, high-performance web interfaces.
-          </p>
-        </div>
+    <article className="resume-container bg-white text-gray-800 font-sans flex flex-col justify-between p-10 leading-relaxed">
+      {/* HEADER */}
+      <header className="text-center border-b border-gray-300 pb-4">
+        <h1 className="text-3xl font-bold tracking-tight">Romeo Atoyan</h1>
+        <p className="text-lg text-gray-600">Front-End Developer</p>
+        <p className="text-sm text-gray-500 mt-1">
+          romeo.atoyan@example.com · Antwerp, Belgium
+        </p>
       </header>
 
-      {/* Body: 2-column layout */}
-      <main
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 2fr",
-          gap: "20px",
-        }}
-      >
-        {/* Left column */}
-        <aside>
-          <section style={{ marginBottom: "20px" }}>
-            <h3 style={sectionTitleStyle}>Contact</h3>
-            <p>Email: john.doe@example.com</p>
-            <p>Phone: +1 555 123 4567</p>
-            <p>Location: San Francisco, CA</p>
-          </section>
+      {/* SUMMARY */}
+      <section className="mt-6">
+        <h2 className="text-xl font-semibold border-b border-gray-200 pb-1">
+          Profile
+        </h2>
+        <p className="mt-2 text-gray-700">
+          Passionate front-end developer with 3+ years of experience building
+          modern web applications using React, Next.js, and TypeScript.
+          Dedicated to creating clean, user-friendly interfaces with a focus on
+          performance and accessibility.
+        </p>
+      </section>
 
-          <section style={{ marginBottom: "20px" }}>
-            <h3 style={sectionTitleStyle}>Skills</h3>
-            <ul style={ulStyle}>
-              <li>React / Next.js</li>
-              <li>TypeScript</li>
-              <li>Tailwind CSS</li>
-              <li>Node.js</li>
-              <li>Prisma / SQL</li>
-            </ul>
-          </section>
+      {/* EXPERIENCE */}
+      <section className="mt-6">
+        <h2 className="text-xl font-semibold border-b border-gray-200 pb-1">
+          Experience
+        </h2>
 
-          <section>
-            <h3 style={sectionTitleStyle}>Languages</h3>
-            <p>English (Native)</p>
-            <p>Dutch (B2)</p>
-          </section>
-        </aside>
+        <div className="mt-2 space-y-4">
+          <div>
+            <p className="font-semibold">Front-End Developer — Freelance</p>
+            <p className="text-sm text-gray-600 italic">2023 – Present</p>
+            <p className="text-sm text-gray-700 mt-1">
+              Building web apps for startups using React 19 and Next.js 15.
+              Implemented responsive UIs, state management with Zustand, and
+              real-time features with WebSockets.
+            </p>
+          </div>
 
-        {/* Right column */}
-        <div>
-          <section style={{ marginBottom: "20px" }}>
-            <h3 style={sectionTitleStyle}>Experience</h3>
-            <div style={itemStyle}>
-              <h4 style={itemTitleStyle}>Front-End Developer – Acme Corp</h4>
-              <span style={itemSubtitleStyle}>2021 – Present</span>
-              <p style={itemDescStyle}>
-                Building and maintaining scalable Next.js applications with
-                React 19 and TypeScript. Led the migration to a new design
-                system using shadcn/ui.
-              </p>
-            </div>
-            <div style={itemStyle}>
-              <h4 style={itemTitleStyle}>Web Developer – Pixel Studio</h4>
-              <span style={itemSubtitleStyle}>2018 – 2021</span>
-              <p style={itemDescStyle}>
-                Designed and implemented over 50+ responsive client websites
-                using React and TailwindCSS.
-              </p>
-            </div>
-          </section>
-
-          <section>
-            <h3 style={sectionTitleStyle}>Education</h3>
-            <div style={itemStyle}>
-              <h4 style={itemTitleStyle}>B.Sc. in Computer Science</h4>
-              <span style={itemSubtitleStyle}>2015 – 2018 | MIT</span>
-              <p style={itemDescStyle}>
-                Focused on software engineering, algorithms, and human-computer
-                interaction.
-              </p>
-            </div>
-          </section>
+          <div>
+            <p className="font-semibold">Junior Developer — StudioPixel</p>
+            <p className="text-sm text-gray-600 italic">2021 – 2023</p>
+            <p className="text-sm text-gray-700 mt-1">
+              Collaborated with designers to convert Figma designs into
+              functional, pixel-perfect interfaces. Contributed to internal
+              component libraries and improved build performance by 25%.
+            </p>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+
+      {/* EDUCATION */}
+      <section className="mt-6">
+        <h2 className="text-xl font-semibold border-b border-gray-200 pb-1">
+          Education
+        </h2>
+
+        <div className="mt-2 space-y-3">
+          <div>
+            <p className="font-semibold">Bachelor of Computer Science</p>
+            <p className="text-sm text-gray-600">
+              University of Antwerp · 2018 – 2021
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* SKILLS */}
+      <section className="mt-6">
+        <h2 className="text-xl font-semibold border-b border-gray-200 pb-1">
+          Skills
+        </h2>
+        <ul className="flex flex-wrap gap-2 mt-3">
+          {[
+            "React",
+            "Next.js",
+            "TypeScript",
+            "TailwindCSS",
+            "Prisma",
+            "Zustand",
+            "Framer Motion",
+            "Figma",
+            "Node.js",
+          ].map((skill) => (
+            <li
+              key={skill}
+              className="bg-gray-100 text-gray-700 text-sm px-3 py-1 rounded-md"
+            >
+              {skill}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="text-center text-xs text-gray-400 mt-8">
+        © 2025 Romeo Atoyan — Resume generated with Next.js
+      </footer>
+    </article>
   );
-};
-
-const sectionTitleStyle: React.CSSProperties = {
-  fontSize: "1.1rem",
-  fontWeight: 600,
-  borderBottom: "1px solid #ddd",
-  paddingBottom: "4px",
-  marginBottom: "8px",
-  color: "#222",
-};
-
-const itemStyle: React.CSSProperties = {
-  marginBottom: "10px",
-};
-
-const itemTitleStyle: React.CSSProperties = {
-  fontSize: "1rem",
-  fontWeight: 600,
-  marginBottom: "2px",
-};
-
-const itemSubtitleStyle: React.CSSProperties = {
-  fontSize: "0.9rem",
-  color: "#555",
-  marginBottom: "4px",
-  display: "block",
-};
-
-const itemDescStyle: React.CSSProperties = {
-  fontSize: "0.9rem",
-  color: "#333",
-};
-
-const ulStyle: React.CSSProperties = {
-  paddingLeft: "16px",
-  margin: 0,
 };
 
 export default Default;

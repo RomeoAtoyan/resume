@@ -1,5 +1,7 @@
 import { getBrowser } from "@/lib/helpers/get-browser";
 import { NextResponse } from "next/server";
+import fs from "fs";
+import path from "path";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,7 +13,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Missing HTML" }, { status: 400 });
     }
 
-    // 🧾 Wrap the HTML into a proper A4 print document
+    const cssDir = path.resolve(".next/static/css");
+    const cssFiles = fs.readdirSync(cssDir).filter((f) => f.endsWith(".css"));
+    const latestCSS = cssFiles.length
+      ? fs.readFileSync(path.join(cssDir, cssFiles[0]), "utf8")
+      : "";
+
     const doc = `
       <!doctype html>
       <html>
@@ -32,18 +39,8 @@ export async function POST(req: Request) {
             .resume-container {
               width: 100%;
               height: 100%;
-              display: flex;
-              flex-direction: column;
-              justify-content: flex-start;
-              align-items: flex-start;
             }
-            h1, h2, h3, h4 {
-              margin: 0;
-              padding: 0;
-            }
-            p {
-              margin: 4px 0;
-            }
+            ${latestCSS}
           </style>
         </head>
         <body>

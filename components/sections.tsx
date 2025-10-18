@@ -3,17 +3,18 @@
 import clsx from "clsx";
 import { useSectionStore } from "@/store/use-sections-store";
 import {
-    Award,
-    Brain,
-    Briefcase,
-    Cpu,
-    FileText,
-    GraduationCap,
-    Languages,
-    MoreHorizontal,
-    User,
-    Users2,
+  Award,
+  Brain,
+  Briefcase,
+  Cpu,
+  FileText,
+  GraduationCap,
+  Languages,
+  MoreHorizontal,
+  User,
+  Users2,
 } from "lucide-react";
+import { motion } from "framer-motion";
 
 const Sections = () => {
   const { activeSection, setActiveSection } = useSectionStore();
@@ -81,7 +82,13 @@ const Sections = () => {
               <span className="font-semibold">{section.title}</span>
             </div>
             {isActive && (
-              <div className="size-4 bg-green-400 rounded-full"></div>
+              <motion.div
+                className="size-4 bg-green-400 border border-green-500 rounded-full"
+                initial={{ opacity: 0, scale: 0.5 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.5 }}
+                transition={{ duration: 0.3, ease: "easeOut" }}
+              />
             )}
           </button>
         );

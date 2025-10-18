@@ -32,7 +32,6 @@ const EditResumeTemplate = () => {
     useState<TemplateTypes>(template);
 
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
 
   return (
     <div className="overflow-hidden">
@@ -41,7 +40,7 @@ const EditResumeTemplate = () => {
         <p className="text-sm text-gray-500">Edit the title and/or template</p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 px-px">
         <div>
           <Label htmlFor="title">Title</Label>
           <Input

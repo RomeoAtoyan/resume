@@ -43,7 +43,7 @@ const AddCV = () => {
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="space-y-4 px-px">
         <div>
           <Label htmlFor="title">Title</Label>
           <Input
